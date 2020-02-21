@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from pyjpeg import decode
+from pylibjpeg import decode
 
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))

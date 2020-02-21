@@ -1,6 +1,6 @@
 
-import _jpeg
+import _libjpeg
 
 
 def decode(infile, outfile):
-    return _jpeg.decode(infile, outfile)
+    return _libjpeg.decode(infile, outfile)
