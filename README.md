@@ -1,17 +1,17 @@
 To get running for testing:
 
 ```bash
-cd pyjpeg/src/libjpeg
+cd pylibjpeg/src/libjpeg
 ./configure
 ```
 
-Then open `pyjpeg/src/libjpeg/automake` and copy the arguments from
+Then open `pylibjpeg/src/libjpeg/automake` and copy the arguments from
 ``ADDOPTS`` into `extra_compile_args` in `setup.py`. Then:
 
 ```bash
 cd ../../../
 python setup.py build_ext --inplace
-pyjpeg/scripts/test.py
+pylibjpeg/scripts/test.py
 ```
 
 Will create an uncompressed version of `in.jpg` called  `out.pnm` in the
