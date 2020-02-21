@@ -13,8 +13,8 @@ from Cython.Distutils import build_ext
 LIB_DIR = os.path.abspath(os.path.dirname(__file__))
 
 # Cython extension.
-source_files = ['pyjpeg/_jpeg.pyx']
-libdir = os.path.join(LIB_DIR, 'pyjpeg/src/libjpeg/')
+source_files = ['pylibjpeg/_libjpeg.pyx']
+libdir = os.path.join(LIB_DIR, 'pylibjpeg/src/libjpeg/')
 for fname in Path(libdir).glob('*/*'):
     if '.cpp' in str(fname):
         source_files.append(str(fname))
@@ -22,7 +22,7 @@ for fname in Path(libdir).glob('*/*'):
 #print(source_files)
 
 include_dirs = [
-    os.path.join(LIB_DIR, 'pyjpeg/src/libjpeg/'),
+    os.path.join(LIB_DIR, 'pylibjpeg/src/libjpeg/'),
     setuptools.distutils.sysconfig.get_python_inc(),
     np.get_include()
 ]
@@ -37,7 +37,7 @@ extra_link_args = []
 
 
 ext = Extension(
-    '_jpeg',
+    '_libjpeg',
     source_files,
     language='c++',
     include_dirs=include_dirs,
@@ -46,7 +46,7 @@ ext = Extension(
 )
 
 setup(
-    name='pyjpeg',
+    name='pylibjpeg',
     packages=find_packages(),
     package_data={'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
     cmdclass={'build_ext': build_ext},

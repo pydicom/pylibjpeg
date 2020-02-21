@@ -604,8 +604,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___jpeg
-#define __PYX_HAVE_API___jpeg
+#define __PYX_HAVE___libjpeg
+#define __PYX_HAVE_API___libjpeg
 /* Early includes */
 #include <string.h>
 #include <stdio.h>
@@ -842,7 +842,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "pyjpeg/_jpeg.pyx",
+  "pylibjpeg/_libjpeg.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -1553,18 +1553,17 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from '_jpeg' */
-#define __Pyx_MODULE_NAME "_jpeg"
-extern int __pyx_module_is_main__jpeg;
-int __pyx_module_is_main__jpeg = 0;
+/* Module declarations from '_libjpeg' */
+#define __Pyx_MODULE_NAME "_libjpeg"
+extern int __pyx_module_is_main__libjpeg;
+int __pyx_module_is_main__libjpeg = 0;
 
-/* Implementation of '_jpeg' */
+/* Implementation of '_libjpeg' */
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_RuntimeError;
 static PyObject *__pyx_builtin_ImportError;
 static const char __pyx_k_np[] = "np";
-static const char __pyx_k_jpeg[] = "_jpeg";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
@@ -1573,12 +1572,13 @@ static const char __pyx_k_range[] = "range";
 static const char __pyx_k_decode[] = "decode";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_infile[] = "infile";
+static const char __pyx_k_libjpeg[] = "_libjpeg";
 static const char __pyx_k_outfile[] = "outfile";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_ImportError[] = "ImportError";
 static const char __pyx_k_RuntimeError[] = "RuntimeError";
-static const char __pyx_k_pyjpeg__jpeg_pyx[] = "pyjpeg/_jpeg.pyx";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_pylibjpeg__libjpeg_pyx[] = "pylibjpeg/_libjpeg.pyx";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
@@ -1597,7 +1597,7 @@ static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_decode;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_infile;
-static PyObject *__pyx_n_s_jpeg;
+static PyObject *__pyx_n_s_libjpeg;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
@@ -1607,11 +1607,11 @@ static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_u_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_u_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_outfile;
-static PyObject *__pyx_kp_s_pyjpeg__jpeg_pyx;
+static PyObject *__pyx_kp_s_pylibjpeg__libjpeg_pyx;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
-static PyObject *__pyx_pf_5_jpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_infile, PyObject *__pyx_v_outfile); /* proto */
+static PyObject *__pyx_pf_8_libjpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_infile, PyObject *__pyx_v_outfile); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_tuple_;
@@ -1625,7 +1625,7 @@ static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_codeobj__9;
 /* Late includes */
 
-/* "_jpeg.pyx":19
+/* "_libjpeg.pyx":19
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
@@ -1633,9 +1633,9 @@ static PyObject *__pyx_codeobj__9;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5_jpeg_1decode(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5_jpeg_1decode = {"decode", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_5_jpeg_1decode, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5_jpeg_1decode(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8_libjpeg_1decode(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_8_libjpeg_1decode = {"decode", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_8_libjpeg_1decode, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_8_libjpeg_1decode(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_infile = 0;
   PyObject *__pyx_v_outfile = 0;
   PyObject *__pyx_r = 0;
@@ -1683,25 +1683,25 @@ static PyObject *__pyx_pw_5_jpeg_1decode(PyObject *__pyx_self, PyObject *__pyx_a
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("decode", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 19, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_jpeg.decode", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("_libjpeg.decode", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5_jpeg_decode(__pyx_self, __pyx_v_infile, __pyx_v_outfile);
+  __pyx_r = __pyx_pf_8_libjpeg_decode(__pyx_self, __pyx_v_infile, __pyx_v_outfile);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5_jpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_infile, PyObject *__pyx_v_outfile) {
+static PyObject *__pyx_pf_8_libjpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_infile, PyObject *__pyx_v_outfile) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   char *__pyx_t_1;
   char *__pyx_t_2;
   __Pyx_RefNannySetupContext("decode", 0);
 
-  /* "_jpeg.pyx":20
+  /* "_libjpeg.pyx":20
  * 
  * def decode(infile, outfile):
  *     Reconstruct(infile, outfile, 1, NULL, True)             # <<<<<<<<<<<<<<
@@ -1710,7 +1710,7 @@ static PyObject *__pyx_pf_5_jpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, PyOb
   __pyx_t_2 = __Pyx_PyObject_AsWritableString(__pyx_v_outfile); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L1_error)
   Reconstruct(__pyx_t_1, __pyx_t_2, 1, NULL, 1);
 
-  /* "_jpeg.pyx":19
+  /* "_libjpeg.pyx":19
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
@@ -1721,7 +1721,7 @@ static PyObject *__pyx_pf_5_jpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, PyOb
   __pyx_r = Py_None; __Pyx_INCREF(Py_None);
   goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_AddTraceback("_jpeg.decode", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("_libjpeg.decode", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4154,17 +4154,17 @@ static PyMethodDef __pyx_methods[] = {
 #if PY_MAJOR_VERSION >= 3
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 static PyObject* __pyx_pymod_create(PyObject *spec, PyModuleDef *def); /*proto*/
-static int __pyx_pymod_exec__jpeg(PyObject* module); /*proto*/
+static int __pyx_pymod_exec__libjpeg(PyObject* module); /*proto*/
 static PyModuleDef_Slot __pyx_moduledef_slots[] = {
   {Py_mod_create, (void*)__pyx_pymod_create},
-  {Py_mod_exec, (void*)__pyx_pymod_exec__jpeg},
+  {Py_mod_exec, (void*)__pyx_pymod_exec__libjpeg},
   {0, NULL}
 };
 #endif
 
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
-    "_jpeg",
+    "_libjpeg",
     0, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
@@ -4203,7 +4203,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_decode, __pyx_k_decode, sizeof(__pyx_k_decode), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_infile, __pyx_k_infile, sizeof(__pyx_k_infile), 0, 0, 1, 1},
-  {&__pyx_n_s_jpeg, __pyx_k_jpeg, sizeof(__pyx_k_jpeg), 0, 0, 1, 1},
+  {&__pyx_n_s_libjpeg, __pyx_k_libjpeg, sizeof(__pyx_k_libjpeg), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
   {&__pyx_kp_u_ndarray_is_not_C_contiguous, __pyx_k_ndarray_is_not_C_contiguous, sizeof(__pyx_k_ndarray_is_not_C_contiguous), 0, 1, 0, 0},
@@ -4213,7 +4213,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 1, 0, 0},
   {&__pyx_kp_u_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 1, 0, 0},
   {&__pyx_n_s_outfile, __pyx_k_outfile, sizeof(__pyx_k_outfile), 0, 0, 1, 1},
-  {&__pyx_kp_s_pyjpeg__jpeg_pyx, __pyx_k_pyjpeg__jpeg_pyx, sizeof(__pyx_k_pyjpeg__jpeg_pyx), 0, 0, 1, 0},
+  {&__pyx_kp_s_pylibjpeg__libjpeg_pyx, __pyx_k_pylibjpeg__libjpeg_pyx, sizeof(__pyx_k_pylibjpeg__libjpeg_pyx), 0, 0, 1, 0},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_kp_u_unknown_dtype_code_in_numpy_pxd, __pyx_k_unknown_dtype_code_in_numpy_pxd, sizeof(__pyx_k_unknown_dtype_code_in_numpy_pxd), 0, 1, 0, 0},
@@ -4310,7 +4310,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "_jpeg.pyx":19
+  /* "_libjpeg.pyx":19
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
@@ -4319,7 +4319,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_infile, __pyx_n_s_outfile); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pyjpeg__jpeg_pyx, __pyx_n_s_decode, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pylibjpeg__libjpeg_pyx, __pyx_n_s_decode, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4444,11 +4444,11 @@ static int __Pyx_modinit_function_import_code(void) {
 
 
 #if PY_MAJOR_VERSION < 3
-__Pyx_PyMODINIT_FUNC init_jpeg(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC init_jpeg(void)
+__Pyx_PyMODINIT_FUNC init_libjpeg(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC init_libjpeg(void)
 #else
-__Pyx_PyMODINIT_FUNC PyInit__jpeg(void) CYTHON_SMALL_CODE; /*proto*/
-__Pyx_PyMODINIT_FUNC PyInit__jpeg(void)
+__Pyx_PyMODINIT_FUNC PyInit__libjpeg(void) CYTHON_SMALL_CODE; /*proto*/
+__Pyx_PyMODINIT_FUNC PyInit__libjpeg(void)
 #if CYTHON_PEP489_MULTI_PHASE_INIT
 {
   return PyModuleDef_Init(&__pyx_moduledef);
@@ -4515,7 +4515,7 @@ bad:
 }
 
 
-static CYTHON_SMALL_CODE int __pyx_pymod_exec__jpeg(PyObject *__pyx_pyinit_module)
+static CYTHON_SMALL_CODE int __pyx_pymod_exec__libjpeg(PyObject *__pyx_pyinit_module)
 #endif
 #endif
 {
@@ -4524,7 +4524,7 @@ static CYTHON_SMALL_CODE int __pyx_pymod_exec__jpeg(PyObject *__pyx_pyinit_modul
   #if CYTHON_PEP489_MULTI_PHASE_INIT
   if (__pyx_m) {
     if (__pyx_m == __pyx_pyinit_module) return 0;
-    PyErr_SetString(PyExc_RuntimeError, "Module '_jpeg' has already been imported. Re-initialisation is not supported.");
+    PyErr_SetString(PyExc_RuntimeError, "Module '_libjpeg' has already been imported. Re-initialisation is not supported.");
     return -1;
   }
   #elif PY_MAJOR_VERSION >= 3
@@ -4539,7 +4539,7 @@ if (!__Pyx_RefNanny) {
       Py_FatalError("failed to import 'refnanny' module");
 }
 #endif
-  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__jpeg(void)", 0);
+  __Pyx_RefNannySetupContext("__Pyx_PyMODINIT_FUNC PyInit__libjpeg(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #ifdef __Pxy_PyFrame_Initialize_Offsets
   __Pxy_PyFrame_Initialize_Offsets();
@@ -4578,7 +4578,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_jpeg", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("_libjpeg", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -4596,14 +4596,14 @@ if (!__Pyx_RefNanny) {
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__jpeg) {
+  if (__pyx_module_is_main__libjpeg) {
     if (PyObject_SetAttr(__pyx_m, __pyx_n_s_name, __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_jpeg")) {
-      if (unlikely(PyDict_SetItemString(modules, "_jpeg", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "_libjpeg")) {
+      if (unlikely(PyDict_SetItemString(modules, "_libjpeg", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -4624,7 +4624,7 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_jpeg.pyx":6
+  /* "_libjpeg.pyx":6
  * from libcpp cimport bool
  * 
  * import numpy as np             # <<<<<<<<<<<<<<
@@ -4636,18 +4636,18 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_jpeg.pyx":19
+  /* "_libjpeg.pyx":19
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
  *     Reconstruct(infile, outfile, 1, NULL, True)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5_jpeg_1decode, NULL, __pyx_n_s_jpeg); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8_libjpeg_1decode, NULL, __pyx_n_s_libjpeg); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_decode, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_jpeg.pyx":1
+  /* "_libjpeg.pyx":1
  * #cython: language_level=3             # <<<<<<<<<<<<<<
  * # distutils: language=c++
  * 
@@ -4672,11 +4672,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _jpeg", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init _libjpeg", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_CLEAR(__pyx_m);
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _jpeg");
+    PyErr_SetString(PyExc_ImportError, "init _libjpeg");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
