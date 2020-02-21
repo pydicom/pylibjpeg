@@ -10,19 +10,24 @@ from setuptools.extension import Extension
 
 from Cython.Distutils import build_ext
 
-LIB_DIR = os.path.abspath(os.path.dirname(__file__))
+PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
+LIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'libjpeg')
+PYLIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'pylibjpeg')
 
 # Cython extension.
-source_files = ['pylibjpeg/_libjpeg.pyx']
-libdir = os.path.join(LIB_DIR, 'pylibjpeg/src/libjpeg/')
-for fname in Path(libdir).glob('*/*'):
+source_files = [
+    'pylibjpeg/_libjpeg.pyx',
+    os.path.join(PYLIBJPEG_SRC, 'decode.cpp'),
+]
+for fname in Path(LIBJPEG_SRC).glob('*/*'):
     if '.cpp' in str(fname):
         source_files.append(str(fname))
 
 #print(source_files)
 
 include_dirs = [
-    os.path.join(LIB_DIR, 'pylibjpeg/src/libjpeg/'),
+    LIBJPEG_SRC,
+    PYLIBJPEG_SRC,
     setuptools.distutils.sysconfig.get_python_inc(),
     np.get_include()
 ]

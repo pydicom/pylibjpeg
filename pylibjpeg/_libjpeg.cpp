@@ -611,7 +611,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <stdio.h>
 #include "numpy/arrayobject.h"
 #include "numpy/ufuncobject.h"
-#include "cmd/reconstruct.hpp"
+#include "decode.hpp"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1625,11 +1625,12 @@ static PyObject *__pyx_tuple__8;
 static PyObject *__pyx_codeobj__9;
 /* Late includes */
 
-/* "_libjpeg.pyx":19
+/* "_libjpeg.pyx":25
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
- *     Reconstruct(infile, outfile, 1, NULL, True)
+ *     #Reconstruct(infile, outfile, 1, NULL, True)
+ *     Decode(infile, outfile)
  */
 
 /* Python wrapper */
@@ -1664,11 +1665,11 @@ static PyObject *__pyx_pw_8_libjpeg_1decode(PyObject *__pyx_self, PyObject *__py
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_outfile)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("decode", 1, 2, 2, 1); __PYX_ERR(0, 19, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("decode", 1, 2, 2, 1); __PYX_ERR(0, 25, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decode") < 0)) __PYX_ERR(0, 19, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decode") < 0)) __PYX_ERR(0, 25, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1681,7 +1682,7 @@ static PyObject *__pyx_pw_8_libjpeg_1decode(PyObject *__pyx_self, PyObject *__py
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("decode", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 19, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("decode", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 25, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("_libjpeg.decode", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1701,20 +1702,21 @@ static PyObject *__pyx_pf_8_libjpeg_decode(CYTHON_UNUSED PyObject *__pyx_self, P
   char *__pyx_t_2;
   __Pyx_RefNannySetupContext("decode", 0);
 
-  /* "_libjpeg.pyx":20
- * 
+  /* "_libjpeg.pyx":27
  * def decode(infile, outfile):
- *     Reconstruct(infile, outfile, 1, NULL, True)             # <<<<<<<<<<<<<<
+ *     #Reconstruct(infile, outfile, 1, NULL, True)
+ *     Decode(infile, outfile)             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_AsWritableString(__pyx_v_infile); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_AsWritableString(__pyx_v_outfile); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 20, __pyx_L1_error)
-  Reconstruct(__pyx_t_1, __pyx_t_2, 1, NULL, 1);
+  __pyx_t_1 = __Pyx_PyObject_AsWritableString(__pyx_v_infile); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_AsWritableString(__pyx_v_outfile); if (unlikely((!__pyx_t_2) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)
+  Decode(__pyx_t_1, __pyx_t_2);
 
-  /* "_libjpeg.pyx":19
+  /* "_libjpeg.pyx":25
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
- *     Reconstruct(infile, outfile, 1, NULL, True)
+ *     #Reconstruct(infile, outfile, 1, NULL, True)
+ *     Decode(infile, outfile)
  */
 
   /* function exit code */
@@ -4310,16 +4312,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "_libjpeg.pyx":19
+  /* "_libjpeg.pyx":25
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
- *     Reconstruct(infile, outfile, 1, NULL, True)
+ *     #Reconstruct(infile, outfile, 1, NULL, True)
+ *     Decode(infile, outfile)
  */
-  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_infile, __pyx_n_s_outfile); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_tuple__8 = PyTuple_Pack(2, __pyx_n_s_infile, __pyx_n_s_outfile); if (unlikely(!__pyx_tuple__8)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
-  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pylibjpeg__libjpeg_pyx, __pyx_n_s_decode, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pylibjpeg__libjpeg_pyx, __pyx_n_s_decode, 25, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -4636,15 +4639,16 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_libjpeg.pyx":19
+  /* "_libjpeg.pyx":25
  * 
  * 
  * def decode(infile, outfile):             # <<<<<<<<<<<<<<
- *     Reconstruct(infile, outfile, 1, NULL, True)
+ *     #Reconstruct(infile, outfile, 1, NULL, True)
+ *     Decode(infile, outfile)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8_libjpeg_1decode, NULL, __pyx_n_s_libjpeg); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8_libjpeg_1decode, NULL, __pyx_n_s_libjpeg); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decode, __pyx_t_1) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decode, __pyx_t_1) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "_libjpeg.pyx":1
