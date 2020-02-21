@@ -1,9 +1,7 @@
 To get running for testing:
 
 ```bash
-cd pyjpeg/src/
-git clone --depth=1 https://github.com/thorfdbg/libjpeg
-cd libjpeg
+cd pyjpeg/src/libjpeg
 ./configure
 ```
 
