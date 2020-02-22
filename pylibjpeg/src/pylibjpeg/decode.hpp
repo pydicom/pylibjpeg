@@ -8,12 +8,10 @@
     );
 
     struct StreamData{
-        // The raw encoded JPEG byte data
+        // Pointer to the current offset of the raw encoded JPEG byte data
         char *pData;
         // The current offset, starts at 0
         int position;
-        // The number of bytes read
-        int nr_read;
         // The total length of the byte data
         int length;
         // Pointer to the beginning of the byte data

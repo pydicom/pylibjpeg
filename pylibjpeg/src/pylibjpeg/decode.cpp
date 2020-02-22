@@ -36,17 +36,17 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
 
     */
 
-    // Values from cmd/main.cpp - can probably hardcode these later
     int colortrafo = 1;
+    // No alpha channel
     const char *alpha = NULL;
     bool upsample = true;
 
     // Create a struct with for the input data so we can track its info
     StreamData in = {
-        inArray, 0, 0, inLength, &inArray[0], &inArray[inLength - 1]
+        inArray, 0, inLength, &inArray[0], &inArray[inLength - 1]
     };
     StreamData out = {
-        outArray, 0, 0, outLength, &outArray[0], &outArray[outLength -1]
+        outArray, 0, outLength, &outArray[0], &outArray[outLength -1]
     };
 
     // Our custom hook handler
@@ -210,16 +210,6 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                     omm.omm_bNoAlphaOutputConversion = !aconvert;
                     omm.omm_bUpsampling  = upsample;
 
-                    memset(omm.omm_PGXFiles, 0, sizeof(omm.omm_PGXFiles));
-
-                    /*
-                    if (depth != 1 && depth != 3)
-                        writepgx = true;
-
-                    if (!upsample)
-                        writepgx = true;
-                    */
-
                     // If upsampling is enabled, the subsampling factors are
                     // all implicitly 1.
                     if (upsample) {
@@ -227,81 +217,11 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                         memset(suby, 1, sizeof(suby));
                     }
 
-
-                    omm.omm_bWritePGX = writepgx;
-                    /*
-                    if (writepgx) {
-                        for(int i = 0;i < depth;i++) {
-                            char headername[256], rawname[256];
-                            FILE *hdr;
-                            sprintf(headername, "%s_%d.h", outfile,i);
-                            sprintf(rawname, "%s_%d.raw", outfile,i);
-                            fprintf(omm.omm_pTarget, "%s\n", rawname);
-                            hdr = fopen(headername, "wb");
-                            // FIXME: component dimensions have to differ
-                            // without subsampling expansion
-                            if (hdr) {
-                                fprintf(
-                                    hdr,
-                                    "P%c ML +%d %d %d\n",
-                                    pfm?'F':'G',
-                                    prec,
-                                    (width  + subx[i] - 1) / subx[i],
-                                    (height + suby[i] - 1) / suby[i]
-                                );
-                                fclose(hdr);
-                            }
-                            omm.omm_PGXFiles[i] = fopen(rawname, "wb");
-                        }
-                    }
-                    */
-
                     if (omm.omm_pTarget) {
                         struct JPG_Hook outhook(OStreamHook, &omm);
+                        // TODO: implement writing to numpy
                         struct JPG_Hook alphahook(AlphaHook, &omm);
-                        // pgx reconstruction is component by component since
-                        // we cannot interleave non-upsampled components of differing
-                        // subsampling factors.
-                        /*
-                        if (writepgx) {
-                            int comp;
-                            for(comp = 0;comp < depth;comp++) {
-                                ULONG y = 0;
-                                ULONG lastline;
-                                ULONG thisheight = height;
-                                struct JPG_TagItem tags[] = {
-                                    JPG_PointerTag(JPGTAG_BIH_HOOK,&outhook),
-                                    JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK,&alphahook),
-                                    JPG_ValueTag(JPGTAG_DECODER_MINY,y),
-                                    JPG_ValueTag(JPGTAG_DECODER_MAXY,y + (suby[comp] << 3) - 1),
-                                    JPG_ValueTag(JPGTAG_DECODER_UPSAMPLE,upsample),
-                                    JPG_ValueTag(JPGTAG_MATRIX_LTRAFO,colortrafo),
-                                    JPG_ValueTag(JPGTAG_DECODER_MINCOMPONENT,comp),
-                                    JPG_ValueTag(JPGTAG_DECODER_MAXCOMPONENT,comp),
-                                    JPG_EndTag
-                                };
 
-                                // Reconstruct now the buffered image, line by line. Could also
-                                // reconstruct the image as a whole. What we have here is just a demo
-                                // that is not necessarily the most efficient way of handling images.
-                                do {
-                                    lastline = height;
-                                    if (lastline > y + (suby[comp] << 3))
-                                    lastline = y + (suby[comp] << 3);
-                                    tags[2].ti_Data.ti_lData = y;
-                                    tags[3].ti_Data.ti_lData = lastline - 1;
-                                    ok = jpeg->DisplayRectangle(tags);
-                                    y  = lastline;
-                                } while(y < thisheight && ok);
-                            }
-
-                            for(int i = 0;i < depth;i++) {
-                                if (omm.omm_PGXFiles[i]) {
-                                    fclose(omm.omm_PGXFiles[i]);
-                                }
-                            }
-                        } else {
-                        */
                         // Write the data
                         if (true) {
                             // Just as a demo, run a stripe-based
@@ -317,28 +237,6 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                                 JPG_ValueTag(JPGTAG_MATRIX_LTRAFO, colortrafo),
                                 JPG_EndTag
                             };
-
-                            // PNM header data - not needed
-                            /*
-                            fprintf(
-                                omm.omm_pTarget,
-                                "P%c\n%d %d\n%d\n",
-                                (pfm)?((depth > 1)?'F':'f'):((depth > 1)?('6'):('5')),
-                                width,
-                                height,
-                                (pfm)?(1):((1 << prec) - 1)
-                            );
-
-                            if (omm.omm_pAlphaTarget)
-                                fprintf(
-                                    omm.omm_pAlphaTarget,
-                                    "P%c\n%d %d\n%d\n",
-                                    (apfm)?('f'):('5'),
-                                    width,
-                                    height,
-                                    (apfm)?(1):((1 << aprec) - 1)
-                                );
-                            */
 
                             // Writes the image data to file somehow
                             // Need to modify to write to ndarray instead
@@ -362,8 +260,6 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                     } else {
                         perror("failed to open the output file");
                     }
-
-                    //fclose(omm.omm_pTarget);
 
                     if (omm.omm_pAlphaTarget)
                         fclose(omm.omm_pAlphaTarget);

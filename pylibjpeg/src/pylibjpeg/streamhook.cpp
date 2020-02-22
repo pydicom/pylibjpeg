@@ -17,23 +17,11 @@
 // The input stream hook function
 JPG_LONG IStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
 {
-    // Pointer to the input data which is stored by the hook
-    // Need to customise the hook so we can add the length of the input data
+    // Pointer to the input struct which is stored by the hook
     StreamData *in = (StreamData *)(hook->hk_pData);
+    // Pointer to current pointer of the input buffer
+    //   The pointer itself gets updated so no guarantee where it is
     char *data = (char *)(in->pData);
-
-    std::cout << "Current position: " << in->position << std::endl;
-    std::cout << "Moving pointer to position" << std::endl;
-    printf("Initial position 0x%X, value 0x%X\n", data, *data);
-    // init, condition, increase
-    // repeats while condition is true
-    int total_move = 0;
-    for (int ii = 0; ii < in->position; ii++) {
-        total_move += 1;
-        data++;
-    }
-    std::cout << "Moved " << total_move << std::endl;
-    printf("Final position 0x%X, value 0x%X\n", data, *data);
 
     switch(tags->GetTagData(JPGTAG_FIO_ACTION)) {
         case JPGFLAG_ACTION_READ:
@@ -41,31 +29,23 @@ JPG_LONG IStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
             UBYTE *buffer = (UBYTE *)tags->GetTagPtr(JPGTAG_FIO_BUFFER);
             ULONG  size   = (ULONG  )tags->GetTagData(JPGTAG_FIO_SIZE);
 
-            std::cout << "Reading " << size << " bytes starting at " << in->position << std::endl;
-
             // Number of bytes read this session
             ULONG bytes_read = 0;
-            // TODO dont allow reading beyond end
             for (int ii = 0; ii < size; ii++) {
-                if (in->nr_read >= in->length) {
+                // Check that we haven't gone beyond the buffer
+                if (in->position >= in->length) {
                     break;
                 }
-                //std::cout << *in << std::endl;
-                // Copy value at current input item to buffer
                 *buffer = *data;
-                in->nr_read += 1;
                 in->position += 1;
                 bytes_read += 1;
-                // Increment buffer pointer
+
                 buffer++;
-                // Increment input pointer
                 data++;
             }
+            // Update the stored pointer
+            in->pData = data;
 
-            std::cout << "Read " << bytes_read << " now at " << in->position << std::endl;
-
-            //int nr_read = fread(buffer, 1, size, in);
-            //std::cout << "read " << bytes_read << " total " << in->nr_read << std::endl;
             return bytes_read;
         }
         case JPGFLAG_ACTION_WRITE:
@@ -73,45 +53,24 @@ JPG_LONG IStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
             UBYTE *buffer = (UBYTE *)tags->GetTagPtr(JPGTAG_FIO_BUFFER);
             ULONG  size   = (ULONG  )tags->GetTagData(JPGTAG_FIO_SIZE);
 
-            std::cout << "Need to write" << std::endl;
-
-            /*
-            std::cout << "writing... \n";
-            int nr_write = fwrite(buffer, 1, size, in);
-            std::cout << "write " << nr_write << std::endl;
-            return nr_write;
-            */
-            return 0;
+            // We want to raise an error so writing can be implemented
+            return -1;
         }
         case JPGFLAG_ACTION_SEEK:
         {
             LONG mode   = tags->GetTagData(JPGTAG_FIO_SEEKMODE);
             LONG offset = tags->GetTagData(JPGTAG_FIO_OFFSET);
 
-            std::cout << "Current position " << in->position << std::endl;
-            std::cout << "Move " << offset;
-
-            int result = 0;
+            // We want to raise an error here seek can be implemented
             switch(mode) {
                 case JPGFLAG_OFFSET_CURRENT:
-                    std::cout << " from current" << std::endl;
-                    for (int ii = 0; ii <= offset; ii++)
-                    {
-                        data++;
-                        in->position += 1;
-                    }
-                    return result;
+                    return -1;
                 case JPGFLAG_OFFSET_BEGINNING:
-                    std::cout << " from start" << std::endl;
-                    //for (int ii = 0; ii < offset, ii++) {
-                    //    //
-                    //}
-                    return result;
+                    return -1;
                 case JPGFLAG_OFFSET_END:
-                    std::cout << " from end" << std::endl;
-                    return result;
+                    return -1;
             }
-            return 0;
+            return -1;
         }
         case JPGFLAG_ACTION_QUERY:
         {
@@ -129,15 +88,6 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
     struct StreamMemory *omm  = (struct StreamMemory *)(hook->hk_pData);
     struct StreamData *out = (struct StreamData *)(omm->omm_pTarget);
     char *oArray = (char *)(out->pData);
-
-    std::cout << "Current position: " << out->position << std::endl;
-    std::cout << "Moving pointer to position" << std::endl;
-    int total_move = 0;
-    for (int ii = 0; ii < out->position; ii++) {
-        total_move += 1;
-        oArray++;
-    }
-    std::cout << "Moved " << total_move << std::endl;
 
     UWORD comp  = tags->GetTagData(JPGTAG_BIO_COMPONENT);
     ULONG miny  = tags->GetTagData((omm->omm_bUpsampling)?(JPGTAG_BIO_MINY):(JPGTAG_BIO_PIXEL_MINY));
@@ -306,8 +256,6 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
         case JPGFLAG_BIO_RELEASE:
         {
             assert(OpenComponents & (1UL << comp));
-            // PGX writes plane-interleaved, not line-interleaved.
-            //if (omm->omm_bWritePGX || comp == omm->omm_usDepth - 1) {
             if (comp == omm->omm_usDepth - 1) {
                 ULONG height = maxy + 1 - miny;
                 if (
@@ -324,16 +272,6 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                 double r = 0.0, g = 0.0, b = 0.0;
 
                                 do {
-                                    /*
-                                    if (omm->omm_bWritePGX) {
-                                        writeFloat(
-                                            omm->omm_PGXFiles[comp],
-                                            data[comp],
-                                            omm->omm_bBigEndian
-                                        );
-                                        data += omm->omm_usDepth;
-                                    } else switch(omm->omm_usDepth) {
-                                    */
                                     switch(omm->omm_usDepth) {
                                         case 1:
                                             write_float(
@@ -358,16 +296,6 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                 double r = 0.0, g = 0.0, b = 0.0;
 
                                 do {
-                                    /*
-                                    if (omm->omm_bWritePGX) {
-                                        writeFloat(
-                                            omm->omm_PGXFiles[comp],
-                                            HalfToDouble(data[comp]),
-                                            omm->omm_bBigEndian
-                                        );
-                                        data += omm->omm_usDepth;
-                                    } else switch(omm->omm_usDepth) {
-                                    */
                                     switch(omm->omm_usDepth) {
                                         case 1:
                                             write_float(
@@ -388,28 +316,6 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                 } while(--count);
                             }
                         } else {
-                            /*
-                            if (omm->omm_bWritePGX) {
-                                if (omm->omm_ucPixelType == CTYP_UWORD) {
-                                    UWORD *data = (UWORD *)omm->omm_pMemPtr;
-                                    ULONG count = width * height;
-
-                                    do {
-                                        fputc(data[comp] >> 8,omm->omm_PGXFiles[comp]);
-                                        fputc(data[comp]     ,omm->omm_PGXFiles[comp]);
-                                        data += omm->omm_usDepth;
-                                    } while(--count);
-                                } else {
-                                    UBYTE *data = (UBYTE *)omm->omm_pMemPtr;
-                                    ULONG count = width * height;
-
-                                    do {
-                                        fputc(data[comp],omm->omm_PGXFiles[comp]);
-                                        data += omm->omm_usDepth;
-                                    } while(--count);
-                                }
-                            } else switch(omm->omm_usDepth) {
-                            */
                             switch(omm->omm_usDepth) {
                                 // Samples per Pixel or Number of Components
                                 case 1:
@@ -428,51 +334,28 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                             } while(--count);
                                         }
                                     #endif
-                                    //if (omm->omm_ucPixelType == CTYP_UBYTE) {
-                                    //    UBYTE *mem = (UBYTE *)(omm->omm_pMemPtr);
-                                    //} else if (omm->omm_ucPixelType == CTYP_UWORD) {
-                                    //    UWORD *mem = (UWORD *)(omm->omm_pMemPtr);
-                                    //} else if (omm->omm_ucPixelType == CTYP_FLOAT) {
-                                    //    FLOAT *mem = (FLOAT *)(omm->omm_pMemPtr);
-                                    //}
-                                    // Write data to target?
-                                    // fwrite(
-                                    //      ptr; ptr to array of elements to be written
-                                    //      size; size in bytes of each element
-                                    //      count; number of elements
-                                    //      stream: output stream where to be written
-                                    // )
-                                    //std::cout << "Hmm, should probably write something\n";
-                                    // Yup I think this writes the pixel data
+                                    // Write pixel data to target
                                     ULONG size = omm->omm_ucPixelType & CTYP_SIZE_MASK;
                                     ULONG count = width * height * omm->omm_usDepth;
-                                    std::cout << "Size " << size << " count " << count << std::endl;
-                                    // For each element
                                     UBYTE *mem = (UBYTE *)(omm->omm_pMemPtr);
-                                    std::cout << *mem << std::endl;
-                                    //int total_write = 0;
+
+                                    // TODO: make sure we don't overflow the
+                                    // buffer
                                     for (int ii = 0; ii < count; ii++) {
                                         // For each byte of the element
                                         for (int jj = 0; jj < size; jj++) {
+                                            if (out->position >= out->length) {
+                                                break;
+                                            }
                                             // Write the byte value to the output
-                                            //std::cout << omm->omm_pMemPtr << std::endl;
-                                            *oArray = *mem; //omm->omm_pMemPtr;
+                                            *oArray = *mem;
                                             oArray++;
                                             out->position += 1;
                                             mem++;
-                                            //total_write += 1;
-                                    //        omm->omm_pMemPtr++;
                                         }
-                                        //std::cout << total_write << std::endl;
-                                        //std::cout << size * ii + count << std::endl;
                                     }
-                                    std::cout << "Written " << size * count << " now at " << out->position << std::endl;
-                                    // fwrite(
-                                    //    bmm->bmm_pMemPtr,
-                                    //    bmm->bmm_ucPixelType & CTYP_SIZE_MASK,
-                                    //    width * height * bmm->bmm_usDepth,
-                                    //    bmm->bmm_pTarget
-                                    // );
+                                    // Update the buffer pointer
+                                    out->pData = oArray;
                                     break;
                             }
                         }

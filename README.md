@@ -28,3 +28,5 @@ Tasks
 4. ~Modify `Decode()` so it outputs to a numpy array.~
 5. Cleanup code, add buffer overflow checks, etc.
 6. Implement pixel data handler for *pydicom* and add test coverage.
+7. Change `Decode()` to return any success/fail condition with error message
+8. Make JPEG image details available (precision, size, etc)
