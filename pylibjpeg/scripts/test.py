@@ -53,14 +53,14 @@ if __name__ == "__main__":
     #    print(jpg)
 
     #infile = bytes(fname, 'utf-8')
-    outfile = bytes(os.path.join(SCRIPT_DIR, 'out.pnm'), 'utf-8')
+    #outfile = bytes(os.path.join(SCRIPT_DIR, 'out.pnm'), 'utf-8')
 
-    print(
-        'Expected length of pixel data in bytes: {}'
-        .format(get_expected_length(ds))
-    )
+    #print(
+    #    'Expected length of pixel data in bytes: {}'
+    #    .format(get_expected_length(ds))
+    #)
 
     arr = np.frombuffer(pixel_data, dtype=np.uint8)
-    out = decode(arr, outfile, get_expected_length(ds))
+    out = decode(arr, get_expected_length(ds))
 
     print(out.shape, out)

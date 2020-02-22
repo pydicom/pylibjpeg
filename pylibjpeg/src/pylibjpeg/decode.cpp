@@ -17,16 +17,16 @@
 #include "../libjpeg/interface/jpeg.hpp"
 
 
-void Decode(char *inArray, const char *outArray, int inLength, int outLength)
+void Decode(char *inArray, char *outArray, int inLength, int outLength)
 {
     /*
 
     Parameters
     ----------
-    const char *inArray
+    char *inArray
         Pointer to the first element of a numpy.ndarray containing the JPEG
         data to be decompressed.
-    const char *outArray
+    char *outArray
         Pointer to the first element of a numpy.ndarray where the decompressed
         JPEG data should be written.
     int inLength

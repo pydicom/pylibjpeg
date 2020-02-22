@@ -4,7 +4,7 @@
 
     // Prototypes
     extern void Decode(
-        char *inArray, const char *outArray, int inLength, int outLength
+        char *inArray, char *outArray, int inLength, int outLength
     );
 
     struct StreamData{
