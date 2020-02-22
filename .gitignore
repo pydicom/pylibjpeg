@@ -21,7 +21,7 @@
 # Build/dist files
 dist/*
 build/*
-pydicom.egg-info/*
+*.egg-info/*
 distribute*.egg
 distribute*.tar.gz
 py3source
