@@ -3,10 +3,10 @@ import os
 
 
 DATA_DIR = os.path.abspath(os.path.dirname(__file__))
-DS_INDEX = ps.path.join(DATA_DIR, 'ds', 'index.py')
-JPG10918_INDEX = ps.path.join(DATA_DIR, 'jpg10918', 'index.py')  # JPEG
-JPG14495_INDEX = ps.path.join(DATA_DIR, 'jpg14495', 'index.py')  # JPEG-LS
-JPG15444_INDEX = ps.path.join(DATA_DIR, 'jpg15444', 'index.py')  # JPEG2000
+DS_INDEX = os.path.join(DATA_DIR, 'ds', 'index.py')
+JPG10918_INDEX = os.path.join(DATA_DIR, 'jpg10918', 'index.py')  # JPEG
+JPG14495_INDEX = os.path.join(DATA_DIR, 'jpg14495', 'index.py')  # JPEG-LS
+JPG15444_INDEX = os.path.join(DATA_DIR, 'jpg15444', 'index.py')  # JPEG2000
 
 
 def _add_element(elem):

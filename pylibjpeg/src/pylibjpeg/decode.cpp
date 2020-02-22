@@ -45,9 +45,12 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
     StreamData in = {
         inArray, 0, 0, inLength, &inArray[0], &inArray[inLength - 1]
     };
+    StreamData out = {
+        outArray, 0, 0, outLength, &outArray[0], &outArray[outLength -1]
+    };
 
     // Our custom hook handler
-    struct JPG_Hook streamhook(StreamHook, &in);
+    struct JPG_Hook streamhook(IStreamHook, &in);
     // JPEG representation from main library interface
     class JPEG *jpeg = JPEG::Construct(NULL);
 
@@ -185,29 +188,29 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                     // I think the struct here is used to pass parameters to
                     // the writer hook - BitmapHook
                     // We could probably vastly simplify it?
-                    struct BitmapMemory bmm;
-                    bmm.bmm_pMemPtr      = mem;
-                    bmm.bmm_pAlphaPtr    = amem;
-                    bmm.bmm_ulWidth      = width;
-                    bmm.bmm_ulHeight     = height;
-                    bmm.bmm_usDepth      = depth;
-                    bmm.bmm_ucPixelType  = pixeltype;
-                    bmm.bmm_ucAlphaType  = alphapixeltype;
-                    bmm.bmm_pTarget      = fopen(outfile, "wb");
-                    //bmm.bmm_pTarget      = outfile;
-                    bmm.bmm_pAlphaTarget = (doalpha)?(fopen(alpha, "wb")):NULL;
-                    bmm.bmm_pSource      = NULL;
-                    bmm.bmm_pAlphaSource = NULL;
-                    bmm.bmm_pLDRSource   = NULL;
-                    bmm.bmm_bFloat       = pfm;
-                    bmm.bmm_bAlphaFloat  = apfm;
-                    bmm.bmm_bBigEndian   = true;
-                    bmm.bmm_bAlphaBigEndian          = true;
-                    bmm.bmm_bNoOutputConversion      = !convert;
-                    bmm.bmm_bNoAlphaOutputConversion = !aconvert;
-                    bmm.bmm_bUpsampling  = upsample;
+                    struct StreamMemory omm;
+                    omm.omm_pMemPtr      = mem;
+                    omm.omm_pAlphaPtr    = amem;
+                    omm.omm_ulWidth      = width;
+                    omm.omm_ulHeight     = height;
+                    omm.omm_usDepth      = depth;
+                    omm.omm_ucPixelType  = pixeltype;
+                    omm.omm_ucAlphaType  = alphapixeltype;
+                    //omm.omm_pTarget      = fopen(outfile, "wb");
+                    omm.omm_pTarget      = &out;
+                    omm.omm_pAlphaTarget = (doalpha)?(fopen(alpha, "wb")):NULL;
+                    omm.omm_pSource      = NULL;
+                    omm.omm_pAlphaSource = NULL;
+                    omm.omm_pLDRSource   = NULL;
+                    omm.omm_bFloat       = pfm;
+                    omm.omm_bAlphaFloat  = apfm;
+                    omm.omm_bBigEndian   = true;
+                    omm.omm_bAlphaBigEndian          = true;
+                    omm.omm_bNoOutputConversion      = !convert;
+                    omm.omm_bNoAlphaOutputConversion = !aconvert;
+                    omm.omm_bUpsampling  = upsample;
 
-                    memset(bmm.bmm_PGXFiles, 0, sizeof(bmm.bmm_PGXFiles));
+                    memset(omm.omm_PGXFiles, 0, sizeof(omm.omm_PGXFiles));
 
                     /*
                     if (depth != 1 && depth != 3)
@@ -225,7 +228,7 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                     }
 
 
-                    bmm.bmm_bWritePGX = writepgx;
+                    omm.omm_bWritePGX = writepgx;
                     /*
                     if (writepgx) {
                         for(int i = 0;i < depth;i++) {
@@ -233,7 +236,7 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                             FILE *hdr;
                             sprintf(headername, "%s_%d.h", outfile,i);
                             sprintf(rawname, "%s_%d.raw", outfile,i);
-                            fprintf(bmm.bmm_pTarget, "%s\n", rawname);
+                            fprintf(omm.omm_pTarget, "%s\n", rawname);
                             hdr = fopen(headername, "wb");
                             // FIXME: component dimensions have to differ
                             // without subsampling expansion
@@ -248,14 +251,14 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                                 );
                                 fclose(hdr);
                             }
-                            bmm.bmm_PGXFiles[i] = fopen(rawname, "wb");
+                            omm.omm_PGXFiles[i] = fopen(rawname, "wb");
                         }
                     }
                     */
 
-                    if (bmm.bmm_pTarget) {
-                        struct JPG_Hook bmhook(BitmapHook, &bmm);
-                        struct JPG_Hook alphahook(AlphaHook, &bmm);
+                    if (omm.omm_pTarget) {
+                        struct JPG_Hook outhook(OStreamHook, &omm);
+                        struct JPG_Hook alphahook(AlphaHook, &omm);
                         // pgx reconstruction is component by component since
                         // we cannot interleave non-upsampled components of differing
                         // subsampling factors.
@@ -267,7 +270,7 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                                 ULONG lastline;
                                 ULONG thisheight = height;
                                 struct JPG_TagItem tags[] = {
-                                    JPG_PointerTag(JPGTAG_BIH_HOOK,&bmhook),
+                                    JPG_PointerTag(JPGTAG_BIH_HOOK,&outhook),
                                     JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK,&alphahook),
                                     JPG_ValueTag(JPGTAG_DECODER_MINY,y),
                                     JPG_ValueTag(JPGTAG_DECODER_MAXY,y + (suby[comp] << 3) - 1),
@@ -293,8 +296,8 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                             }
 
                             for(int i = 0;i < depth;i++) {
-                                if (bmm.bmm_PGXFiles[i]) {
-                                    fclose(bmm.bmm_PGXFiles[i]);
+                                if (omm.omm_PGXFiles[i]) {
+                                    fclose(omm.omm_PGXFiles[i]);
                                 }
                             }
                         } else {
@@ -306,7 +309,7 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                             ULONG y = 0;
                             ULONG lastline;
                             struct JPG_TagItem tags[] = {
-                                JPG_PointerTag(JPGTAG_BIH_HOOK, &bmhook),
+                                JPG_PointerTag(JPGTAG_BIH_HOOK, &outhook),
                                 JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK, &alphahook),
                                 JPG_ValueTag(JPGTAG_DECODER_MINY, y),
                                 JPG_ValueTag(JPGTAG_DECODER_MAXY, y + 7),
@@ -318,7 +321,7 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                             // PNM header data - not needed
                             /*
                             fprintf(
-                                bmm.bmm_pTarget,
+                                omm.omm_pTarget,
                                 "P%c\n%d %d\n%d\n",
                                 (pfm)?((depth > 1)?'F':'f'):((depth > 1)?('6'):('5')),
                                 width,
@@ -326,9 +329,9 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                                 (pfm)?(1):((1 << prec) - 1)
                             );
 
-                            if (bmm.bmm_pAlphaTarget)
+                            if (omm.omm_pAlphaTarget)
                                 fprintf(
-                                    bmm.bmm_pAlphaTarget,
+                                    omm.omm_pAlphaTarget,
                                     "P%c\n%d %d\n%d\n",
                                     (apfm)?('f'):('5'),
                                     width,
@@ -360,10 +363,10 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
                         perror("failed to open the output file");
                     }
 
-                    fclose(bmm.bmm_pTarget);
+                    //fclose(omm.omm_pTarget);
 
-                    if (bmm.bmm_pAlphaTarget)
-                        fclose(bmm.bmm_pAlphaTarget);
+                    if (omm.omm_pAlphaTarget)
+                        fclose(omm.omm_pAlphaTarget);
 
                     if (amem)
                         free(amem);

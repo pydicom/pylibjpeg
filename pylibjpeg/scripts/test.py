@@ -4,10 +4,11 @@ import os
 import sys
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 from pydicom import dcmread
 from pydicom.encaps import defragment_data
-from pydicom.pixel_data_handlers.util import get_expected_length
+from pydicom.pixel_data_handlers.util import get_expected_length, reshape_pixel_array
 #from pydicom.jpeg import jpgread
 
 from pylibjpeg import decode
@@ -59,8 +60,14 @@ if __name__ == "__main__":
     #    'Expected length of pixel data in bytes: {}'
     #    .format(get_expected_length(ds))
     #)
+    expected_length = ds.Rows * ds.Columns * ds.SamplesPerPixel * (ds.BitsAllocated // 8)
 
     arr = np.frombuffer(pixel_data, dtype=np.uint8)
-    out = decode(arr, get_expected_length(ds))
+    #print(expected_length)
+    out = decode(arr, expected_length)
+    #print(out.shape, out)
+    out = reshape_pixel_array(ds, out)
+    #print(out.shape, out)
 
-    print(out.shape, out)
+    plt.imshow(out)
+    plt.show()
