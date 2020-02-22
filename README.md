@@ -1,4 +1,4 @@
-To get running for testing (may not be necessary):
+Configuration (may not be necessary):
 ```bash
 
 cd pylibjpeg/src/libjpeg
@@ -25,8 +25,8 @@ transverse MR of a leg.
 Tasks
 -----
 
-1. Modify `Decode()` so it works with an input bytestream instead of a path to
-   a file.
+1. ~Modify `Decode()` so it works with an input bytestream instead of a path to
+   a file.~ Done! Input numpy array which is probably better.
 2. Modify `Decode()` so it outputs to a bytestream rather than a file.
 3. Modify `Decode()` so it outputs binary rather than PNM.
 4. Modify `Decode()` so it outputs to a numpy array.
