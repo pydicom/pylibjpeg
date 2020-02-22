@@ -19,8 +19,6 @@ source_files = [
     'pylibjpeg/_libjpeg.pyx',
     os.path.join(PYLIBJPEG_SRC, 'decode.cpp'),
     os.path.join(PYLIBJPEG_SRC, 'streamhook.cpp'),
-    #os.path.join(PYLIBJPEG_SRC, 'bmphook.cpp'),
-    #os.path.join(PYLIBJPEG_SRC, 'helpers.cpp'),
 ]
 for fname in Path(LIBJPEG_SRC).glob('*/*'):
     if '.cpp' in str(fname):

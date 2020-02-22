@@ -30,7 +30,7 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes):
 
     # Create array for output and get pointer to first element
     output_buffer = np.zeros(nr_bytes, dtype=np.uint8)
-    cdef char *pOutput = <char *>np.PyArray_data(output_buffer)
+    cdef char *pOutput = <char *>np.PyArray_DATA(output_buffer)
 
     # Decode the data - output is written to output_buffer
     Decode(pInput, pOutput, input_buffer.shape[0], output_buffer.shape[0])
