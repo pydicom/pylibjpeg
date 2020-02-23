@@ -30,3 +30,7 @@ Tasks
 6. Implement pixel data handler for *pydicom* and add test coverage.
 7. Change `Decode()` to return any success/fail condition with error message
 8. Make JPEG image details available (precision, size, etc)
+9. Add interface for the `cmd/Reconstruct()` method to allow regular usage
+
+
+ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04
