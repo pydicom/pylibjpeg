@@ -1,8 +1,11 @@
 # cython: language_level=3
 # distutils: language=c++
 
+from libcpp cimport bool
+
 import numpy as np
 cimport numpy as np
+
 
 cdef extern from "decode.hpp":
     cdef void Decode(
@@ -52,3 +55,37 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes, colourspace):
     )
 
     return output_buffer
+
+
+cdef extern from "cmd/reconstruct.hpp":
+    cdef void Reconstruct(
+        const char *inArray,
+        const char *outArray,
+        int colortrafo,
+        const char *alpha,
+        bool upsample,
+    )
+
+def reconstruct(fin, fout, colourspace, falpha, upsample):
+    """Decode the JPEG file in `fin` and write it to `fout` as PNM.
+
+    Parameters
+    ----------
+    fin : bytes
+        The path to the JPEG file to be decoded.
+    fout : bytes
+        The path to the decoded PNM file.
+    colourspace : int
+        The colourspace transform to apply.
+    falpha : bytes or None
+        The path where any decoded alpha channel data will be written,
+        otherwise ``None`` to not write alpha channel data. Equivalent to the
+        ``-al file`` flag.
+    upsample : bool
+        ``True`` to disable automatic upsampling, equivalent to the ``-U``
+        flag.
+    """
+    if falpha is None:
+        Reconstruct(fin, fout, colourspace, NULL, upsample)
+    else:
+        Reconstruct(fin, fout, colourspace, falpha, upsample)

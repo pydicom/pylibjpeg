@@ -17,8 +17,10 @@ PYLIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'pylibjpeg')
 # Cython extension.
 source_files = [
     'pylibjpeg/_libjpeg.pyx',
+    # For decode()
     os.path.join(PYLIBJPEG_SRC, 'decode.cpp'),
     os.path.join(PYLIBJPEG_SRC, 'streamhook.cpp'),
+    #os.path.join(LIBJPEG_SRC, 'cmd/reconstruct.cpp'),
 ]
 for fname in Path(LIBJPEG_SRC).glob('*/*'):
     if '.cpp' in str(fname):

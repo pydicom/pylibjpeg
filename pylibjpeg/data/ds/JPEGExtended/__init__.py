@@ -1,7 +1,5 @@
 """1.2.840.10008.1.2.4.51 - JPEG Extended (Process 2 and 4)"""
 
-#
-
 INDEX = {
     'JPGExtended_1s_1f_16_12.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),

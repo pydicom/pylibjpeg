@@ -11,9 +11,6 @@ from pylibjpeg.data.ds import (
 
 DATA_DIR = os.path.abspath(os.path.dirname(__file__))
 DS_DIR = os.path.join(DATA_DIR, 'ds')
-JPG10918_DIR = os.path.join(DATA_DIR, 'jpg10918')  # JPEG
-JPG14495_DIR = os.path.join(DATA_DIR, 'jpg14495')  # JPEG-LS
-JPG15444_DIR = os.path.join(DATA_DIR, 'jpg15444')  # JPEG2000
 
 
 def get_datasets(uid=None, as_dataset=False):
