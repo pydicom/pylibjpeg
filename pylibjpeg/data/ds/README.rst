@@ -48,7 +48,7 @@ should be placed in the subfolder corresponding to the value of the
 +------------------------+-------------------------------------------------+----------------------+
 | 1.2.840.10008.1.2.4.57 | JPEG Lossless, Non-Hierarchical (Process 14)    | JPEGLossless         |
 +------------------------+-------------------------------------------------+----------------------+
-| 1.2.840.10008.1.2.4.70 | JPEG Lossless, Non-Hierarchical, First-Order    | JPEGLesslessSV1      |
+| 1.2.840.10008.1.2.4.70 | JPEG Lossless, Non-Hierarchical, First-Order    | JPEGLosslessSV1      |
 |                        | Prediction (Process 14 [Selection Value 1])     |                      |
 +------------------------+-------------------------------------------------+----------------------+
 | 1.2.840.10008.1.2.4.80 | JPEG-LS Lossless Image Compression              | JPEGLSLossless       |

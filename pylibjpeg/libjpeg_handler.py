@@ -55,7 +55,7 @@ except ImportError:
 
 try:
     import pylibjpeg
-    from pylibjpeg import decode
+    from pylibjpeg.libjpeg import decode
     HAVE_LIBJPEG = True
 except ImportError:
     HAVE_LIBJPEG = False
@@ -187,9 +187,9 @@ def get_pixeldata(ds):
     arr = np.empty(expected_len, np.uint8)
 
     # Generators for the encoded JPG image frame(s) and insertion offsets
-    generate_frames = generate_pixel_data_frame(ds, nr_frames)
-    generate_offsets = range(0, frame_len, expected_len)
-    for (frame, offset) in zip(generate_frames, generate_offsets):
+    generate_frames = generate_pixel_data_frame(ds.PixelData, nr_frames)
+    generate_offsets = range(0, expected_len, frame_len)
+    for frame, offset in zip(generate_frames, generate_offsets):
         # Encoded JPG data to be sent to the decoder
         frame = np.frombuffer(frame, np.uint8)
         arr[offset:offset + frame_len] = decode(frame, frame_len)

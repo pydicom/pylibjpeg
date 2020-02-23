@@ -18,6 +18,7 @@ except ImportError:
 
 from pylibjpeg import add_handler, remove_handler
 from pylibjpeg import libjpeg_handler
+from pylibjpeg.data import get_indexed_datasets
 
 
 @pytest.mark.skipif(not HAS_PYDICOM, reason="pydicom unavailable")
@@ -53,17 +54,30 @@ def test_remove_handler_raises():
         remove_handler()
 
 
-class HandlerBase(object):
+class HandlerTestBase(object):
     """Baseclass for handler tests."""
+    uid = None
+
     def setup(self):
         add_handler()
+        self.ds = get_indexed_datasets(self.uid)
 
     def teardown(self):
         remove_handler()
 
+    def plot(self, arr, index=None):
+        import matplotlib.pyplot as plt
+
+        if index is not None:
+            plt.imshow(arr[index])
+        else:
+            plt.imshow(arr)
+
+        plt.show()
+
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEGBaseline(HandlerBase):
+class TestJPEGBaseline(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
     1.2.840.10008.1.2.4.50 : JPEG Baseline (Process 1)
@@ -77,37 +91,134 @@ class TestJPEGBaseline(HandlerBase):
     Photometric Interpretation: MONOCHROME1, MONOCHROME2, RGB, YBR_FULL,
         YBR_FULL_422
     """
+    uid = '1.2.840.10008.1.2.4.50'
+
+    @pytest.mark.skip("No matching dataset")
     def test_1s_1f(self):
         """Test greyscale."""
-        pass
+        ds = self.ds['']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated == ds.BitsStored
 
-    def test_1s_2f(self):
-        """Test greyscale with 2 frames."""
-        pass
+        arr = ds.pixel_array
+
+        self.plot(arr)
+
+    @pytest.mark.skip("No matching dataset")
+    def test_1s_Nf(self):
+        """Test greyscale with N frames."""
+        ds = self.ds['']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 != getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated == ds.BitsStored
+
+        arr = ds.pixel_array
+
+        self.plot(arr)
 
     def test_3s_1f_rgb(self):
         """Test RGB."""
-        pass
+        # +cr is RGB
+        ds = self.ds['SC_rgb_dcmtk_+eb+cr.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'RGB' == ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated == ds.BitsStored
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+
+        assert (255,   0,   0) == tuple(arr[ 5, 50, :])
+        assert (255, 128, 128) == tuple(arr[15, 50, :])
+        assert (  0, 255,   0) == tuple(arr[25, 50, :])
+        assert (128, 255, 128) == tuple(arr[35, 50, :])
+        assert (  0,   0, 255) == tuple(arr[45, 50, :])
+        assert (128, 128, 255) == tuple(arr[55, 50, :])
+        assert (  0,   0,   0) == tuple(arr[65, 50, :])
+        assert ( 64,  64,  64) == tuple(arr[75, 50, :])
+        assert (192, 192, 192) == tuple(arr[85, 50, :])
+        assert (255, 255, 255) == tuple(arr[95, 50, :])
 
     def test_3s_1f_ybr_411(self):
         """Test YBR with 411 subsampling."""
-        pass
+        # +cy is YCbCr
+        # +n1 is 411 subsampling w/ YBR_FULL - DICOM non-conformant
+        ds = self.ds['SC_rgb_dcmtk_+eb+cy+n1.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'YBR_FULL' == ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated == ds.BitsStored
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+
+        #self.plot(arr)
 
     def test_3s_1f_ybr_422(self):
         """Test YBR with 422 subsampling."""
-        pass
+        # +cy is YCbCr
+        # +s2 is 422 subsampling w/ YBR_FULL_422
+        ds = self.ds['SC_rgb_dcmtk_+eb+cy+np.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'YBR_FULL_422' == ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated == ds.BitsStored
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+
+        #self.plot(arr)
 
     def test_3s_1f_ybr_444(self):
         """Test YBR with 444 subsampling."""
-        pass
+        # +cy is YCbCr
+        # +s4 is 444 subsampling w/ YBR_FULL - DICOM non-conformant
+        ds = self.ds['SC_rgb_dcmtk_+eb+cy+s4.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'YBR_FULL' == ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated == ds.BitsStored
 
-    def test_3s_2f(self):
-        """Test 3 sample/px with 2 frames."""
-        pass
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+
+        #self.plot(arr)
+
+    def test_3s_Nf(self):
+        """Test 3 sample/px with N frames."""
+        ds = self.ds['color3d_jpeg_baseline.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 != getattr(ds, 'NumberOfFrames', 1)
+        assert 8 == ds.BitsAllocated == ds.BitsStored
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.NumberOfFrames, ds.Rows, ds.Columns, 3) == arr.shape
+
+        #self.plot(arr, index=2)
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEGExtended(HandlerBase):
+class TestJPEGExtended(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
     1.2.840.10008.1.2.4.51 : JPEG Extended (Process 2 and 4)
@@ -179,7 +290,7 @@ class TestJPEGExtended(HandlerBase):
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEGLossless(HandlerBase):
+class TestJPEGLossless(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
     1.2.840.10008.1.2.4.57 : JPEG Lossless, Non-Hierarchical (Process 14)
@@ -196,7 +307,7 @@ class TestJPEGLossless(HandlerBase):
     pass
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEGLosslessSV1(HandlerBase):
+class TestJPEGLosslessSV1(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
     1.2.840.10008.1.2.4.70 : JPEG Lossless, Non-Hierarchical, First-Order
@@ -215,7 +326,7 @@ class TestJPEGLosslessSV1(HandlerBase):
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEGLSLossless(HandlerBase):
+class TestJPEGLSLossless(HandlerTestBase):
     """Test the handler with ISO 14495 JPEG-LS images.
 
     1.2.840.10008.1.2.4.80 : JPEG-LS Lossless Image Compression
@@ -224,7 +335,7 @@ class TestJPEGLSLossless(HandlerBase):
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEGLS(HandlerBase):
+class TestJPEGLS(HandlerTestBase):
     """Test the handler with ISO 14495 JPEG-LS images.
 
     Transfer Syntaxes
@@ -236,7 +347,7 @@ class TestJPEGLS(HandlerBase):
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEG2000Lossless(HandlerBase):
+class TestJPEG2000Lossless(HandlerTestBase):
     """Test the handler with ISO 15444 JPEG2000 images.
 
     1.2.840.10008.1.2.4.90 : JPEG 2000 Image Compression (Lossless Only)
@@ -245,7 +356,7 @@ class TestJPEG2000Lossless(HandlerBase):
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestJPEG2000(HandlerBase):
+class TestJPEG2000(HandlerTestBase):
     """Test the handler with ISO 15444 JPEG2000 images.
 
     1.2.840.10008.1.2.4.91 : JPEG 2000 Image Compression

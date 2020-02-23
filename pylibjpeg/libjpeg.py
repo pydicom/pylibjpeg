@@ -1,6 +1,5 @@
 
 import _libjpeg
-from pylibjpeg import libjpeg_handler
 
 
 def decode(arr, nr_bytes):
@@ -29,9 +28,13 @@ def add_handler():
     ImportError
         If *pydicom* is not available.
     """
+    # Avoid circular import during unit testing
+    from . import libjpeg_handler
     import pydicom.config
+
     if libjpeg_handler not in pydicom.config.pixel_data_handlers:
         pydicom.config.pixel_data_handlers.append(libjpeg_handler)
+
 
 def remove_handler():
     """Remove the pylibjpeg pixel data handler from pydicom.
@@ -41,6 +44,9 @@ def remove_handler():
     ImportError
         If *pydicom* is not available.
     """
+    # Avoid circular import during unit testing
+    from . import libjpeg_handler
     import pydicom.config
+
     if libjpeg_handler in pydicom.config.pixel_data_handlers:
         pydicom.config.pixel_data_handlers.remove(libjpeg_handler)
