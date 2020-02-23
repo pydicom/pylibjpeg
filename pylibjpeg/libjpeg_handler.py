@@ -194,4 +194,4 @@ def get_pixeldata(ds):
         frame = np.frombuffer(frame, np.uint8)
         arr[offset:offset + frame_len] = decode(frame, frame_len)
 
-    return arr.astype(pixel_dtype(ds))
+    return arr.view(pixel_dtype(ds))

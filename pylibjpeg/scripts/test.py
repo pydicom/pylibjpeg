@@ -8,10 +8,13 @@ import matplotlib.pyplot as plt
 
 from pydicom import dcmread
 from pydicom.encaps import defragment_data
-from pydicom.pixel_data_handlers.util import get_expected_length, reshape_pixel_array
+from pydicom.pixel_data_handlers.util import (
+    get_expected_length, reshape_pixel_array, pixel_dtype
+)
 #from pydicom.jpeg import jpgread
 
 from pylibjpeg import decode
+from pylibjpeg.data.manager import DATA_DIR
 
 
 SCRIPT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -22,10 +25,13 @@ if __name__ == "__main__":
     #dsfile = os.path.join(SCRIPT_DIR, 'JPGLosslessP14SV1_1s_1f_8b.dcm')
     # OK
     #dsfile = os.path.join(SCRIPT_DIR, 'JPGLS_1s_1f_16b.dcm')
-    # Fails - bad JPEG; should have SOS:Se of 63 if actually sequential DCT
-    #dsfile = os.path.join(SCRIPT_DIR, 'JPGExtended_1s_1f_12b.dcm')
     # OK
-    dsfile = os.path.join(SCRIPT_DIR, 'JPGBaseline_3s_1f_8b.dcm')
+    #dsfile = os.path.join(SCRIPT_DIR, 'JPGExtended.dcm')
+    # Fails - bad JPEG; should have SOS:Se of 63 if actually sequential DCT
+    #dsfile = os.path.join(SCRIPT_DIR, 'JPEG-lossy.dcm')
+    # OK
+    #dsfile = os.path.join(SCRIPT_DIR, 'JPGBaseline_3s_1f_8b.dcm')
+    #dsfile = os.path.join(DATA_DIR, 'ds', 'JPGExtended_BAD.dcm')
     ds = dcmread(dsfile)
 
     print(ds.file_meta['TransferSyntaxUID'])
@@ -45,9 +51,9 @@ if __name__ == "__main__":
 
     pixel_data = defragment_data(ds.PixelData)
 
-    fname = os.path.join(SCRIPT_DIR, 'in.jpg')
-    with open(fname, 'wb') as out:
-        out.write(pixel_data)
+    #fname = os.path.join(SCRIPT_DIR, 'in.jpg')
+    #with open(fname, 'wb') as out:
+    #    out.write(pixel_data)
 
     #with open(fname, 'rb') as fp:
     #    jpg = jpgread(fp)
@@ -64,8 +70,8 @@ if __name__ == "__main__":
 
     arr = np.frombuffer(pixel_data, dtype=np.uint8)
     #print(expected_length)
-    out = decode(arr, expected_length)
-    #print(out.shape, out)
+    out = decode(arr, expected_length).view(pixel_dtype(ds))
+    print(out.shape, out, out.dtype)
     out = reshape_pixel_array(ds, out)
     #print(out.shape, out)
 
