@@ -179,6 +179,8 @@ def get_pixeldata(ds):
         # libjpeg has already resampled the pixel data, see PS3.3 C.7.6.3.1.2
         expected_len = expected_len // 2 * 3
 
+    p_interp = ds.PhotometricInterpretation
+
     # How long each frame is in bytes
     nr_frames = getattr(ds, 'NumberOfFrames', 1)
     frame_len = expected_len // nr_frames
@@ -192,6 +194,6 @@ def get_pixeldata(ds):
     for frame, offset in zip(generate_frames, generate_offsets):
         # Encoded JPG data to be sent to the decoder
         frame = np.frombuffer(frame, np.uint8)
-        arr[offset:offset + frame_len] = decode(frame, frame_len)
+        arr[offset:offset + frame_len] = decode(frame, frame_len, p_interp)
 
     return arr.view(pixel_dtype(ds))

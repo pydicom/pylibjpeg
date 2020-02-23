@@ -17,7 +17,7 @@
 #include "../libjpeg/interface/jpeg.hpp"
 
 
-void Decode(char *inArray, char *outArray, int inLength, int outLength)
+void Decode(char *inArray, char *outArray, int inLength, int outLength, int colourTransform)
 {
     /*
 
@@ -33,10 +33,15 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength)
         Length of the input array
     int outLength
         Expected length of the output array
+    int colourTransform
+        JPGFLAG_MATRIX_COLORTRANSFORMATION_NONE 0
+        JPGFLAG_MATRIX_COLORTRANSFORMATION_YCBCR 1
+        JPGFLAG_MATRIX_COLORTRANSFORMATION_LSRCT 2
+        JPGFLAG_MATRIX_COLORTRANSFORMATION_RCT 2
+        JPGFLAG_MATRIX_COLORTRANSFORMATION_FREEFORM 3
 
     */
-
-    int colortrafo = 1;
+    int colortrafo = colourTransform;
     // No alpha channel
     const char *alpha = NULL;
     bool upsample = true;

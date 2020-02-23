@@ -15,6 +15,7 @@ try:
 except ImportError:
     HAS_PYDICOM = False
 
+from pydicom.pixel_data_handlers.util import convert_color_space
 
 from pylibjpeg import add_handler, remove_handler
 from pylibjpeg import libjpeg_handler
@@ -136,6 +137,8 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
 
+        #self.plot(arr)
+
         assert (255,   0,   0) == tuple(arr[ 5, 50, :])
         assert (255, 128, 128) == tuple(arr[15, 50, :])
         assert (  0, 255,   0) == tuple(arr[25, 50, :])
@@ -163,7 +166,20 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
 
+        arr = convert_color_space(arr, 'YBR_FULL', 'RGB')
+
         #self.plot(arr)
+
+        assert (253,   1,   0) == tuple(arr[ 5, 50, :])
+        assert (253, 129, 131) == tuple(arr[15, 50, :])
+        assert (  0, 255,   5) == tuple(arr[25, 50, :])
+        assert (127, 255, 129) == tuple(arr[35, 50, :])
+        assert (  0,   0, 254) == tuple(arr[45, 50, :])
+        assert (127, 128, 255) == tuple(arr[55, 50, :])
+        assert (  0,   0,   0) == tuple(arr[65, 50, :])
+        assert ( 64,  64,  64) == tuple(arr[75, 50, :])
+        assert (192, 192, 192) == tuple(arr[85, 50, :])
+        assert (255, 255, 255) == tuple(arr[95, 50, :])
 
     def test_3s_1f_ybr_422(self):
         """Test YBR with 422 subsampling."""
@@ -181,7 +197,20 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
 
+        arr = convert_color_space(arr, 'YBR_FULL', 'RGB')
+
         #self.plot(arr)
+
+        assert (253,   1,   0) == tuple(arr[ 5, 50, :])
+        assert (253, 129, 131) == tuple(arr[15, 50, :])
+        assert (  0, 255,   5) == tuple(arr[25, 50, :])
+        assert (127, 255, 129) == tuple(arr[35, 50, :])
+        assert (  0,   0, 254) == tuple(arr[45, 50, :])
+        assert (127, 128, 255) == tuple(arr[55, 50, :])
+        assert (  0,   0,   0) == tuple(arr[65, 50, :])
+        assert ( 64,  64,  64) == tuple(arr[75, 50, :])
+        assert (192, 192, 192) == tuple(arr[85, 50, :])
+        assert (255, 255, 255) == tuple(arr[95, 50, :])
 
     def test_3s_1f_ybr_444(self):
         """Test YBR with 444 subsampling."""
@@ -199,7 +228,20 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
 
+        arr = convert_color_space(arr, 'YBR_FULL', 'RGB')
+
         #self.plot(arr)
+
+        assert (254,   0,   0) == tuple(arr[ 5, 50, :])
+        assert (255, 127, 127) == tuple(arr[15, 50, :])
+        assert (  0, 255,   5) == tuple(arr[25, 50, :])
+        assert (129, 255, 129) == tuple(arr[35, 50, :])
+        assert (  0,   0, 254) == tuple(arr[45, 50, :])
+        assert (128, 127, 255) == tuple(arr[55, 50, :])
+        assert (  0,   0,   0) == tuple(arr[65, 50, :])
+        assert ( 64,  64,  64) == tuple(arr[75, 50, :])
+        assert (192, 192, 192) == tuple(arr[85, 50, :])
+        assert (255, 255, 255) == tuple(arr[95, 50, :])
 
     def test_3s_Nf(self):
         """Test 3 sample/px with N frames."""
@@ -208,13 +250,16 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 3 == ds.SamplesPerPixel
         assert 1 != getattr(ds, 'NumberOfFrames', 1)
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 'YBR_FULL_422' == ds.PhotometricInterpretation
 
         arr = ds.pixel_array
         assert arr.flags.writeable
         assert 'uint8' == arr.dtype
         assert (ds.NumberOfFrames, ds.Rows, ds.Columns, 3) == arr.shape
 
-        #self.plot(arr, index=2)
+        arr = convert_color_space(arr, 'YBR_FULL', 'RGB')
+
+        self.plot(arr, index=2)
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")

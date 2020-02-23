@@ -4,7 +4,11 @@
 
     // Prototypes
     extern void Decode(
-        char *inArray, char *outArray, int inLength, int outLength
+        char *inArray,
+        char *outArray,
+        int inLength,
+        int outLength,
+        int colourTransform
     );
 
     struct StreamData{
