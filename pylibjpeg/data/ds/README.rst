@@ -3,13 +3,14 @@ Description
 
 DICOM datasets used to test the *pydicom* pixel data handler. New datasets
 should be placed in the subfolder corresponding to the value of the
-(0002,0010) *Transfer Syntax UID* and a new `key:value` pair added to the
-`index.py` file using the following format:
+(0002,0010) *Transfer Syntax UID* and a new ``key:value`` pair added to the
+``__init__.py`` file using the following format:
 
 .. code-block:: python
 
     INDEX = {
         'filename' : {
+            # 'Keyword' : ('VR', value),
             'TransferSyntaxUID' : ('UI', ),
             'SamplesPerPixel' : ('US', ),
             'PhotometricInterpretation' : ('CS', ),
