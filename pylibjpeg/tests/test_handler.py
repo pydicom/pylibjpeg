@@ -66,13 +66,19 @@ class HandlerTestBase(object):
     def teardown(self):
         remove_handler()
 
-    def plot(self, arr, index=None):
+    def plot(self, arr, index=None, cmap=None):
         import matplotlib.pyplot as plt
 
         if index is not None:
-            plt.imshow(arr[index])
+            if cmap:
+                plt.imshow(arr[index], cmap=cmap)
+            else:
+                plt.imshow(arr[index])
         else:
-            plt.imshow(arr)
+            if cmap:
+                plt.imshow(arr, cmap=cmap)
+            else:
+                plt.imshow(arr)
 
         plt.show()
 
@@ -103,6 +109,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
         assert 'MONOCHROME' in ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
 
@@ -117,6 +124,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 != getattr(ds, 'NumberOfFrames', 1)
         assert 'MONOCHROME' in ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
 
@@ -131,6 +139,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
         assert 'RGB' == ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
         assert arr.flags.writeable
@@ -160,6 +169,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
         assert 'YBR_FULL' == ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
         assert arr.flags.writeable
@@ -191,6 +201,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
         assert 'YBR_FULL_422' == ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
         assert arr.flags.writeable
@@ -222,6 +233,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
         assert 'YBR_FULL' == ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
         assert arr.flags.writeable
@@ -251,6 +263,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 1 != getattr(ds, 'NumberOfFrames', 1)
         assert 8 == ds.BitsAllocated == ds.BitsStored
         assert 'YBR_FULL_422' == ds.PhotometricInterpretation
+        assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
         assert arr.flags.writeable
@@ -259,7 +272,11 @@ class TestJPEGBaseline(HandlerTestBase):
 
         arr = convert_color_space(arr, 'YBR_FULL', 'RGB')
 
-        self.plot(arr, index=2)
+        #self.plot(arr, index=3)
+
+        assert (41,  41,  41) == tuple(arr[3, 159, 290, :])
+        assert (57,  57,  57) == tuple(arr[3, 169, 290, :])
+        assert (72, 167, 125) == tuple(arr[3, 41, 380, :])
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -277,58 +294,87 @@ class TestJPEGExtended(HandlerTestBase):
     Photometric Interpretation: MONOCHROME1, MONOCHROME2, RGB, YBR_FULL,
         YBR_FULL_422
     """
+    uid = '1.2.840.10008.1.2.4.51'
+
+    @pytest.mark.skip("No matching dataset")
     def test_p2_1s_1f(self):
         """Test process 2 greyscale."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p2_1s_2f(self):
         """Test process 2 greyscale with 2 frames."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p2_3s_1f_rgb(self):
         """Test process 2 RGB."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p2_3s_1f_ybr_411(self):
         """Test process 2 YBR with 411 subsampling."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p2_3s_1f_ybr_422(self):
         """Test process 2 YBR with 422 subsampling."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p2_3s_1f_ybr_444(self):
         """Test process 2 YBR with 444 subsampling."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p2_3s_2f(self):
         """Test process 2 3 sample/px with 2 frames."""
         pass
 
     def test_p4_1s_1f(self):
         """Test process 4 greyscale."""
-        pass
+        ds = self.ds['JPGExtended_1s_1f_16_12.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 12 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
 
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        self.plot(arr)
+
+    @pytest.mark.skip("No matching dataset")
     def test_p4_1s_2f(self):
         """Test process 4 greyscale with 2 frames."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p4_3s_1f_rgb(self):
         """Test process 4 RGB."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p4_3s_1f_ybr_411(self):
         """Test process 4 YBR with 411 subsampling."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p4_3s_1f_ybr_422(self):
         """Test process 4 YBR with 422 subsampling."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p4_3s_1f_ybr_444(self):
         """Test process 4 YBR with 444 subsampling."""
         pass
 
+    @pytest.mark.skip("No matching dataset")
     def test_p4_3s_2f(self):
         """Test process 4 3 sample/px with 2 frames."""
         pass
@@ -349,7 +395,8 @@ class TestJPEGLossless(HandlerTestBase):
     Photometric Interpretation: MONOCHROME1, MONOCHROME2, RGB, YBR_FULL,
         YBR_FULL_422
     """
-    pass
+    uid = '1.2.840.10008.1.2.4.57'
+
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLosslessSV1(HandlerTestBase):
@@ -367,7 +414,112 @@ class TestJPEGLosslessSV1(HandlerTestBase):
     Photometric Interpretation: MONOCHROME1, MONOCHROME2, RGB, YBR_FULL,
         YBR_FULL_422
     """
-    pass
+    uid = '1.2.840.10008.1.2.4.70'
+
+    def test_1s_1f_u_08_08(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['JPGLosslessP14SV1_1s_1f_8b.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated
+        assert 8 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+    @pytest.mark.skip("No matching dataset")
+    def test_1s_1f_i_08_08(self):
+        """Test process 2 greyscale."""
+        pass
+
+    @pytest.mark.skip("No matching dataset")
+    def test_1s_Nf_u_08_08(self):
+        """Test process 2 greyscale."""
+        pass
+
+    @pytest.mark.skip("No matching dataset")
+    def test_1s_1f_u_16_16(self):
+        """Test process 2 greyscale."""
+        pass
+
+    def test_1s_1f_i_16_16(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['JPEG-LL.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 16 == ds.BitsStored
+        assert 1 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'int16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+    @pytest.mark.skip("No matching dataset")
+    def test_1s_Nf_u_16_16(self):
+        """Test process 2 greyscale."""
+        pass
+
+    def test_3s_1f_u_08_08(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['SC_rgb_jpeg_gdcm.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'RGB' in ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated
+        assert 8 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+
+        #self.plot(arr)
+
+        assert (255,   0,   0) == tuple(arr[ 5, 50, :])
+        assert (255, 128, 128) == tuple(arr[15, 50, :])
+        assert (  0, 255,   0) == tuple(arr[25, 50, :])
+        assert (128, 255, 128) == tuple(arr[35, 50, :])
+        assert (  0,   0, 255) == tuple(arr[45, 50, :])
+        assert (128, 128, 255) == tuple(arr[55, 50, :])
+        assert (  0,   0,   0) == tuple(arr[65, 50, :])
+        assert ( 64,  64,  64) == tuple(arr[75, 50, :])
+        assert (192, 192, 192) == tuple(arr[85, 50, :])
+        assert (255, 255, 255) == tuple(arr[95, 50, :])
+
+    @pytest.mark.skip("No matching dataset")
+    def test_3s_1f_u_16_16(self):
+        """Test process 2 greyscale."""
+        pass
+
+    @pytest.mark.skip("No matching dataset")
+    def test_3s_Nf_u(self):
+        """Test process 2 greyscale."""
+        pass
+
+    @pytest.mark.skip("No matching dataset")
+    def test_3s_Nf_u_08_08(self):
+        """Test process 2 greyscale."""
+        pass
+
+    @pytest.mark.skip("No matching dataset")
+    def test_3s_Nf_u_16_16(self):
+        """Test process 2 greyscale."""
+        pass
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -376,7 +528,43 @@ class TestJPEGLSLossless(HandlerTestBase):
 
     1.2.840.10008.1.2.4.80 : JPEG-LS Lossless Image Compression
     """
-    pass
+    uid = '1.2.840.10008.1.2.4.80'
+
+    def test_1s_Nf_u_16_12(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['emri_small_jpeg_ls_lossless.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 10 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 12 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (10, ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr, index=0, cmap='gray')
+
+    def test_1s_1f_i_16_16(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['MR_small_jpeg_ls_lossless.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 16 == ds.BitsStored
+        assert 1 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'int16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr, cmap='gray')
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -388,7 +576,7 @@ class TestJPEGLS(HandlerTestBase):
 
     1.2.840.10008.1.2.4.81 : JPEG-LS Lossy (Near-Lossless) Image Compression
     """
-    pass
+    uid = '1.2.840.10008.1.2.4.81'
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -397,7 +585,27 @@ class TestJPEG2000Lossless(HandlerTestBase):
 
     1.2.840.10008.1.2.4.90 : JPEG 2000 Image Compression (Lossless Only)
     """
-    pass
+    uid = '1.2.840.10008.1.2.4.90'
+
+    def test_1s_1f_i_16_16(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['693_J2KR.dcm']['ds']
+        libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.append(ds.file_meta.TransferSyntaxUID)
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 16 == ds.BitsStored
+        assert 1 == ds.PixelRepresentation
+
+        # TODO: should raise an exception
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'int16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        self.plot(arr, cmap='gray')
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -406,4 +614,24 @@ class TestJPEG2000(HandlerTestBase):
 
     1.2.840.10008.1.2.4.91 : JPEG 2000 Image Compression
     """
-    pass
+    uid = '1.2.840.10008.1.2.4.91'
+
+    def test_1s_1f_i_16_16(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['693_J2KI.dcm']['ds']
+        libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.append(ds.file_meta.TransferSyntaxUID)
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 14 == ds.BitsStored
+        assert 1 == ds.PixelRepresentation
+
+        # TODO: should raise an exception
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'int16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        self.plot(arr, cmap='gray')

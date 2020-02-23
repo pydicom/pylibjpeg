@@ -16,7 +16,7 @@ INDEX = {
         # Optional DICOM keys
         'ImageComments' : ('LT', 'Fixed version of JPEG-lossy.dcm'),
     },
-    'JPEG-lossy' : {
+    'JPEG-lossy.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),

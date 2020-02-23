@@ -25,7 +25,7 @@ INDEX = {
         'BitsAllocated' : ('US', 16),
         'BitsStored' : ('US', 16),
         'HighBit' : ('US', 15),
-        'PixelRepresentation' : ('US', 0),
+        'PixelRepresentation' : ('US', 1),
         'WindowCenter' : ('DS', '600'),
         'WindowWidth' : ('DS', '1600'),
     },
