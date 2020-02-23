@@ -546,7 +546,7 @@ class TestJPEGLSLossless(HandlerTestBase):
         assert 'uint16' == arr.dtype
         assert (10, ds.Rows, ds.Columns) == arr.shape
 
-        #self.plot(arr, index=0, cmap='gray')
+        self.plot(arr, index=0, cmap='gray')
 
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
@@ -564,7 +564,7 @@ class TestJPEGLSLossless(HandlerTestBase):
         assert 'int16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        #self.plot(arr, cmap='gray')
+        self.plot(arr, cmap='gray')
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
