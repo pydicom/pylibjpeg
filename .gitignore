@@ -26,6 +26,10 @@ distribute*.egg
 distribute*.tar.gz
 py3source
 .tox/*
+__pycache__
+.pytest_cache
+*.egg-info
+build
 
 # Docs build
 docs/_build/*
@@ -39,6 +43,7 @@ doc/reference/generated/*
 
 # PyCharm IDE files
 *.idea*
+
 
 
 # jupyter notebooks
