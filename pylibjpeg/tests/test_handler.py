@@ -303,42 +303,7 @@ class TestJPEGExtended(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.51'
 
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_1s_1f(self):
-        """Test process 2 greyscale."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_1s_2f(self):
-        """Test process 2 greyscale with 2 frames."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_3s_1f_rgb(self):
-        """Test process 2 RGB."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_3s_1f_ybr_411(self):
-        """Test process 2 YBR with 411 subsampling."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_3s_1f_ybr_422(self):
-        """Test process 2 YBR with 422 subsampling."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_3s_1f_ybr_444(self):
-        """Test process 2 YBR with 444 subsampling."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p2_3s_2f(self):
-        """Test process 2 3 sample/px with 2 frames."""
-        pass
-
-    # Needs reference data
+    # Needs reference data - GDCM doesn't load!
     def test_p4_1s_1f_u_16_12(self):
         """Test process 4 greyscale."""
         ds = self.ds['JPGExtended_1s_1f_16_12.dcm']['ds']
@@ -357,12 +322,9 @@ class TestJPEGExtended(HandlerTestBase):
 
         #self.plot(arr)
 
-    @pytest.mark.skip("No matching dataset")
-    def test_p4_1s_2f(self):
-        """Test process 4 greyscale with 2 frames."""
-        pass
-
-    # Needs reference data
+    # Broken dataset - should raise
+    # Needs fixed dataset
+    # Needs reference data - GDCM doesn't load!
     def test_p4_1s_1f_u_16_10(self):
         """Test process 4 greyscale."""
         ds = self.ds['RG2_JPLY']['ds']
@@ -380,31 +342,6 @@ class TestJPEGExtended(HandlerTestBase):
         assert (ds.Rows, ds.Columns) == arr.shape
 
         #self.plot(arr)
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p4_3s_1f_rgb(self):
-        """Test process 4 RGB."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p4_3s_1f_ybr_411(self):
-        """Test process 4 YBR with 411 subsampling."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p4_3s_1f_ybr_422(self):
-        """Test process 4 YBR with 422 subsampling."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p4_3s_1f_ybr_444(self):
-        """Test process 4 YBR with 444 subsampling."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_p4_3s_2f(self):
-        """Test process 4 3 sample/px with 2 frames."""
-        pass
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -443,7 +380,6 @@ class TestJPEGLosslessSV1(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.70'
 
-    # Needs reference data
     def test_1s_1f_u_08_08(self):
         """Test process 2 greyscale."""
         ds = self.ds['JPGLosslessP14SV1_1s_1f_8b.dcm']['ds']
@@ -462,20 +398,8 @@ class TestJPEGLosslessSV1(HandlerTestBase):
 
         #self.plot(arr)
 
-    @pytest.mark.skip("No matching dataset")
-    def test_1s_1f_i_08_08(self):
-        """Test process 2 greyscale."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_1s_Nf_u_08_08(self):
-        """Test process 2 greyscale."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_1s_1f_u_16_16(self):
-        """Test process 2 greyscale."""
-        pass
+        # Reference values from GDCM handler
+        assert [0, 255, 254, 253, 253, 252, 251] == arr[121:128, 974].tolist()
 
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
@@ -498,45 +422,6 @@ class TestJPEGLosslessSV1(HandlerTestBase):
         assert 227 == arr[420, 140]
         assert 105 == arr[230, 120]
 
-    # Needs reference data
-    def test_1s_1f_u_16_12(self):
-        """Test process 2 greyscale."""
-        ds = self.ds['MG1_JPLL']['ds']
-        assert self.uid == ds.file_meta.TransferSyntaxUID
-        assert 1 == ds.SamplesPerPixel
-        assert 1 == getattr(ds, 'NumberOfFrames', 1)
-        assert 'MONOCHROME' in ds.PhotometricInterpretation
-        assert 16 == ds.BitsAllocated
-        assert 12 == ds.BitsStored
-        assert 0 == ds.PixelRepresentation
-
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'uint16' == arr.dtype
-        assert (ds.Rows, ds.Columns) == arr.shape
-
-        #self.plot(arr)
-
-    # Needs reference data
-    def test_1s_1f_u_16_15(self):
-        """Test process 2 greyscale."""
-        ds = self.ds['RG1_JPLL']['ds']
-        assert self.uid == ds.file_meta.TransferSyntaxUID
-        assert 1 == ds.SamplesPerPixel
-        assert 1 == getattr(ds, 'NumberOfFrames', 1)
-        assert 'MONOCHROME' in ds.PhotometricInterpretation
-        assert 16 == ds.BitsAllocated
-        assert 15 == ds.BitsStored
-        assert 0 == ds.PixelRepresentation
-
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'uint16' == arr.dtype
-        assert (ds.Rows, ds.Columns) == arr.shape
-
-        #self.plot(arr)
-
-    # Needs reference data
     def test_1s_1f_u_16_10(self):
         """Test process 2 greyscale."""
         ds = self.ds['RG2_JPLL']['ds']
@@ -555,10 +440,54 @@ class TestJPEGLosslessSV1(HandlerTestBase):
 
         #self.plot(arr)
 
-    @pytest.mark.skip("No matching dataset")
-    def test_1s_Nf_u_16_16(self):
+        # Reference values from GDCM handler
+        assert [574, 669, 763, 782, 789, 736, 637, 583, 592, 589] == (
+            arr[845, 965:975].tolist()
+        )
+
+    def test_1s_1f_u_16_12(self):
         """Test process 2 greyscale."""
-        pass
+        ds = self.ds['MG1_JPLL']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 12 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+        # Reference values from GDCM handler
+        assert [3023, 2862, 2841, 2825, 2841] == arr[1830:1835, 1285].tolist()
+
+    def test_1s_1f_u_16_15(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['RG1_JPLL']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 15 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+        # Reference values from GDCM handler
+        assert [24043, 23906, 23669, 23526, 22962, 22874, 22501, 22066] == (
+            arr[1900, 1805:1813].tolist()
+        )
 
     def test_3s_1f_u_08_08(self):
         """Test process 2 greyscale."""
@@ -589,26 +518,6 @@ class TestJPEGLosslessSV1(HandlerTestBase):
         assert (192, 192, 192) == tuple(arr[85, 50, :])
         assert (255, 255, 255) == tuple(arr[95, 50, :])
 
-    @pytest.mark.skip("No matching dataset")
-    def test_3s_1f_u_16_16(self):
-        """Test process 2 greyscale."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_3s_Nf_u(self):
-        """Test process 2 greyscale."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_3s_Nf_u_08_08(self):
-        """Test process 2 greyscale."""
-        pass
-
-    @pytest.mark.skip("No matching dataset")
-    def test_3s_Nf_u_16_16(self):
-        """Test process 2 greyscale."""
-        pass
-
 
 # ISO/IEC 14495 JPEG-LS
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -619,26 +528,6 @@ class TestJPEGLSLossless(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.80'
 
-    # Needs reference data
-    def test_1s_Nf_u_16_12(self):
-        """Test process 2 greyscale."""
-        ds = self.ds['emri_small_jpeg_ls_lossless.dcm']['ds']
-        assert self.uid == ds.file_meta.TransferSyntaxUID
-        assert 1 == ds.SamplesPerPixel
-        assert 10 == getattr(ds, 'NumberOfFrames', 1)
-        assert 'MONOCHROME' in ds.PhotometricInterpretation
-        assert 16 == ds.BitsAllocated
-        assert 12 == ds.BitsStored
-        assert 0 == ds.PixelRepresentation
-
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'uint16' == arr.dtype
-        assert (10, ds.Rows, ds.Columns) == arr.shape
-
-        #self.plot(arr, index=0, cmap='gray')
-
-    # Needs reference data
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
         ds = self.ds['MR_small_jpeg_ls_lossless.dcm']['ds']
@@ -657,6 +546,37 @@ class TestJPEGLSLossless(HandlerTestBase):
 
         #self.plot(arr, cmap='gray')
 
+        # Reference values from GDCM handler
+        assert [1194,  879,  127,  661, 1943, 1885, 1857, 1746, 1699] == (
+            arr[55:65, 38].tolist()
+        )
+
+    def test_1s_Nf_u_16_12(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['emri_small_jpeg_ls_lossless.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 10 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 12 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (10, ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr, index=0, cmap='gray')
+
+        # Reference values from GDCM handler
+        assert [361, 295, 215,  98,  79,  70,  41,  29,  61,  64] == (
+            arr[0, 18:28, 48].tolist()
+        )
+        assert [298, 332, 355, 361, 324, 263, 169, 105,  53,  45] == (
+            arr[9, 18:28, 48].tolist()
+        )
+
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLS(HandlerTestBase):
@@ -669,7 +589,6 @@ class TestJPEGLS(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.81'
 
-    # Needs reference data
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
         ds = self.ds['CT1_JLSN']['ds']
@@ -688,7 +607,34 @@ class TestJPEGLS(HandlerTestBase):
 
         #self.plot(arr)
 
-    # Needs reference data
+        # Reference values from GDCM handler
+        assert [-2000, -2000, 936, 946, 927, 925, 918, 929, 931, 921] == (
+            arr[433, 69:79].tolist()
+        )
+
+    def test_1s_1f_u_16_10(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['RG2_JLSN']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 10 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+        # Reference values from GDCM handler
+        assert [574, 666, 760, 781, 789, 733, 634, 585, 594, 589] == (
+            arr[845, 965:975].tolist()
+        )
+
     def test_1s_1f_u_16_12(self):
         """Test process 2 greyscale."""
         ds = self.ds['MG1_JLSN']['ds']
@@ -707,7 +653,11 @@ class TestJPEGLS(HandlerTestBase):
 
         #self.plot(arr)
 
-    # Needs reference data
+        # Reference values from GDCM handler
+        assert [3027, 2859, 2839, 2821, 2837, 2834, 2817, 2844, 2837] == (
+            arr[1830:1839, 1285].tolist()
+        )
+
     def test_1s_1f_u_16_15(self):
         """Test process 2 greyscale."""
         ds = self.ds['RG1_JLSN']['ds']
@@ -726,24 +676,10 @@ class TestJPEGLS(HandlerTestBase):
 
         #self.plot(arr)
 
-    # Needs reference data
-    def test_1s_1f_u_16_10(self):
-        """Test process 2 greyscale."""
-        ds = self.ds['RG2_JLSN']['ds']
-        assert self.uid == ds.file_meta.TransferSyntaxUID
-        assert 1 == ds.SamplesPerPixel
-        assert 1 == getattr(ds, 'NumberOfFrames', 1)
-        assert 'MONOCHROME' in ds.PhotometricInterpretation
-        assert 16 == ds.BitsAllocated
-        assert 10 == ds.BitsStored
-        assert 0 == ds.PixelRepresentation
-
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'uint16' == arr.dtype
-        assert (ds.Rows, ds.Columns) == arr.shape
-
-        self.plot(arr)
+        # Reference values from GDCM handler
+        assert [24047, 23910, 23668, 23529, 22960, 22871, 22505, 22066] == (
+            arr[1900, 1805:1813].tolist()
+        )
 
 
 # ISO/IEC 15444 JPEG 2000 - Expected fail
