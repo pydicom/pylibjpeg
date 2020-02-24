@@ -1,7 +1,7 @@
 """1.2.840.10008.1.2.4.51 - JPEG Extended (Process 2 and 4)"""
 
 INDEX = {
-    'JPGExtended_1s_1f_16_12.dcm' : {
+    'JPEGExtended_1s_1f_u_16_12.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
@@ -14,6 +14,19 @@ INDEX = {
         'HighBit' : ('US', 11),
         'PixelRepresentation' : ('US', 0),
         'ImageComments' : ('LT', 'Fixed version of JPEG-lossy.dcm'),
+    },
+    'JPEGExtended_3s_1f_u_08_08.dcm' : {
+        'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),
+        'SamplesPerPixel' : ('US', 3),
+        'PhotometricInterpretation' : ('CS', 'YBR_FULL'),
+        'PlanarConfiguration' : ('US', 0),
+        'NumberOfFrames' : ('IS', '1'),
+        'Rows' : ('US', 576),
+        'Columns' : ('US', 768),
+        'BitsAllocated' : ('US', 8),
+        'BitsStored' : ('US', 8),
+        'HighBit' : ('US', 7),
+        'PixelRepresentation' : ('US', 0),
     },
     'JPEG-lossy.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),

@@ -103,7 +103,7 @@ class TestJPEGBaseline(HandlerTestBase):
 
     def test_1s_1f(self):
         """Test greyscale."""
-        ds = self.ds['JPEGBaseline_1s_1f_08_08.dcm']['ds']
+        ds = self.ds['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -116,7 +116,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        self.plot(arr, cmap='gray')
+        #self.plot(arr, cmap='gray')
 
     @pytest.mark.skip('Bad')
     def test_1s_Nf(self):
@@ -306,7 +306,7 @@ class TestJPEGExtended(HandlerTestBase):
     # Needs reference data - GDCM doesn't load!
     def test_p4_1s_1f_u_16_12(self):
         """Test process 4 greyscale."""
-        ds = self.ds['JPGExtended_1s_1f_16_12.dcm']['ds']
+        ds = self.ds['JPEGExtended_1s_1f_u_16_12.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -382,7 +382,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
 
     def test_1s_1f_u_08_08(self):
         """Test process 2 greyscale."""
-        ds = self.ds['JPGLosslessP14SV1_1s_1f_8b.dcm']['ds']
+        ds = self.ds['JPEGLosslessP14SV1_1s_1f_u_08_08.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
