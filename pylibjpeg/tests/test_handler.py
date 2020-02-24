@@ -101,10 +101,9 @@ class TestJPEGBaseline(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.50'
 
-    @pytest.mark.skip("No matching dataset")
     def test_1s_1f(self):
         """Test greyscale."""
-        ds = self.ds['']['ds']
+        ds = self.ds['JPEGBaseline_1s_1f_08_08.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -113,23 +112,30 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
 
-        #self.plot(arr)
+        self.plot(arr, cmap='gray')
 
-    @pytest.mark.skip("No matching dataset")
+    @pytest.mark.skip('Bad')
     def test_1s_Nf(self):
         """Test greyscale with N frames."""
-        ds = self.ds['']['ds']
+        ds = self.ds['JPEGBaseline_1s_2f_08_08.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
-        assert 1 != getattr(ds, 'NumberOfFrames', 1)
+        assert 2 == getattr(ds, 'NumberOfFrames', 1)
         assert 'MONOCHROME' in ds.PhotometricInterpretation
         assert 8 == ds.BitsAllocated == ds.BitsStored
         assert 0 == ds.PixelRepresentation
 
         arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (2, ds.Rows, ds.Columns) == arr.shape
 
-        #self.plot(arr)
+        self.plot(arr, index=0, cmap='gray')
+        self.plot(arr, index=1, cmap='gray')
 
     def test_3s_1f_rgb(self):
         """Test RGB."""
