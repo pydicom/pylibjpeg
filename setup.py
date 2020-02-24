@@ -59,8 +59,8 @@ extra_compile_args.extend(opts['ADDOPTS'])
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
 
-print(extra_compile_args)
-print(extra_link_args)
+#print(extra_compile_args)
+#print(extra_link_args)
 
 ext = Extension(
     '_libjpeg',

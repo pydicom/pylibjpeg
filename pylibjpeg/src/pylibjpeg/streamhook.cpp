@@ -320,6 +320,7 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                 // Samples per Pixel or Number of Components
                                 case 1:
                                 case 3: // The direct cases, can write PPM right away.
+                                    /*
                                     #ifdef JPG_LIL_ENDIAN
                                         // On those bloddy little endian machines,
                                         // an endian swap is necessary as PNM is
@@ -334,13 +335,24 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                             } while(--count);
                                         }
                                     #endif
+                                    */
                                     // Write pixel data to target
+                                    /*
+                                    if (omm->omm_ucPixelType == CTYP_UBYTE) {
+                                        std::cout << "PixelType CTYP_UBYTE " << std::endl;
+                                    } else if (omm->omm_ucPixelType == CTYP_UWORD) {
+                                        std::cout << "PixelType CTYP_UWORD " << std::endl;
+                                    } else if (omm->omm_ucPixelType == CTYP_FLOAT) {
+                                        std::cout << "PixelType CTYP_FLOAT " << std::endl;
+                                    } else {
+                                        std::cout << "PixelType None of the above " << std::endl;
+                                    }
+                                    */
+
                                     ULONG size = omm->omm_ucPixelType & CTYP_SIZE_MASK;
                                     ULONG count = width * height * omm->omm_usDepth;
                                     UBYTE *mem = (UBYTE *)(omm->omm_pMemPtr);
 
-                                    // TODO: make sure we don't overflow the
-                                    // buffer
                                     for (int ii = 0; ii < count; ii++) {
                                         // For each byte of the element
                                         for (int jj = 0; jj < size; jj++) {

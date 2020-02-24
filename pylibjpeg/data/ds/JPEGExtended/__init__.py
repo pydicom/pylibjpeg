@@ -45,5 +45,7 @@ INDEX = {
         'WindowCenter' : ('DS', '511'),
         'WindowWidth' : ('DS', '1024'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
+        'Status' : ('US', 0xC000),
+        'ImageComments' : ('LT', 'SOS::Se invalid value 0 (should be 63)'),
     },
 }

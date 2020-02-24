@@ -83,6 +83,7 @@ class HandlerTestBase(object):
         plt.show()
 
 
+# ISO/IEC 10918 JPEG
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGBaseline(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
@@ -113,7 +114,7 @@ class TestJPEGBaseline(HandlerTestBase):
 
         arr = ds.pixel_array
 
-        self.plot(arr)
+        #self.plot(arr)
 
     @pytest.mark.skip("No matching dataset")
     def test_1s_Nf(self):
@@ -128,7 +129,7 @@ class TestJPEGBaseline(HandlerTestBase):
 
         arr = ds.pixel_array
 
-        self.plot(arr)
+        #self.plot(arr)
 
     def test_3s_1f_rgb(self):
         """Test RGB."""
@@ -331,7 +332,7 @@ class TestJPEGExtended(HandlerTestBase):
         """Test process 2 3 sample/px with 2 frames."""
         pass
 
-    def test_p4_1s_1f(self):
+    def test_p4_1s_1f_u_16_12(self):
         """Test process 4 greyscale."""
         ds = self.ds['JPGExtended_1s_1f_16_12.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
@@ -347,12 +348,30 @@ class TestJPEGExtended(HandlerTestBase):
         assert 'uint16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        self.plot(arr)
+        #self.plot(arr)
 
     @pytest.mark.skip("No matching dataset")
     def test_p4_1s_2f(self):
         """Test process 4 greyscale with 2 frames."""
         pass
+
+    def test_p4_1s_1f_u_16_10(self):
+        """Test process 4 greyscale."""
+        ds = self.ds['RG2_JPLY']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 10 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        self.plot(arr)
 
     @pytest.mark.skip("No matching dataset")
     def test_p4_3s_1f_rgb(self):
@@ -432,7 +451,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        #self.plot(arr)
+        self.plot(arr)
 
     @pytest.mark.skip("No matching dataset")
     def test_1s_1f_i_08_08(self):
@@ -463,6 +482,63 @@ class TestJPEGLosslessSV1(HandlerTestBase):
         arr = ds.pixel_array
         assert arr.flags.writeable
         assert 'int16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+        assert 227 == arr[420, 140]
+        assert 105 == arr[230, 120]
+
+    def test_1s_1f_u_16_12(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['MG1_JPLL']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 12 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+    def test_1s_1f_u_16_15(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['RG1_JPLL']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 15 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+    def test_1s_1f_u_16_10(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['RG2_JPLL']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 10 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
         #self.plot(arr)
@@ -522,6 +598,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
         pass
 
 
+# ISO/IEC 14495 JPEG-LS
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLSLossless(HandlerTestBase):
     """Test the handler with ISO 14495 JPEG-LS images.
@@ -546,7 +623,7 @@ class TestJPEGLSLossless(HandlerTestBase):
         assert 'uint16' == arr.dtype
         assert (10, ds.Rows, ds.Columns) == arr.shape
 
-        self.plot(arr, index=0, cmap='gray')
+        #self.plot(arr, index=0, cmap='gray')
 
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
@@ -564,7 +641,7 @@ class TestJPEGLSLossless(HandlerTestBase):
         assert 'int16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        self.plot(arr, cmap='gray')
+        #self.plot(arr, cmap='gray')
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -579,6 +656,7 @@ class TestJPEGLS(HandlerTestBase):
     uid = '1.2.840.10008.1.2.4.81'
 
 
+# ISO/IEC 15444 JPEG 2000 - Expected fail
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
 class TestJPEG2000Lossless(HandlerTestBase):
     """Test the handler with ISO 15444 JPEG2000 images.
@@ -605,7 +683,7 @@ class TestJPEG2000Lossless(HandlerTestBase):
         assert 'int16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        self.plot(arr, cmap='gray')
+        #self.plot(arr, cmap='gray')
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -634,4 +712,4 @@ class TestJPEG2000(HandlerTestBase):
         assert 'int16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
 
-        self.plot(arr, cmap='gray')
+        #self.plot(arr, cmap='gray')
