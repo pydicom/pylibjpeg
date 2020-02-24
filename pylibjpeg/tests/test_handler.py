@@ -303,6 +303,38 @@ class TestJPEGExtended(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.51'
 
+    def test_p2_3s_1f_u_08_08(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['JPEGExtended_3s_1f_u_08_08.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 3 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'YBR_FULL' in ds.PhotometricInterpretation
+        assert 8 == ds.BitsAllocated
+        assert 8 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+
+        #self.plot(arr)
+
+        # Reference values from GDCM handler - in YBR colour space
+        assert [
+            [ 71,  86, 147],
+            [124,  62, 167],
+            [138,  66, 175],
+            [145,  65, 172],
+            [150,  59, 168],
+            [178,  59, 167],
+            [183,  56, 171],
+            [201,  83, 165],
+            [213,  92, 153],
+            [255, 132, 134]
+        ] == arr[41, 105:115].tolist()
+
     # Needs reference data - GDCM doesn't load!
     def test_p4_1s_1f_u_16_12(self):
         """Test process 4 greyscale."""
@@ -360,6 +392,29 @@ class TestJPEGLossless(HandlerTestBase):
         YBR_FULL_422
     """
     uid = '1.2.840.10008.1.2.4.57'
+
+    def test_1s_1f_u_08_08(self):
+        """Test process 2 greyscale."""
+        ds = self.ds['JPEGLossless_1s_1f_u_16_12.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        assert 12 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+        # Reference values from GDCM handler
+        assert [392, 304, 238, 250, 224, 257, 221, 182, 166, 68] == (
+            arr[779, 170:180].tolist()
+        )
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
