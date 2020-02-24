@@ -87,6 +87,7 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
     static ULONG OpenComponents = 0;
     struct StreamMemory *omm  = (struct StreamMemory *)(hook->hk_pData);
     struct StreamData *out = (struct StreamData *)(omm->omm_pTarget);
+    // Pointer to the output numpy array, currently at offset out->position
     char *oArray = (char *)(out->pData);
 
     UWORD comp  = tags->GetTagData(JPGTAG_BIO_COMPONENT);
@@ -255,6 +256,9 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
             break;
         case JPGFLAG_BIO_RELEASE:
         {
+            // omm_ucPixelType: precision
+            // omm_usDepth: number of components
+            // omm_bFloat: input is floating point
             assert(OpenComponents & (1UL << comp));
             if (comp == omm->omm_usDepth - 1) {
                 ULONG height = maxy + 1 - miny;
@@ -266,6 +270,7 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                 {
                     if (oArray) {
                         if (omm->omm_bFloat) {
+                            // No floating point input allowed for DICOM
                             if (omm->omm_bNoOutputConversion) {
                                 ULONG count = width * height;
                                 FLOAT *data = (FLOAT *)omm->omm_pMemPtr;
@@ -316,45 +321,18 @@ JPG_LONG OStreamHook(struct JPG_Hook *hook, struct JPG_TagItem *tags)
                                 } while(--count);
                             }
                         } else {
+                            // DICOM should always be integer input
                             switch(omm->omm_usDepth) {
                                 // Samples per Pixel or Number of Components
-                                case 1:
-                                case 3: // The direct cases, can write PPM right away.
-                                    /*
-                                    #ifdef JPG_LIL_ENDIAN
-                                        // On those bloddy little endian machines,
-                                        // an endian swap is necessary as PNM is
-                                        // big-endian.
-                                        if (omm->omm_ucPixelType == CTYP_UWORD) {
-                                            ULONG count = width * height * omm->omm_usDepth;
-                                            UWORD *data = (UWORD *)omm->omm_pMemPtr;
-
-                                            do {
-                                                *data = (*data >> 8) | ((*data & 0xff) << 8);
-                                                data++;
-                                            } while(--count);
-                                        }
-                                    #endif
-                                    */
+                                case 1: // 1 component
+                                case 3: // 3 components
                                     // Write pixel data to target
-                                    /*
-                                    if (omm->omm_ucPixelType == CTYP_UBYTE) {
-                                        std::cout << "PixelType CTYP_UBYTE " << std::endl;
-                                    } else if (omm->omm_ucPixelType == CTYP_UWORD) {
-                                        std::cout << "PixelType CTYP_UWORD " << std::endl;
-                                    } else if (omm->omm_ucPixelType == CTYP_FLOAT) {
-                                        std::cout << "PixelType CTYP_FLOAT " << std::endl;
-                                    } else {
-                                        std::cout << "PixelType None of the above " << std::endl;
-                                    }
-                                    */
-
                                     ULONG size = omm->omm_ucPixelType & CTYP_SIZE_MASK;
                                     ULONG count = width * height * omm->omm_usDepth;
                                     UBYTE *mem = (UBYTE *)(omm->omm_pMemPtr);
-
+                                    // For each pixel
                                     for (int ii = 0; ii < count; ii++) {
-                                        // For each byte of the element
+                                        // For each byte of the pixel
                                         for (int jj = 0; jj < size; jj++) {
                                             if (out->position >= out->length) {
                                                 break;

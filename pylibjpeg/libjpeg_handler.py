@@ -1,4 +1,3 @@
-# Copyright 2008-2018 pydicom authors. See LICENSE file for details.
 """Use the `pylibjpeg <https://github.com/scaramallion/pylibjpeg/>`_ package
 to convert supported pixel data to a :class:`numpy.ndarray`.
 
@@ -24,7 +23,7 @@ values given in the table below.
 +-------------+---------------------------+------+ values        |          |
 | Tag         | Keyword                   | Type |               |          |
 +=============+===========================+======+===============+==========+
-| (0028,0002) | SamplesPerPixel           | 1    | N             | Required |
+| (0028,0002) | SamplesPerPixel           | 1    | 1, 3          | Required |
 +-------------+---------------------------+------+---------------+----------+
 | (0028,0004) | PhotometricInterpretation | 1    | MONOCHROME1,  | Required |
 |             |                           |      | MONOCHROME2,  |          |
@@ -40,7 +39,7 @@ values given in the table below.
 +-------------+---------------------------+------+---------------+----------+
 | (0028,0011) | Columns                   | 1    | N             | Required |
 +-------------+---------------------------+------+---------------+----------+
-| (0028,0100) | BitsAllocated             | 1    | 1, 8, 12, 16  | Required |
+| (0028,0100) | BitsAllocated             | 1    | 8, 16         | Required |
 +-------------+---------------------------+------+---------------+----------+
 | (0028,0103) | PixelRepresentation       | 1    | 0, 1          | Required |
 +-------------+---------------------------+------+---------------+----------+

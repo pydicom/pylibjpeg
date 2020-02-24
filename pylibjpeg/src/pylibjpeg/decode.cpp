@@ -201,7 +201,6 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength, int colo
                     omm.omm_usDepth      = depth;
                     omm.omm_ucPixelType  = pixeltype;
                     omm.omm_ucAlphaType  = alphapixeltype;
-                    //omm.omm_pTarget      = fopen(outfile, "wb");
                     omm.omm_pTarget      = &out;
                     omm.omm_pAlphaTarget = (doalpha)?(fopen(alpha, "wb")):NULL;
                     omm.omm_pSource      = NULL;
@@ -224,44 +223,43 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength, int colo
 
                     if (omm.omm_pTarget) {
                         struct JPG_Hook outhook(OStreamHook, &omm);
-                        // TODO: implement writing to numpy
+                        // TODO: implement writing alpha to numpy
+                        // Not required for DICOM
                         struct JPG_Hook alphahook(AlphaHook, &omm);
 
                         // Write the data
-                        if (true) {
-                            // Just as a demo, run a stripe-based
-                            // reconstruction.
-                            ULONG y = 0;
-                            ULONG lastline;
-                            struct JPG_TagItem tags[] = {
-                                JPG_PointerTag(JPGTAG_BIH_HOOK, &outhook),
-                                JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK, &alphahook),
-                                JPG_ValueTag(JPGTAG_DECODER_MINY, y),
-                                JPG_ValueTag(JPGTAG_DECODER_MAXY, y + 7),
-                                JPG_ValueTag(JPGTAG_DECODER_UPSAMPLE, upsample),
-                                JPG_ValueTag(JPGTAG_MATRIX_LTRAFO, colortrafo),
-                                JPG_EndTag
-                            };
+                        // Just as a demo, run a stripe-based
+                        // reconstruction.
+                        ULONG y = 0;
+                        ULONG lastline;
+                        struct JPG_TagItem tags[] = {
+                            JPG_PointerTag(JPGTAG_BIH_HOOK, &outhook),
+                            JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK, &alphahook),
+                            JPG_ValueTag(JPGTAG_DECODER_MINY, y),
+                            JPG_ValueTag(JPGTAG_DECODER_MAXY, y + 7),
+                            JPG_ValueTag(JPGTAG_DECODER_UPSAMPLE, upsample),
+                            JPG_ValueTag(JPGTAG_MATRIX_LTRAFO, colortrafo),
+                            JPG_EndTag
+                        };
 
-                            // Writes the image data to file somehow
-                            // Need to modify to write to ndarray instead
-                            //
-                            // Reconstruct now the buffered image, line by
-                            // line. Could also reconstruct the image as a
-                            // whole. What we have here is just a demo
-                            // that is not necessarily the most efficient
-                            // way of handling images.
-                            do {
-                                lastline = height;
-                                if (lastline > y + 8)
-                                    lastline = y + 8;
+                        // Writes the image data to numpy array
+                        //
+                        // Reconstruct now the buffered image, line by
+                        // line. Could also reconstruct the image as a
+                        // whole. What we have here is just a demo
+                        // that is not necessarily the most efficient
+                        // way of handling images.
+                        do {
+                            lastline = height;
+                            if (lastline > y + 8)
+                                lastline = y + 8;
 
-                                tags[2].ti_Data.ti_lData = y;
-                                tags[3].ti_Data.ti_lData = lastline - 1;
-                                ok = jpeg->DisplayRectangle(tags);
-                                y  = lastline;
-                            } while(y < height && ok);
-                        }
+                            tags[2].ti_Data.ti_lData = y;
+                            tags[3].ti_Data.ti_lData = lastline - 1;
+                            // I think this is the decode/writer line
+                            ok = jpeg->DisplayRectangle(tags);
+                            y  = lastline;
+                        } while(y < height && ok);
                     } else {
                         perror("failed to open the output file");
                     }

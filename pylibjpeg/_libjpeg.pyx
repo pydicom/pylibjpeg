@@ -66,6 +66,7 @@ cdef extern from "cmd/reconstruct.hpp":
         bool upsample,
     )
 
+
 def reconstruct(fin, fout, colourspace, falpha, upsample):
     """Decode the JPEG file in `fin` and write it to `fout` as PNM.
 

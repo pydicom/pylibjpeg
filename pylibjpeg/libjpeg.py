@@ -21,7 +21,7 @@ def add_handler():
 
 
 def decode(arr, nr_bytes, colourspace='YBR_FULL'):
-    """Return the decoded JPEG data from `arr`.
+    """Return the decoded JPEG data from `arr` as a 1D numpy array.
 
     Parameters
     ----------
@@ -66,7 +66,7 @@ def reconstruct(fin, fout, colourspace=1, falpha=None, upsample=True):
         The path to the JPEG file to be decoded.
     fout : bytes
         The path to the decoded PPM or PGM (is `falpha` is ``True``) file(s).
-    colourspace : int
+    colourspace : int, optional
         The colourspace transform to apply.
         | ``0`` : ``JPGFLAG_MATRIX_COLORTRANSFORMATION_NONE``  (``-c`` flag)
         | ``1`` : ``JPGFLAG_MATRIX_COLORTRANSFORMATION_YCBCR`` (default)
@@ -75,12 +75,13 @@ def reconstruct(fin, fout, colourspace=1, falpha=None, upsample=True):
         | ``3`` : ``JPGFLAG_MATRIX_COLORTRANSFORMATION_FREEFORM``
         See `here<https://github.com/thorfdbg/libjpeg/blob/87636f3b26b41b85b2fb7355c589a8c456ef808c/interface/parameters.hpp#L381>`_
         for more information.
-    falpha : bytes
+    falpha : bytes, optional
         The path where any decoded alpha channel data will be written (as a
-        PGM file), otherwise ``None`` to not write alpha channel data.
-        Equivalent to the ``-al file`` flag.
-    upsample : bool
-        Upsample.
+        PGM file), otherwise ``None`` (default) to not write alpha channel
+        data. Equivalent to the ``-al file`` flag.
+    upsample : bool, optional
+        ``True`` (default) to disable automatic upsampling, equivalent to
+        the ``-U`` flag.
     """
     if isinstance(fin, (str, pathlib.Path)):
         fin = str(fin)
