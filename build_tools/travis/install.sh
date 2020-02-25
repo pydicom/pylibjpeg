@@ -25,3 +25,5 @@ elif [[ "$TEST_SUITE" == "solo" ]]; then
 fi
 
 python --version
+
+echo $PWD
