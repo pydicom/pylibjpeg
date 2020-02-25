@@ -11,7 +11,7 @@ from setuptools.extension import Extension
 
 from Cython.Distutils import build_ext
 
-PACKAGE_DIR = os.path.abspath(os.path.dirname(__file__))
+PACKAGE_DIR = os.path.dirname(__file__)
 LIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'libjpeg')
 PYLIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'pylibjpeg')
 
@@ -48,8 +48,8 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 include_dirs = [
     LIBJPEG_SRC,
     PYLIBJPEG_SRC,
-    setuptools.distutils.sysconfig.get_python_inc(),
-    np.get_include()
+    os.path.relpath(setuptools.distutils.sysconfig.get_python_inc(), PACKAGE_DIR),
+    os.path.relpath(np.get_include(), PACKAGE_DIR),
 ]
 
 extra_compile_args = []
