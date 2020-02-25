@@ -164,7 +164,6 @@ class TestJPEGBaseline(HandlerTestBase):
 
         #self.plot(arr, index=0, cmap='gray')
 
-
     def test_3s_1f_ybr_422(self):
         """Test YBR with 422 subsampling."""
         # +cy is YCbCr
@@ -182,20 +181,22 @@ class TestJPEGBaseline(HandlerTestBase):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
 
-        arr = convert_color_space(arr, 'YBR_FULL', 'RGB')
-
         #self.plot(arr)
 
-        assert (253,   1,   0) == tuple(arr[ 5, 50, :])
-        assert (253, 129, 131) == tuple(arr[15, 50, :])
-        assert (  0, 255,   5) == tuple(arr[25, 50, :])
-        assert (127, 255, 129) == tuple(arr[35, 50, :])
-        assert (  0,   0, 254) == tuple(arr[45, 50, :])
-        assert (127, 128, 255) == tuple(arr[55, 50, :])
-        assert (  0,   0,   0) == tuple(arr[65, 50, :])
-        assert ( 64,  64,  64) == tuple(arr[75, 50, :])
-        assert (192, 192, 192) == tuple(arr[85, 50, :])
-        assert (255, 255, 255) == tuple(arr[95, 50, :])
+        # Reference values from GDCM handler - slightly different
+        assert ( 76,  85, 254) == tuple(arr[ 5, 50, :])
+        # assert (166, 109, 190) == tuple(arr[15, 50, :])
+        assert (166, 108, 190) == tuple(arr[15, 50, :])  # Different
+        assert (150,  46,  21) == tuple(arr[25, 50, :])
+        # assert (203,  85,  74) == tuple(arr[35, 50, :])
+        assert (203,  86,  74) == tuple(arr[35, 50, :])  # Different
+        # assert ( 29, 255, 108) == tuple(arr[45, 50, :])
+        assert ( 29, 255, 107) == tuple(arr[45, 50, :])  # Different
+        assert (142, 192, 117) == tuple(arr[55, 50, :])
+        assert (  0, 128, 128) == tuple(arr[65, 50, :])
+        assert ( 64, 128, 128) == tuple(arr[75, 50, :])
+        assert (192, 128, 128) == tuple(arr[85, 50, :])
+        assert (255, 128, 128) == tuple(arr[95, 50, :])
 
     def test_3s_Nf_ybr_422(self):
         """Test 3 sample/px with N frames."""
@@ -344,7 +345,7 @@ class TestJPEGExtended(HandlerTestBase):
     ----------------
     1 sample/px, 8/8 bits allocated/stored, unsigned, 1 frame
     1 sample/px, 8/8 bits allocated/stored, unsigned, > 1 frame
-    3 sample/px, 8/8 bits allocated/stored, unsigned, > 1 frame
+    1 sample/px, 16/12 bits allocated/stored, unsigned, > 1 frame
     """
     uid = '1.2.840.10008.1.2.4.51'
 
@@ -358,7 +359,32 @@ class TestJPEGExtended(HandlerTestBase):
         pass
 
     # Process 4
-    # Needs reference data - GDCM doesn't load!
+    def test_1s_1f_u_16_10(self):
+        """Test process 4 greyscale."""
+        ds = self.ds['RG2_JPLY_fixed']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+        assert 1 == ds.SamplesPerPixel
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 'MONOCHROME' in ds.PhotometricInterpretation
+        assert 16 == ds.BitsAllocated
+        # Input precision is 12, not 10
+        assert 10 == ds.BitsStored
+        assert 0 == ds.PixelRepresentation
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        #self.plot(arr)
+
+        # Reference values from output of IJG's djpeg recompiled for 12-bit
+        # Note differences       |              |
+        # IJG: [571, 582, 666, 766, 803, 781, 726, 651, 595, 578]
+        assert [571, 582, 666, 765, 803, 781, 725, 651, 595, 578] == (
+            arr[845, 964:974].tolist()
+        )
+
     def test_1s_1f_u_16_12(self):
         """Test process 4 greyscale."""
         ds = self.ds['JPEGExtended_1s_1f_u_16_12.dcm']['ds']
@@ -376,6 +402,13 @@ class TestJPEGExtended(HandlerTestBase):
         assert (ds.Rows, ds.Columns) == arr.shape
 
         #self.plot(arr)
+
+        # Reference values from output of IJG's djpeg recompiled for 12-bit
+        # Note differences  |
+        # IJG: [134, 143, 161, 172, 180, 193, 249, 214, 223, 247]
+        assert [134, 143, 160, 172, 180, 193, 249, 214, 223, 247] == (
+            arr[410:420, 136].tolist()
+        )
 
     @pytest.mark.skip("No suitable dataset")
     def test_1s_Nf_u_16_12(self):
@@ -414,28 +447,6 @@ class TestJPEGExtended(HandlerTestBase):
             [213,  92, 153],
             [255, 132, 134]
         ] == arr[41, 105:115].tolist()
-
-    # Broken dataset - should raise
-    # Needs fixed dataset
-    # Needs reference data - GDCM doesn't load!
-    def test_p4_1s_1f_u_16_10_non(self):
-        """Test process 4 greyscale."""
-        # Non-conformant to DICOM
-        ds = self.ds['RG2_JPLY']['ds']
-        assert self.uid == ds.file_meta.TransferSyntaxUID
-        assert 1 == ds.SamplesPerPixel
-        assert 1 == getattr(ds, 'NumberOfFrames', 1)
-        assert 'MONOCHROME' in ds.PhotometricInterpretation
-        assert 16 == ds.BitsAllocated
-        assert 10 == ds.BitsStored
-        assert 0 == ds.PixelRepresentation
-
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'uint16' == arr.dtype
-        assert (ds.Rows, ds.Columns) == arr.shape
-
-        #self.plot(arr)
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
