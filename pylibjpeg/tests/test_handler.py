@@ -14,11 +14,12 @@ try:
     import pydicom.config
     from pydicom.pixel_data_handlers.util import convert_color_space
     from pydicom.encaps import defragment_data
+    from pylibjpeg import libjpeg_handler
     HAS_PYDICOM = True
 except ImportError:
     HAS_PYDICOM = False
 
-from pylibjpeg import add_handler, remove_handler, decode, libjpeg_handler
+from pylibjpeg import add_handler, remove_handler, decode
 from pylibjpeg.data import get_indexed_datasets
 
 

@@ -58,8 +58,8 @@ def add_handler():
         If *pydicom* is not available.
     """
     # Avoid circular import during unit testing
-    from . import libjpeg_handler
     import pydicom.config
+    from . import libjpeg_handler
 
     if libjpeg_handler not in pydicom.config.pixel_data_handlers:
         pydicom.config.pixel_data_handlers.append(libjpeg_handler)
@@ -176,8 +176,8 @@ def remove_handler():
         If *pydicom* is not available.
     """
     # Avoid circular import during unit testing
-    from . import libjpeg_handler
     import pydicom.config
+    from . import libjpeg_handler
 
     if libjpeg_handler in pydicom.config.pixel_data_handlers:
         pydicom.config.pixel_data_handlers.remove(libjpeg_handler)
