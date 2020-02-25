@@ -9,9 +9,8 @@ support for [pydicom](https://github.com/pydicom/pydicom).
 
 ```bash
 git clone https://github.com/scaramallion/pylibjpeg
-cd pylibjpeg/pylibjpeg/src/libjpeg
-git submodule update
-cd ../../../
+cd pylibjpeg
+git submodule update --init --recursive
 pip install .
 ```
 

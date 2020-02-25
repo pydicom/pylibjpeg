@@ -1,24 +1,32 @@
+
 import os
 import sys
 from pathlib import Path
-import subprocess
-
-import numpy as np
 import setuptools
-
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
+import subprocess
 
+# Install dependencies required by setup.py
+from pip._internal import main as pip
+pip(['install', 'numpy', 'cython'])
+
+# Dependencies
+import numpy as np
 from Cython.Distutils import build_ext
 
+#PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 PACKAGE_DIR = os.path.dirname(__file__)
 LIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'libjpeg')
 PYLIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'pylibjpeg')
+print('Package:', PACKAGE_DIR)
+print('libjpeg:', LIBJPEG_SRC)
+print('pylibjpeg:', PYLIBJPEG_SRC)
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
     os.chdir(LIBJPEG_SRC)
-    subprocess.call(os.path.abspath(os.path.join(LIBJPEG_SRC, 'configure')))
+    subprocess.call(os.path.join(LIBJPEG_SRC, 'configure'))
     os.chdir(PACKAGE_DIR)
 
 # Get compilation options
@@ -28,9 +36,6 @@ with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
 lines = [ll for ll in lines if not ll.startswith('#')]
 opts = [ll.split('=', 1) for ll in lines]
 opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
-
-#for kk, vv in opts.items():
-#    print(kk, vv)
 
 os.environ["CC"] = opts['COMPILER_CMD'][0]
 os.environ["CXX"] = opts['COMPILER_CMD'][0]
@@ -44,6 +49,10 @@ source_files = [
 for fname in Path(LIBJPEG_SRC).glob('*/*'):
     if '.cpp' in str(fname):
         source_files.append(str(fname))
+
+#print('Source files:')
+#for src in source_files:
+#    print(' ', src)
 
 include_dirs = [
     LIBJPEG_SRC,
@@ -75,6 +84,8 @@ VERSION_FILE = os.path.join(PACKAGE_DIR, 'pylibjpeg', '_version.py')
 with open(VERSION_FILE) as fp:
     exec(fp.read())
 
+#print('Version:', VERSION_FILE)
+
 setup(
     name='pylibjpeg',
     packages=find_packages(),
@@ -85,6 +96,6 @@ setup(
     include_package_data = True,
     version=__version__,
     zip_safe=False,
-    setup_requires=['cython', 'numpy'],
-    install_requires = ["cython", "numpy"],
+    #setup_requires=['cython', 'numpy'],
+    install_requires=["numpy"],
 )
