@@ -15,13 +15,8 @@ pip(['install', 'numpy', 'cython'])
 import numpy as np
 from Cython.Distutils import build_ext
 
-#PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
-PACKAGE_DIR = os.path.dirname(__file__)
 LIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'libjpeg')
 PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
-print('Package:', PACKAGE_DIR)
-print('libjpeg:', LIBJPEG_SRC)
-print('pylibjpeg:', PYLIBJPEG_SRC)
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
@@ -34,6 +29,10 @@ with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
 lines = [ll for ll in lines if not ll.startswith('#')]
 opts = [ll.split('=', 1) for ll in lines]
 opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
+
+print('automakefile options')
+for kk, vv in opts.items():
+    print(kk, vv)
 
 os.environ["CC"] = opts['COMPILER_CMD'][0]
 os.environ["CXX"] = opts['COMPILER_CMD'][0]
@@ -78,11 +77,9 @@ ext = Extension(
     extra_link_args=extra_link_args,
 )
 
-VERSION_FILE = os.path.join(PACKAGE_DIR, 'pylibjpeg', '_version.py')
+VERSION_FILE = os.path.join('pylibjpeg', '_version.py')
 with open(VERSION_FILE) as fp:
     exec(fp.read())
-
-#print('Version:', VERSION_FILE)
 
 setup(
     name='pylibjpeg',
