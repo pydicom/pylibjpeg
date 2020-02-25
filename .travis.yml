@@ -35,8 +35,7 @@ matrix:
 # Install dependencies and package
 install:
     - source build_tools/travis/install.sh
-    - pip install -r requirements.txt
-    - python setup.py build
+    - pip install .
 
 # Command to run tests
 script:
