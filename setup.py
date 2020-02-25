@@ -34,8 +34,8 @@ print('automakefile options')
 for kk, vv in opts.items():
     print(kk, vv)
 
-os.environ["CC"] = opts['COMPILER_CMD'][0]
-os.environ["CXX"] = opts['COMPILER_CMD'][0]
+#os.environ["CC"] = opts['COMPILER_CMD'][0]
+#os.environ["CXX"] = opts['COMPILER_CMD'][0]
 
 # Cython extension.
 source_files = [
