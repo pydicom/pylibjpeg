@@ -48,8 +48,8 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 include_dirs = [
     LIBJPEG_SRC,
     PYLIBJPEG_SRC,
-    os.path.relpath(setuptools.distutils.sysconfig.get_python_inc(), PACKAGE_DIR),
-    os.path.relpath(np.get_include(), PACKAGE_DIR),
+    setuptools.distutils.sysconfig.get_python_inc(),
+    np.get_include(),
 ]
 
 extra_compile_args = []
