@@ -82,5 +82,7 @@ setup(
     cmdclass={'build_ext': build_ext},
     ext_modules = [ext],
     version=__version__,
+    zip_safe=False,
+    setup_requires=['cython', 'numpy'],
     install_requires = ["cython", "numpy"],
 )
