@@ -17,17 +17,15 @@ from Cython.Distutils import build_ext
 
 #PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 PACKAGE_DIR = os.path.dirname(__file__)
-LIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'libjpeg')
-PYLIBJPEG_SRC = os.path.join(PACKAGE_DIR, 'pylibjpeg', 'src', 'pylibjpeg')
+LIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'libjpeg')
+PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 print('Package:', PACKAGE_DIR)
 print('libjpeg:', LIBJPEG_SRC)
 print('pylibjpeg:', PYLIBJPEG_SRC)
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
-    os.chdir(LIBJPEG_SRC)
     subprocess.call(os.path.join(LIBJPEG_SRC, 'configure'))
-    os.chdir(PACKAGE_DIR)
 
 # Get compilation options
 with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
