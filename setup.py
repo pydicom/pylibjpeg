@@ -7,13 +7,21 @@ from setuptools import setup, find_packages
 from setuptools.extension import Extension
 import subprocess
 
-# Install dependencies required by setup.py
-from pip._internal import main as pip
-pip(['install', 'numpy', 'cython'])
 
-# Dependencies
-import numpy as np
-from Cython.Distutils import build_ext
+# Workaround for needing cython and numpy
+# Solution from: https://stackoverflow.com/a/54138355/12606901
+def my_build_ext(args):
+    from Cython.Distutils import build_ext as _build_ext
+
+    class build_ext(_build_ext):
+        def finalize_options(self):
+            _build_ext.finalize_options(self)
+            __builtins__.__NUMPY_SETUP__ = False
+            import numpy
+            self.include_dirs.append(numpy.get_include())
+
+    return build_ext(args)
+
 
 LIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'libjpeg')
 PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
@@ -30,9 +38,9 @@ lines = [ll for ll in lines if not ll.startswith('#')]
 opts = [ll.split('=', 1) for ll in lines]
 opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
 
-print('automakefile options')
-for kk, vv in opts.items():
-    print(kk, vv)
+#print('automakefile options')
+#for kk, vv in opts.items():
+#    print(kk, vv)
 
 #os.environ["CC"] = opts['COMPILER_CMD'][0]
 #os.environ["CXX"] = opts['COMPILER_CMD'][0]
@@ -47,26 +55,16 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
     if '.cpp' in str(fname):
         source_files.append(str(fname))
 
-#print('Source files:')
-#for src in source_files:
-#    print(' ', src)
+extra_compile_args = []
+extra_compile_args.extend(opts['ADDOPTS'])
+extra_link_args = []
+extra_link_args.extend(opts['EXTRA_LIBS'])
 
 include_dirs = [
     LIBJPEG_SRC,
     PYLIBJPEG_SRC,
     setuptools.distutils.sysconfig.get_python_inc(),
-    np.get_include(),
 ]
-
-extra_compile_args = []
-extra_compile_args.extend(opts['ADDOPTS'])
-# Hmm, don't use -DBUILD_LIB
-#extra_compile_args.extend(opts['LIB_OPTS'])
-extra_link_args = []
-extra_link_args.extend(opts['EXTRA_LIBS'])
-
-#print(extra_compile_args)
-#print(extra_link_args)
 
 ext = Extension(
     '_libjpeg',
@@ -86,11 +84,11 @@ setup(
     packages=find_packages(),
     python_requires=">=3.6",
     package_data={'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
-    cmdclass={'build_ext': build_ext},
-    ext_modules = [ext],
     include_package_data = True,
     version=__version__,
     zip_safe=False,
-    #setup_requires=['cython', 'numpy'],
-    install_requires=["numpy"],
+    setup_requires=['setuptools>=18.0', 'cython', 'numpy'],
+    install_requires=['cython', "numpy"],
+    cmdclass={'build_ext': my_build_ext},
+    ext_modules = [ext],
 )
