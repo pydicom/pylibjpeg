@@ -407,7 +407,7 @@ class TestJPEGExtended(HandlerTestBase):
     # Process 4
     def test_1s_1f_u_16_10(self):
         """Test process 4 greyscale."""
-        ds = self.ds['RG2_JPLY_fixed']['ds']
+        ds = self.ds['RG2_JPLY_fixed.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -659,7 +659,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
     # 1 sample/px, 16/NN
     def test_1s_1f_u_16_10(self):
         """Test process 2 greyscale."""
-        ds = self.ds['RG2_JPLL']['ds']
+        ds = self.ds['RG2_JPLL.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -682,7 +682,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
 
     def test_1s_1f_u_16_12(self):
         """Test process 2 greyscale."""
-        ds = self.ds['MG1_JPLL']['ds']
+        ds = self.ds['MG1_JPLL.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -703,7 +703,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
 
     def test_1s_1f_u_16_15(self):
         """Test process 2 greyscale."""
-        ds = self.ds['RG1_JPLL']['ds']
+        ds = self.ds['RG1_JPLL.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -925,7 +925,7 @@ class TestJPEGLS(HandlerTestBase):
 
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
-        ds = self.ds['CT1_JLSN']['ds']
+        ds = self.ds['CT1_JLSN.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -948,7 +948,7 @@ class TestJPEGLS(HandlerTestBase):
 
     def test_1s_1f_u_16_10(self):
         """Test process 2 greyscale."""
-        ds = self.ds['RG2_JLSN']['ds']
+        ds = self.ds['RG2_JLSN.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -971,7 +971,7 @@ class TestJPEGLS(HandlerTestBase):
 
     def test_1s_1f_u_16_12(self):
         """Test process 2 greyscale."""
-        ds = self.ds['MG1_JLSN']['ds']
+        ds = self.ds['MG1_JLSN.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -994,7 +994,7 @@ class TestJPEGLS(HandlerTestBase):
 
     def test_1s_1f_u_16_15(self):
         """Test process 2 greyscale."""
-        ds = self.ds['RG1_JLSN']['ds']
+        ds = self.ds['RG1_JLSN.dcm']['ds']
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
