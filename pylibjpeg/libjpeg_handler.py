@@ -59,16 +59,21 @@ try:
 except ImportError:
     HAVE_LIBJPEG = False
 
-from pydicom.encaps import generate_pixel_data_frame
-from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
-from pydicom.uid import (
-    JPEGBaseline,
-    JPEGExtended,
-    JPEGLosslessP14,
-    JPEGLossless,
-    JPEGLSLossless,
-    JPEGLSLossy,
-)
+try:
+    from pydicom.encaps import generate_pixel_data_frame
+    from pydicom.pixel_data_handlers.util import (
+        pixel_dtype, get_expected_length
+    )
+    from pydicom.uid import (
+        JPEGBaseline,
+        JPEGExtended,
+        JPEGLosslessP14,
+        JPEGLossless,
+        JPEGLSLossless,
+        JPEGLSLossy,
+    )
+except ImportError:
+    pass
 
 
 HANDLER_NAME = 'pylibjpeg'
