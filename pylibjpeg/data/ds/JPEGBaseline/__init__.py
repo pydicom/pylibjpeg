@@ -14,6 +14,26 @@ INDEX = {
         'HighBit' : ('US', 7),
         'PixelRepresentation' : ('US', 0),
     },
+    "JPEGBaseline_1s_1f_u_08_08.dcm" : {
+        'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.50'),
+        'SamplesPerPixel' : ('US', 1),
+        'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
+        'PlanarConfiguration' : ('US', 0),
+        'NumberOfFrames' : ('IS', '1'),
+        'Rows' : ('US', 100),
+        'Columns' : ('US', 100),
+        'BitsAllocated' : ('US', 8),
+        'BitsStored' : ('US', 8),
+        'HighBit' : ('US', 7),
+        'PixelRepresentation' : ('US', 0),
+        'ImageComments' : (
+            'LT',
+            (
+                "Created from SC_rgb_jpeg_dcmtk.dcm using IJG's cjpeg with "
+                "-grayscale and -baseline flags"
+            )
+        ),
+    },
     'SC_rgb_dcmtk_+eb+cr.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.50'),
         'SamplesPerPixel' : ('US', 3),
