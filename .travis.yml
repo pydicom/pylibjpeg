@@ -4,6 +4,15 @@ language: python
 # Build against pydicom master and current release
 matrix:
     include:
+        - name: "Python 3.6, solo"
+          python: "3.6"
+          env: TEST_SUITE=solo
+        - name: "Python 3.7, solo"
+          python: "3.7"
+          env: TEST_SUITE=solo
+        - name: "Python 3.8, solo"
+          python: "3.8"
+          env: TEST_SUITE=solo
         - name: "Python 3.6, pydicom master"
           python: "3.6"
           env: TEST_SUITE=pydicom_master
@@ -23,8 +32,10 @@ matrix:
           python: "3.8"
           env: TEST_SUITE=pydicom_release
 
-# Install dependencies and pynetdicom
-install: source build_tools/travis/install.sh
+# Install dependencies and package
+install:
+    - source build_tools/travis/install.sh
+    - pip install -r requirements.txt
 
 # Command to run tests
 script:

@@ -20,6 +20,8 @@ if [[ "$TEST_SUITE" == "pydicom_master" ]]; then
 elif [[ "$TEST_SUITE" == "pydicom_release" ]]; then
     pip install pydicom
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
+elif [[ "$TEST_SUITE" == "solo"]]; then
+    //
 fi
 
 python --version
