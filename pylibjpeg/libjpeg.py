@@ -1,7 +1,52 @@
 
 import pathlib
+import warnings
 
 import _libjpeg
+
+
+LIBJPEG_ERROR_CODES = {
+    -1024 : "A parameter for a function was out of range",
+    -1025 : "Stream run out of data",
+    -1026 : "A code block run out of data",
+    -1027 : "Tried to perform an unputc or or an unget on an empty stream",
+    -1028 : "Some parameter run out of range",
+    -1029 : "The requested operation does not apply",
+    -1030 : "Tried to create an already existing object",
+    -1031 : "Tried to access a non-existing object",
+    -1032 : "A non-optional parameter was left out",
+    -1033 : "Forgot to delay a 0xFF",
+    -1034 : (
+        "Internal error: the requested operation is not available"
+    ),
+    -1035 : (
+        "Internal error: an item computed on a former pass does not "
+        "coincide with the same item on a later pass"
+    ),
+    -1036 : "The stream passed in is no valid jpeg stream",
+    -1037 : (
+        "A unique marker turned up more than once. The input stream is "
+        "most likely corrupt"
+    ),
+    -1038 : "A misplaced marker segment was found",
+    -1040 : (
+        "The specified parameters are valid, but are not supported by "
+        "the selected profile. Either use a higher profile, or use "
+        "simpler parameters (encoder only). "
+    ),
+    -1041 : (
+        "Internal error: the worker thread that was currently active had "
+        "to terminate unexpectedly"
+    ),
+    -1042 : (
+        "The encoder tried to emit a symbol for which no Huffman code "
+        "was defined. This happens if the standard Huffman table is used "
+        "for an alphabet for which it was not defined. The reaction "
+        "to this exception should be to create a custom huffman table "
+        "instead"
+    ),
+    -2046 : "Failed to construct the JPEG object",
+}
 
 
 def add_handler():
@@ -36,6 +81,11 @@ def decode(arr, nr_bytes, colourspace='YBR_FULL'):
     -------
     numpy.ndarray
         A 1D array of np.uint8 containing the decoded image data.
+
+    Raises
+    ------
+    RuntimeError
+        If the decoding failed.
     """
     colours = {
         'MONOCHROME1': 0,
@@ -48,10 +98,32 @@ def decode(arr, nr_bytes, colourspace='YBR_FULL'):
     try:
         transform = colours[colourspace]
     except KeyError:
-        warnings.warn("")
+        warnings.warn(
+            "Unsupported colour space '{}', no colour transform will "
+            "be applied".format(colourspace)
+        )
         transform = 0
 
-    return _libjpeg.decode(arr, nr_bytes, transform)
+    status, out = _libjpeg.decode(arr, nr_bytes, transform)
+    status = status.decode("utf-8")
+    code, msg = status.split("::::")
+    code = int(code)
+
+    if code == 0:
+        return out
+
+    try:
+        raise RuntimeError(
+            "libjpeg error code '{}' returned from Decode(): {} - {}"
+            .format(code, LIBJPEG_ERROR_CODES[code], msg)
+        )
+    except KeyError:
+        pass
+
+    raise RuntimeError(
+        "Unknown error code '{}' returned from Decode(): {}"
+        .format(status, msg)
+    )
 
 
 def reconstruct(fin, fout, colourspace=1, falpha=None, upsample=True):

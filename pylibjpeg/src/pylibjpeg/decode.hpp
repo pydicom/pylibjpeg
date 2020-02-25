@@ -1,9 +1,12 @@
 
+#include <iostream>
+#include <string>
+
 #ifndef DECODE_HPP
 #define DECODE_HPP
 
     // Prototypes
-    extern void Decode(
+    extern std::string Decode(
         char *inArray,
         char *outArray,
         int inLength,

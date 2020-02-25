@@ -1,6 +1,7 @@
 """Tests for the pylibjpeg pixel data handler."""
 
 import pytest
+import warnings
 
 try:
     import numpy as np
@@ -16,9 +17,9 @@ except ImportError:
     HAS_PYDICOM = False
 
 from pydicom.pixel_data_handlers.util import convert_color_space
+from pydicom.encaps import defragment_data
 
-from pylibjpeg import add_handler, remove_handler
-from pylibjpeg import libjpeg_handler
+from pylibjpeg import add_handler, remove_handler, decode, libjpeg_handler
 from pylibjpeg.data import get_indexed_datasets
 
 
@@ -81,6 +82,51 @@ class HandlerTestBase(object):
                 plt.imshow(arr)
 
         plt.show()
+
+
+@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+class TestLibrary(object):
+    """Tests for libjpeg itself."""
+    def setup(self):
+        add_handler()
+
+    def teardown(self):
+        remove_handler()
+
+    def test_non_conformant_raises(self):
+        """Test that a non-conformant JPEG image raises an exception."""
+        ds_list = get_indexed_datasets('1.2.840.10008.1.2.4.51')
+        # Image has invalid Se value in the SOS marker segment
+        item = ds_list['JPEG-lossy.dcm']
+        assert 0xC000 == item['Status'][1]
+        msg = (
+            r"libjpeg error code '-1038' returned from Decode\(\): A "
+            r"misplaced marker segment was found - scan start must be zero "
+            r"and scan stop must be 63 for the sequential operating modes"
+        )
+        with pytest.raises(RuntimeError, match=msg):
+            arr = item['ds'].pixel_array
+
+    def test_invalid_colour_transform(self):
+        """Test that an invalid colour transform raises an exception."""
+        ds_list = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        # Image has invalid Se value in the SOS marker segment
+        ds = ds_list['color3d_jpeg_baseline.dcm']['ds']
+        data = defragment_data(ds.PixelData)
+        msg = (
+            r"Unsupported colour space '-1', no colour transform will "
+            r"be applied"
+        )
+        with pytest.warns(UserWarning, match=msg):
+            decode(np.frombuffer(data, 'uint8'), 1, -1)
+
+    def test_invalid_buffer(self):
+        """Test that an invalid colour transform raises an exception."""
+        msg = (
+            r"Buffer dtype mismatch, expected 'uint8_t' but got 'double'"
+        )
+        with pytest.raises(ValueError, match=msg):
+            decode(np.zeros(1), 1, 'YBR_FULL')
 
 
 # ISO/IEC 10918 JPEG
@@ -979,11 +1025,26 @@ class TestJPEG2000Lossless(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.90'
 
-    # Needs to raise exception
+    def setup(self):
+        add_handler()
+        self.ds = get_indexed_datasets(self.uid)
+
+        # Check if J2K is already supported, and if not add it
+        self.has_tsyntax = True
+        if self.uid not in libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES:
+            self.has_tsyntax = False
+            libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.append(self.uid)
+
+    def teardown(self):
+        remove_handler()
+
+        # Restore J2K if it was originally supported
+        if not self.has_tsyntax:
+            libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.remove(self.uid)
+
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
         ds = self.ds['693_J2KR.dcm']['ds']
-        libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.append(ds.file_meta.TransferSyntaxUID)
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -992,13 +1053,13 @@ class TestJPEG2000Lossless(HandlerTestBase):
         assert 16 == ds.BitsStored
         assert 1 == ds.PixelRepresentation
 
-        # TODO: should raise an exception
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'int16' == arr.dtype
-        assert (ds.Rows, ds.Columns) == arr.shape
-
-        #self.plot(arr, cmap='gray')
+        msg = (
+            r"libjpeg error code '-1038' returned from Decode\(\): A "
+            r"misplaced marker segment was found - stream does not contain a "
+            r"JPEG file, SOI marker missing"
+        )
+        with pytest.raises(RuntimeError, match=msg):
+            arr = ds.pixel_array
 
 
 @pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
@@ -1009,11 +1070,26 @@ class TestJPEG2000(HandlerTestBase):
     """
     uid = '1.2.840.10008.1.2.4.91'
 
-    # Needs to raise exception
+    def setup(self):
+        add_handler()
+        self.ds = get_indexed_datasets(self.uid)
+
+        # Check if J2K is already supported, and if not add it
+        self.has_tsyntax = True
+        if self.uid not in libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES:
+            self.has_tsyntax = False
+            libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.append(self.uid)
+
+    def teardown(self):
+        remove_handler()
+
+        # Restore J2K if it was originally supported
+        if not self.has_tsyntax:
+            libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.remove(self.uid)
+
     def test_1s_1f_i_16_16(self):
         """Test process 2 greyscale."""
         ds = self.ds['693_J2KI.dcm']['ds']
-        libjpeg_handler.SUPPORTED_TRANSFER_SYNTAXES.append(ds.file_meta.TransferSyntaxUID)
         assert self.uid == ds.file_meta.TransferSyntaxUID
         assert 1 == ds.SamplesPerPixel
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
@@ -1022,10 +1098,10 @@ class TestJPEG2000(HandlerTestBase):
         assert 14 == ds.BitsStored
         assert 1 == ds.PixelRepresentation
 
-        # TODO: should raise an exception
-        arr = ds.pixel_array
-        assert arr.flags.writeable
-        assert 'int16' == arr.dtype
-        assert (ds.Rows, ds.Columns) == arr.shape
-
-        #self.plot(arr, cmap='gray')
+        msg = (
+            r"libjpeg error code '-1038' returned from Decode\(\): A "
+            r"misplaced marker segment was found - stream does not contain a "
+            r"JPEG file, SOI marker missing"
+        )
+        with pytest.raises(RuntimeError, match=msg):
+            arr = ds.pixel_array
