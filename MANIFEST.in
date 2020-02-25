@@ -1,2 +1,2 @@
 include pylibjpeg/data/*
-exclude pylibjpeg/src/*
+include pylibjpeg/src/*

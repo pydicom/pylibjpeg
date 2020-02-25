@@ -78,6 +78,7 @@ with open(VERSION_FILE) as fp:
 setup(
     name='pylibjpeg',
     packages=find_packages(),
+    python_requires=">=3.6",
     package_data={'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
     cmdclass={'build_ext': build_ext},
     ext_modules = [ext],
