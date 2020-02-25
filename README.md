@@ -1,20 +1,25 @@
 ## pylibjpeg
 
-
 A Python wrapper for Thomas Richter's
-[libjpeg](https://github.com/thorfdbg/libjpeg), intended
-for use with [pydicom](https://github.com/pydicom/pydicom).
+[libjpeg](https://github.com/thorfdbg/libjpeg) with a focus on providing JPEG
+support for [pydicom](https://github.com/pydicom/pydicom).
+
 
 ### Installation
 
-Make take a minute or two to install due to the need to compile ``libjpeg``
 ```bash
-pip install git+https://github.com/scaramallion/pylibjpeg.git
+git clone https://github.com/scaramallion/pylibjpeg
+cd pylibjpeg/pylibjpeg/src/libjpeg
+git submodule update
+cd ../../../
+pip install .
 ```
 
 ### Usage
 
 #### With *pydicom*
+
+Assuming you already have *pydicom* installed:
 
 ```python
 from pydicom import dcmread

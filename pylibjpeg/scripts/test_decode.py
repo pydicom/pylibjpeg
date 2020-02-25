@@ -11,7 +11,7 @@ from pydicom.encaps import defragment_data
 from pydicom.pixel_data_handlers.util import (
     get_expected_length, reshape_pixel_array, pixel_dtype
 )
-#from pydicom.jpeg import jpgread
+from pydicom.jpeg import jpgread
 
 from pylibjpeg import decode
 from pylibjpeg.data.manager import DATA_DIR
@@ -32,6 +32,12 @@ if __name__ == "__main__":
     # OK
     #dsfile = os.path.join(SCRIPT_DIR, 'JPGBaseline_3s_1f_8b.dcm')
     #dsfile = os.path.join(DATA_DIR, 'ds', 'JPGExtended_BAD.dcm')
+    with open(os.path.join(SCRIPT_DIR, 'temp.jpg'), 'rb') as fp:
+        jpg = jpgread(fp)
+        print(jpg)
+        print(jpg.uid)
+        sys.exit()
+
     ds = dcmread(dsfile)
 
     print(ds.file_meta['TransferSyntaxUID'])

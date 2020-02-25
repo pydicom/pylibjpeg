@@ -4,7 +4,7 @@ from tempfile import NamedTemporaryFile
 
 import pytest
 
-from pylibjpeg.data.manager import add_dataset, DATA_DIR
+from pylibjpeg.data.manager import DATA_DIR
 
 
 def TestManager_AddDataset(object):

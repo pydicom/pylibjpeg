@@ -16,7 +16,7 @@ INDEX = {
         'HighBit' : ('US', 15),
         'PixelRepresentation' : ('US', 1),
     },
-    'JPGLosslessP14SV1_1s_1f_8b.dcm' : {
+    'JPEGLosslessP14SV1_1s_1f_u_08_08.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.70'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
@@ -30,6 +30,19 @@ INDEX = {
         'PixelRepresentation' : ('US', 0),
         'WindowCenter' : ('DS', '127'),
         'WindowWidth' : ('DS', '254'),
+    },
+    'JPEGLosslessP14SV1_1s_1f_u_16_16.dcm' : {
+        'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.70'),
+        'SamplesPerPixel' : ('US', 1),
+        'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
+        'PlanarConfiguration' : ('US', 0),
+        'NumberOfFrames' : ('IS', '1'),
+        'Rows' : ('US', 535),
+        'Columns' : ('US', 800),
+        'BitsAllocated' : ('US', 16),
+        'BitsStored' : ('US', 16),
+        'HighBit' : ('US', 15),
+        'PixelRepresentation' : ('US', 0),
     },
     'MG1_JPLL' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.70'),
