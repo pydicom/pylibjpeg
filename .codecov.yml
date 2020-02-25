@@ -1,0 +1,18 @@
+comment: off
+
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0.1%
+    patch:
+      default:
+        target: auto
+        threshold: 0.1%
+
+ignore:
+  - "pylibjpeg/tests"
+  - "pylibjpeg/src"
+  - "pylibjpeg/scripts"
+  - "pylibjpeg/data"
