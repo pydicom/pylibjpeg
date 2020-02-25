@@ -30,8 +30,7 @@ def decode(arr, nr_bytes, colourspace='YBR_FULL'):
     nr_bytes : int
         The expected length of the uncompressed image data in bytes.
     colourspace : str, optional
-        One of 'MONOCHROME1', 'MONOCHROME2', 'RGB', 'YBR_FULL', 'YBR_FULL_422',
-        'RCT', 'ICT'.
+        One of 'MONOCHROME1', 'MONOCHROME2', 'RGB', 'YBR_FULL', 'YBR_FULL_422'.
 
     Returns
     -------
@@ -44,8 +43,6 @@ def decode(arr, nr_bytes, colourspace='YBR_FULL'):
         'RGB' : 1,
         'YBR_FULL' : 0,
         'YBR_FULL_422' : 0,
-        'RCT' : 2,
-        'ICT' : 3,
     }
 
     try:

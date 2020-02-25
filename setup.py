@@ -54,7 +54,7 @@ include_dirs = [
 
 extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
-# Hmm, no -DBUILD_LIB
+# Hmm, don't use -DBUILD_LIB
 #extra_compile_args.extend(opts['LIB_OPTS'])
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
@@ -71,11 +71,16 @@ ext = Extension(
     extra_link_args=extra_link_args,
 )
 
+VERSION_FILE = os.path.join(PACKAGE_DIR, 'pylibjpeg', '_version.py')
+with open(VERSION_FILE) as fp:
+    exec(fp.read())
+
 setup(
     name='pylibjpeg',
     packages=find_packages(),
     package_data={'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
     cmdclass={'build_ext': build_ext},
     ext_modules = [ext],
-    version='0.0.1'
+    version=__version__,
+    install_requires = ["cython", "numpy"],
 )
