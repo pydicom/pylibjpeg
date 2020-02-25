@@ -2,6 +2,7 @@
 // Includes
 #include "std/stdio.hpp"
 #include "std/string.hpp"
+#include <sstream>
 
 #include "decode.hpp"
 #include "streamhook.hpp"
@@ -17,7 +18,7 @@
 #include "../libjpeg/interface/jpeg.hpp"
 
 
-void Decode(char *inArray, char *outArray, int inLength, int outLength, int colourTransform)
+std::string Decode(char *inArray, char *outArray, int inLength, int outLength, int colourTransform)
 {
     /*
 
@@ -41,6 +42,10 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength, int colo
         JPGFLAG_MATRIX_COLORTRANSFORMATION_FREEFORM 3
 
     */
+    // Check valid value
+    if (colourTransform < 0 || colourTransform > 3) {
+        return "-8194::::Invalid colourTransform value";
+    }
     int colortrafo = colourTransform;
     // No alpha channel
     const char *alpha = NULL;
@@ -221,48 +226,44 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength, int colo
                         memset(suby, 1, sizeof(suby));
                     }
 
-                    if (omm.omm_pTarget) {
-                        struct JPG_Hook outhook(OStreamHook, &omm);
-                        // TODO: implement writing alpha to numpy
-                        // Not required for DICOM
-                        struct JPG_Hook alphahook(AlphaHook, &omm);
+                    struct JPG_Hook outhook(OStreamHook, &omm);
+                    // TODO: implement writing alpha to numpy
+                    // Not required for DICOM
+                    struct JPG_Hook alphahook(AlphaHook, &omm);
 
-                        // Write the data
-                        // Just as a demo, run a stripe-based
-                        // reconstruction.
-                        ULONG y = 0;
-                        ULONG lastline;
-                        struct JPG_TagItem tags[] = {
-                            JPG_PointerTag(JPGTAG_BIH_HOOK, &outhook),
-                            JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK, &alphahook),
-                            JPG_ValueTag(JPGTAG_DECODER_MINY, y),
-                            JPG_ValueTag(JPGTAG_DECODER_MAXY, y + 7),
-                            JPG_ValueTag(JPGTAG_DECODER_UPSAMPLE, upsample),
-                            JPG_ValueTag(JPGTAG_MATRIX_LTRAFO, colortrafo),
-                            JPG_EndTag
-                        };
+                    // Write the data
+                    // Just as a demo, run a stripe-based
+                    // reconstruction.
+                    ULONG y = 0;
+                    ULONG lastline;
+                    struct JPG_TagItem tags[] = {
+                        JPG_PointerTag(JPGTAG_BIH_HOOK, &outhook),
+                        JPG_PointerTag(JPGTAG_BIH_ALPHAHOOK, &alphahook),
+                        JPG_ValueTag(JPGTAG_DECODER_MINY, y),
+                        JPG_ValueTag(JPGTAG_DECODER_MAXY, y + 7),
+                        JPG_ValueTag(JPGTAG_DECODER_UPSAMPLE, upsample),
+                        JPG_ValueTag(JPGTAG_MATRIX_LTRAFO, colortrafo),
+                        JPG_EndTag
+                    };
 
-                        // Writes the image data to numpy array
-                        //
-                        // Reconstruct now the buffered image, line by
-                        // line. Could also reconstruct the image as a
-                        // whole. What we have here is just a demo
-                        // that is not necessarily the most efficient
-                        // way of handling images.
-                        do {
-                            lastline = height;
-                            if (lastline > y + 8)
-                                lastline = y + 8;
+                    // Writes the image data to numpy array
+                    //
+                    // Reconstruct now the buffered image, line by
+                    // line. Could also reconstruct the image as a
+                    // whole. What we have here is just a demo
+                    // that is not necessarily the most efficient
+                    // way of handling images.
+                    do {
+                        lastline = height;
+                        if (lastline > y + 8)
+                            lastline = y + 8;
 
-                            tags[2].ti_Data.ti_lData = y;
-                            tags[3].ti_Data.ti_lData = lastline - 1;
-                            // I think this is the decode/writer line
-                            ok = jpeg->DisplayRectangle(tags);
-                            y  = lastline;
-                        } while(y < height && ok);
-                    } else {
-                        perror("failed to open the output file");
-                    }
+                        tags[2].ti_Data.ti_lData = y;
+                        tags[3].ti_Data.ti_lData = lastline - 1;
+                        // I think this is the decode/writer line
+                        ok = jpeg->DisplayRectangle(tags);
+                        y  = lastline;
+                    } while(y < height && ok);
 
                     if (omm.omm_pAlphaTarget)
                         fclose(omm.omm_pAlphaTarget);
@@ -272,10 +273,8 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength, int colo
 
                     free(mem);
                 } else {
-                    fprintf(
-                        stderr,
-                        "unable to allocate memory to buffer the image"
-                    );
+                    // Unable to allocate memory to buffer the image
+                    return "-8192::::Unable to allocate memory to buffer the image";
                 }
             } else ok = 0;
         } else ok = 0;
@@ -283,15 +282,15 @@ void Decode(char *inArray, char *outArray, int inLength, int outLength, int colo
         if (!ok) {
             const char *error;
             int code = jpeg->LastError(error);
-            fprintf(
-                stderr,
-                "reading a JPEG file failed - error %d - %s\n",
-                code,
-                error
-            );
+            std::ostringstream status;
+            status << code << "::::" << error;
+            return status.str();
         }
         JPEG::Destruct(jpeg);
     } else {
-        fprintf(stderr, "failed to construct the JPEG object");
+        // Failed to construct the JPEG object
+        return "-8193::::Failed to construct the JPEG object";
     }
+    // Success
+    return "0::::";
 }

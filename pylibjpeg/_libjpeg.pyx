@@ -2,13 +2,14 @@
 # distutils: language=c++
 
 from libcpp cimport bool
+from libcpp.string cimport string
 
 import numpy as np
 cimport numpy as np
 
 
 cdef extern from "decode.hpp":
-    cdef void Decode(
+    cdef string Decode(
         char *inArray,
         char *outArray,
         int inLength,
@@ -35,6 +36,8 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes, colourspace):
 
     Returns
     -------
+    bytes
+        The status and any error message of the decoding operation.
     numpy.ndarray
         A 1D array of np.uint8 containing the decoded image data.
     """
@@ -46,7 +49,7 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes, colourspace):
     cdef char *pOutput = <char *>np.PyArray_DATA(output_buffer)
 
     # Decode the data - output is written to output_buffer
-    Decode(
+    status = Decode(
         pInput,
         pOutput,
         input_buffer.shape[0],
@@ -54,7 +57,7 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes, colourspace):
         colourspace
     )
 
-    return output_buffer
+    return status, output_buffer
 
 
 cdef extern from "cmd/reconstruct.hpp":
