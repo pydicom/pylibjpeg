@@ -7,6 +7,7 @@ import setuptools
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 import subprocess
+import distutils.sysconfig  # conda doesn't like not importing this
 
 
 # Workaround for needing cython and numpy
@@ -70,7 +71,7 @@ extra_link_args.extend(opts['EXTRA_LIBS'])
 include_dirs = [
     LIBJPEG_SRC,
     PYLIBJPEG_SRC,
-    setuptools.distutils.sysconfig.get_python_inc(),
+    distutils.sysconfig.get_python_inc(),
 ]
 
 ext = Extension(
