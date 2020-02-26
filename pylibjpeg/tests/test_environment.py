@@ -41,16 +41,16 @@ class TestBuilds(object):
         if os_name == 'osx':
             assert platform.system() == 'darwin'
         elif os_name == 'linux':
-            assert platform.system() == 'linux'
+            assert platform.system() == 'Linux'
             assert "CPython" in platform.python_implementation()
         else:
             raise NotImplementedError("Unknown 'TRAVIS_OS_NAME' value")
 
     def test_python_version(self):
         """Test that the python version is correct."""
-        version = get_envar('PYTHON_VERSION')
+        version = get_envar('TRAVIS_PYTHON_VERSION')
         if not version:
-            raise RuntimeError("No 'PYTHON_VERSION' envar has been set")
+            raise RuntimeError("No 'TRAVIS_PYTHON_VERSION' envar has been set")
 
         version = tuple([int(vv) for vv in version.split('.')])
         assert version[:2] == sys.version_info[:2]
