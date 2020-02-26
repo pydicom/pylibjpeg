@@ -29,7 +29,7 @@ PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
-    current_dir = os.path.getcwd()
+    current_dir = os.getcwd()
     os.chdir(LIBJPEG_SRC)
     subprocess.call('configure')
     os.chdir(current_dir)
