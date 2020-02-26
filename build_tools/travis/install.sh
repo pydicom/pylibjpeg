@@ -47,7 +47,7 @@ elif [[ "$TEST_SUITE" == 'conda' ]]; then
     # Replace dep1 dep2 ... with your dependencies
     conda create -q -n test-environment python=$PYTHON_VERSION pip
     conda activate test-environment
-    conda install --yes nose pytest pytest-cov setuptools distutils
+    conda install --yes nose pytest pytest-cov setuptools
     conda install --yes -c conda-forge pydicom
 fi
 
