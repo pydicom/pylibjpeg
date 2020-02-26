@@ -29,7 +29,10 @@ PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
+    current_dir = os.path.getcwd()
+    os.chdir(LIBJPEG_SRC)
     subprocess.call(os.path.join(LIBJPEG_SRC, 'configure'))
+    os.chdir(current_dir)
 
 # Get compilation options
 with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
@@ -66,6 +69,11 @@ if platform.system() == 'Darwin':
     # Fix ill-defined HAVE_FOPEN64
     import fileinput
     conf = os.path.join(LIBJPEG_SRC, 'autoconfig.h')
+    with fopen(conf, 'r') as f:
+        for line in f.readlines():
+            if line.startswith('#define HAVE_FOPEN64'):
+                print('Before', line)
+
     with fileinput.input(files=(conf, ), inplace=True) as f:
         for line in f:
             if line.startswith('#define HAVE_FOPEN64'):
@@ -74,10 +82,7 @@ if platform.system() == 'Darwin':
             else:
                 print(line.rstrip())
 
-    with fopen(conf, 'r') as f:
-        for line in f.readlines():
-            if line.startswith('#define HAVE_FOPEN64'):
-                print(line)
+
 
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
