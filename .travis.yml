@@ -11,8 +11,9 @@ matrix:
         - name: "Python 3.6, OSX + pydicom release"
           os: osx
           language: generic
-          env: TEST_SUITE=osx
-          env: PYTHON=3.6.8
+          env:
+            - TEST_SUITE=osx
+            - PYTHON=3.6.8
         # Ubuntu with pydicom master next to find any issues quickly
         - name: "Python 3.6, Ubuntu + pydicom master"
           os: linux
