@@ -75,7 +75,7 @@ install:
 
 # Command to run tests
 script:
-    - pytest --cov pylibjpeg
+    - python -m pytest --cov pylibjpeg
 
 after_success:
     # Upload coverage results to codecov.io
