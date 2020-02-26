@@ -17,10 +17,10 @@ elif [[ "$TEST_SUITE" == "pydicom_release" ]]; then
 elif [[ "$TEST_SUITE" == 'osx' ]]; then
     brew update
     brew install openssl readline
-    pyenv install $PYTHON
+    pyenv install $TRAVIS_PYTHON_VERSION
     brew outdated pyenv || brew upgrade pyenv
     brew install pyenv-virtualenv
-    export PYENV_VERSION=$PYTHON
+    export PYENV_VERSION=$TRAVIS_PYTHON_VERSION
     export PATH="$HOME/.pyenv/bin:${PATH}"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
@@ -43,7 +43,7 @@ elif [[ "$TEST_SUITE" == 'conda' ]]; then
     # Useful for debugging any issues with conda
     conda info -a
     # Replace dep1 dep2 ... with your dependencies
-    conda create -q -n test-environment python=$PYTHON_VERSION pip
+    conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pip
     conda activate test-environment
     conda install --yes nose pytest pytest-cov setuptools
     conda install --yes -c conda-forge pydicom
