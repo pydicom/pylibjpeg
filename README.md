@@ -11,10 +11,8 @@ support for [pydicom](https://github.com/pydicom/pydicom).
 ### Installation
 #### Installing the development version
 ```bash
-git clone https://github.com/scaramallion/pylibjpeg
-cd pylibjpeg
-git submodule update --init --recursive
-pip install .
+git clone --recurse-submodules https://github.com/scaramallion/pylibjpeg
+pip install pylibjpeg
 ```
 
 ### Usage

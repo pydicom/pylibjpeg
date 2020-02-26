@@ -4,3 +4,5 @@ omit =
     pylibjpeg/scripts/*
     pylibjpeg/data/*
     pylibjpeg/src/*
+    pydicom/*
+    pydicom-master/*

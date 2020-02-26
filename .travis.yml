@@ -39,7 +39,7 @@ install:
 
 # Command to run tests
 script:
-    - pytest --cov pylibjpeg --ignore=pydicom-master,pydicom,pylibjpeg/src
+    - pytest --cov pylibjpeg
 
 after_success:
     # Upload coverage results to codecov.io
