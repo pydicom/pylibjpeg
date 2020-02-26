@@ -1,3 +1,6 @@
+[![codecov](https://codecov.io/gh/scaramallion/pylibjpeg/branch/master/graph/badge.svg)](https://codecov.io/gh/scaramallion/pylibjpeg)
+[![Build Status](https://travis-ci.org/scaramallion/pylibjpeg.svg?branch=master)](https://travis-ci.org/scaramallion/pylibjpeg)
+
 ## pylibjpeg
 
 A Python wrapper for Thomas Richter's
@@ -6,7 +9,7 @@ support for [pydicom](https://github.com/pydicom/pydicom).
 
 
 ### Installation
-
+#### Installing the development version
 ```bash
 git clone https://github.com/scaramallion/pylibjpeg
 cd pylibjpeg
@@ -15,8 +18,6 @@ pip install .
 ```
 
 ### Usage
-
-#### With *pydicom*
 
 Assuming you already have *pydicom* installed:
 

@@ -16,3 +16,5 @@ ignore:
   - "pylibjpeg/src"
   - "pylibjpeg/scripts"
   - "pylibjpeg/data"
+  - "pydicom-master"
+  - "pydicom"

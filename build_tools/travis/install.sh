@@ -2,14 +2,15 @@
 
 set -e
 
-pip install coverage
+#pip install coverage
 pip install pytest-cov
 pip install pytest
-pip install asv
+#pip install asv
 
 
 echo ""
-echo "Test suite is " $TEST_SUITE
+echo "Test suite: " $TEST_SUITE
+echo "Working directory: " $PWD
 echo ""
 
 if [[ "$TEST_SUITE" == "pydicom_master" ]]; then
@@ -20,10 +21,6 @@ if [[ "$TEST_SUITE" == "pydicom_master" ]]; then
 elif [[ "$TEST_SUITE" == "pydicom_release" ]]; then
     pip install pydicom
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
-elif [[ "$TEST_SUITE" == "solo" ]]; then
-    echo
 fi
 
 python --version
-
-echo $PWD
