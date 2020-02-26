@@ -63,28 +63,6 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
-# OSX fixes
-if platform.system() == 'Darwin':
-    # For clang we need -mno-sse to use -mfpmath=387
-    extra_compile_args.append('-mno-sse')
-    # Fix ill-defined HAVE_FOPEN64
-    import fileinput
-    conf = os.path.join(LIBJPEG_SRC, 'autoconfig.h')
-    with open(conf, 'r') as f:
-        for line in f.readlines():
-            if line.startswith('#define HAVE_FOPEN64'):
-                print('Before', line)
-
-    with fileinput.input(files=(conf, ), inplace=True) as f:
-        for line in f:
-            if line.startswith('#define HAVE_FOPEN64'):
-                new = line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0')
-                print(new.rstrip())
-            else:
-                print(line.rstrip())
-
-
-
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
 
