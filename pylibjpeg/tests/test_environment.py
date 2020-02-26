@@ -57,14 +57,16 @@ class TestBuilds(object):
 
     def test_pydicom(self):
         """Test that pydicom is absent/present."""
-        if not get_envar('TEST_SUITE'):
-            raise RuntimeError("No TEST_SUITE' envar has been set")
+        if not get_envar('TRAVIS_JOB_NAME'):
+            raise RuntimeError("No TRAVIS_JOB_NAME' envar has been set")
 
-        if 'pydicom' in get_envar('TEST_SUITE'):
+        if 'pydicom' in get_envar('TRAVIS_JOB_NAME'):
             try:
                 import pydicom
             except ImportError:
-                pytest.fail("TEST_SUITE includes pydicom but isn't importable")
+                pytest.fail(
+                    "TRAVIS_JOB_NAME includes pydicom but isn't importable"
+                )
         else:
             with pytest.raises(ImportError):
                 import pydicom
