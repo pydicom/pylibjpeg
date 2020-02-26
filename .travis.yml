@@ -8,12 +8,18 @@ language: python
 matrix:
     include:
         # OSX first because it takes a long time to complete before_install
-        - name: "Python 3.6, OSX + pydicom release"
+        - name: "Python 3.6, OSX + pydicom"
           os: osx
           language: generic
           env:
             - TEST_SUITE=osx
             - PYTHON=3.6.8
+        # Conda next, also takes a while
+        - name: "Python 3.6, Ubuntu + conda + pydicom"
+          os: linux
+          dist: bionic
+          env: TEST_SUITE=conda
+          python: "3.6"
         # Ubuntu with pydicom master next to find any issues quickly
         - name: "Python 3.6, Ubuntu + pydicom master"
           os: linux
@@ -45,42 +51,26 @@ matrix:
           dist: bionic
           python: "3.8"
           env: TEST_SUITE=solo
-        - name: "Python 3.6, Ubuntu + pydicom release"
+        - name: "Python 3.6, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.6"
           env: TEST_SUITE=pydicom_release
-        - name: "Python 3.7, Ubuntu + pydicom release"
+        - name: "Python 3.7, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.7"
           env: TEST_SUITE=pydicom_release
-        - name: "Python 3.8, Ubuntu + pydicom release"
+        - name: "Python 3.8, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.8"
           env: TEST_SUITE=pydicom_release
 
-before_install: |
-  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    brew update
-    brew install openssl readline
-    brew outdated pyenv || brew upgrade pyenv
-    brew install pyenv-virtualenv
-    pyenv install $PYTHON
-    export PYENV_VERSION=$PYTHON
-    export PATH="/Users/travis/.pyenv/shims:${PATH}"
-    pyenv-virtualenv venv
-    source venv/bin/activate
-    python --version
-    pip install --upgrade pip
-  fi
-
-
 # Install dependencies and package
 install:
     - source build_tools/travis/install.sh
-    - python -m pip install . -v
+    - python -m pip install .
 
 # Command to run tests
 script:

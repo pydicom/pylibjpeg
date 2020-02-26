@@ -29,6 +29,7 @@ PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
+    # Needs to be run from within the libjpeg directory
     current_dir = os.getcwd()
     fpath = os.path.abspath(LIBJPEG_SRC)
     os.chdir(LIBJPEG_SRC)
@@ -43,9 +44,9 @@ lines = [ll for ll in lines if not ll.startswith('#')]
 opts = [ll.split('=', 1) for ll in lines]
 opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
 
-print('automakefile options')
-for kk, vv in opts.items():
-    print(kk, vv)
+#print('automakefile options')
+#for kk, vv in opts.items():
+#    print(kk, vv)
 
 #os.environ["CC"] = opts['COMPILER_CMD'][0]
 #os.environ["CXX"] = opts['COMPILER_CMD'][0]
