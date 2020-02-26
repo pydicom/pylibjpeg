@@ -38,9 +38,9 @@ lines = [ll for ll in lines if not ll.startswith('#')]
 opts = [ll.split('=', 1) for ll in lines]
 opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
 
-#print('automakefile options')
-#for kk, vv in opts.items():
-#    print(kk, vv)
+print('automakefile options')
+for kk, vv in opts.items():
+    print(kk, vv)
 
 #os.environ["CC"] = opts['COMPILER_CMD'][0]
 #os.environ["CXX"] = opts['COMPILER_CMD'][0]
@@ -57,6 +57,8 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 
 extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
+# OSX with clang we need -mno-sse
+
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
 
