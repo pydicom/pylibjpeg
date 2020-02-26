@@ -57,7 +57,10 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 
 extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
-# OSX with clang we need -mno-sse
+
+# OSX with clang we need -mno-sse to use -mfpmath=387
+if 'TEST_SUITE' in os.environ and os.environ.get('TEST_SUITE') == 'osx':
+    extra_compile_args.append('-mno-sse')
 
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
