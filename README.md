@@ -15,6 +15,17 @@ git clone --recurse-submodules https://github.com/scaramallion/pylibjpeg
 pip install pylibjpeg
 ```
 
+### Supported Transfer Syntaxes
+
+| UID | Description |
+| --- | --- |
+| 1.2.840.10008.1.2.4.50 | JPEG Baseline (Process 1) |
+| 1.2.840.10008.1.2.4.51 | JPEG Extended (Process 2 and 4) |
+| 1.2.840.10008.1.2.4.57 | JPEG Lossless, Non-Hierarchical (Process 14) |
+| 1.2.840.10008.1.2.4.70 | JPEG Lossless, Non-Hierarchical, First-Order Prediction (Process 14 [Selection Value 1]) |
+| 1.2.840.10008.1.2.4.80 | JPEG-LS Lossless |
+| 1.2.840.10008.1.2.4.81 | JPEG-LS Lossy (Near-Lossless) Image Compression |
+
 ### Usage
 
 Assuming you already have *pydicom* installed:
