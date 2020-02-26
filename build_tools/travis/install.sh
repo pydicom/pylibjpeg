@@ -47,6 +47,8 @@ elif [[ "$TEST_SUITE" == 'conda' ]]; then
     conda activate test-environment
     conda install --yes nose pytest pytest-cov setuptools
     conda install --yes -c conda-forge pydicom
+else
+    pip install pytest pytest-cov
 fi
 
 python --version
