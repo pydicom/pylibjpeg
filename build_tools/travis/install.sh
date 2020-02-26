@@ -34,7 +34,7 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     pyenv activate venv
     python --version
     pip install --upgrade pip
-    pip install pydicom
+    pip install pydicom pytest
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
 elif [[ "$TEST_SUITE" == 'conda' ]]; then
     deactivate
