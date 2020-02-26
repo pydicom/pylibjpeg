@@ -18,8 +18,9 @@ matrix:
         - name: "Python 3.6, Ubuntu + conda + pydicom"
           os: linux
           dist: bionic
-          env: TEST_SUITE=conda
-          python: "3.6"
+          env:
+            - TEST_SUITE=conda
+            - PYTHON_VERSION=3.6
         # Ubuntu with pydicom master next to find any issues quickly
         - name: "Python 3.6, Ubuntu + pydicom master"
           os: linux
