@@ -2,10 +2,12 @@
 import os
 import sys
 from pathlib import Path
+import platform
 import setuptools
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 import subprocess
+import distutils.sysconfig  # conda doesn't like not importing this
 
 
 # Workaround for needing cython and numpy
@@ -28,7 +30,12 @@ PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 
 # Run configure script once
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
-    subprocess.call(os.path.join(LIBJPEG_SRC, 'configure'))
+    # Needs to be run from within the libjpeg directory
+    current_dir = os.getcwd()
+    fpath = os.path.abspath(LIBJPEG_SRC)
+    os.chdir(LIBJPEG_SRC)
+    subprocess.call(os.path.join(fpath, 'configure'))
+    os.chdir(current_dir)
 
 # Get compilation options
 with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
@@ -57,13 +64,14 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 
 extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
+
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
 
 include_dirs = [
     LIBJPEG_SRC,
     PYLIBJPEG_SRC,
-    setuptools.distutils.sysconfig.get_python_inc(),
+    distutils.sysconfig.get_python_inc(),
 ]
 
 ext = Extension(

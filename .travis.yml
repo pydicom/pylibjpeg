@@ -1,34 +1,70 @@
-dist: xenial
+branches:
+    only:
+        - "master"
+
 language: python
 
 # Build against pydicom master and current release
 matrix:
     include:
-        - name: "Python 3.6, solo"
+        # OSX first because it takes a long time to complete before_install
+        - name: "Python 3.6, OSX + pydicom"
+          os: osx
+          language: generic
+          env:
+            - TEST_SUITE=osx
+            - PYTHON=3.6.8
+        # Conda next, also takes a while
+        - name: "Python 3.6, Ubuntu + conda + pydicom"
+          os: linux
+          dist: bionic
+          env:
+            - TEST_SUITE=conda
+            - PYTHON_VERSION=3.6
+        # Ubuntu with pydicom master next to find any issues quickly
+        - name: "Python 3.6, Ubuntu + pydicom master"
+          os: linux
+          dist: bionic
+          python: "3.6"
+          env: TEST_SUITE=pydicom_master
+        - name: "Python 3.7, Ubuntu + pydicom master"
+          os: linux
+          dist: bionic
+          python: "3.7"
+          env: TEST_SUITE=pydicom_master
+        - name: "Python 3.8, Ubuntu + pydicom master"
+          os: linux
+          dist: bionic
+          python: "3.8"
+          env: TEST_SUITE=pydicom_master
+        - name: "Python 3.6, Ubuntu"
+          os: linux
+          dist: bionic
           python: "3.6"
           env: TEST_SUITE=solo
-        - name: "Python 3.7, solo"
+        - name: "Python 3.7, Ubuntu"
+          os: linux
+          dist: bionic
           python: "3.7"
           env: TEST_SUITE=solo
-        - name: "Python 3.8, solo"
+        - name: "Python 3.8, Ubuntu"
+          os: linux
+          dist: bionic
           python: "3.8"
           env: TEST_SUITE=solo
-        - name: "Python 3.6, pydicom master"
-          python: "3.6"
-          env: TEST_SUITE=pydicom_master
-        - name: "Python 3.7, pydicom master"
-          python: "3.7"
-          env: TEST_SUITE=pydicom_master
-        - name: "Python 3.8, pydicom master"
-          python: "3.8"
-          env: TEST_SUITE=pydicom_master
-        - name: "Python 3.6, pydicom release"
+        - name: "Python 3.6, Ubuntu + pydicom"
+          os: linux
+          dist: bionic
           python: "3.6"
           env: TEST_SUITE=pydicom_release
-        - name: "Python 3.7, pydicom release"
+        - name: "Python 3.7, Ubuntu + pydicom"
+          os: linux
+          dist: bionic
           python: "3.7"
           env: TEST_SUITE=pydicom_release
-        - name: "Python 3.8, pydicom release"
+        - name: "Python 3.8, Ubuntu + pydicom"
+          os: linux
+          dist: bionic
           python: "3.8"
           env: TEST_SUITE=pydicom_release
 
@@ -39,7 +75,7 @@ install:
 
 # Command to run tests
 script:
-    - pytest --cov pylibjpeg --ignore=pydicom --ignore=pydicom-master
+    - python -m pytest --cov pylibjpeg
 
 after_success:
     # Upload coverage results to codecov.io
