@@ -59,7 +59,7 @@ extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
 # OSX fixes
-IN_OSX = os.environ.get('TRAVIS_OS_NAME', False)
+IN_OSX = os.environ.get('TRAVIS_OS_NAME', 'undefined') == 'osx'
 if IN_OSX:
     # For clang we need -mno-sse to use -mfpmath=387
     extra_compile_args.append('-mno-sse')
