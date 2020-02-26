@@ -23,11 +23,11 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     brew update
     brew install openssl readline
     brew outdated pyenv || brew upgrade pyenv
-    brew install pyenv-virtualenv
+    brew install pyenv pyenv-virtualenv
     pyenv install $PYTHON
     export PYENV_VERSION=$PYTHON
     export PATH="/Users/travis/.pyenv/shims:${PATH}"
-    pyenv-virtualenv venv
+    pyenv virtualenv venv
     source venv/bin/activate
     python --version
     pip install --upgrade pip
