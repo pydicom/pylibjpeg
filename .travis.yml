@@ -5,8 +5,9 @@ matrix:
     include:
         - name: "Python 3.6, OSX"
           os: osx
-          python: "3.6"
+          language: generic
           env: TEST_SUITE=osx
+          env: PYTHON=3.6.8
         - name: "Python 3.6, solo"
           os: linux
           dist: bionic
@@ -52,6 +53,21 @@ matrix:
           dist: bionic
           python: "3.8"
           env: TEST_SUITE=pydicom_release
+
+before_install: |
+  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    brew update
+    brew install openssl readline
+    brew outdated pyenv || brew upgrade pyenv
+    brew install pyenv-virtualenv
+    pyenv install $PYTHON
+    export PYENV_VERSION=$PYTHON
+    export PATH="/Users/travis/.pyenv/shims:${PATH}"
+    pyenv-virtualenv venv
+    source venv/bin/activate
+    python --version
+  fi
+
 
 # Install dependencies and package
 install:
