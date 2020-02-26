@@ -2,22 +2,17 @@
 
 set -e
 
-#pip install coverage
-pip install pytest-cov
-pip install pytest
-#pip install asv
-
-
 echo ""
 echo "Test suite: " $TEST_SUITE
 echo "Working directory: " $PWD
 echo ""
 
 if [[ "$TEST_SUITE" == "pydicom_master" ]]; then
+    pip install pytest pytest-cov
     pip install git+https://github.com/pydicom/pydicom.git
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
 elif [[ "$TEST_SUITE" == "pydicom_release" ]]; then
-    pip install pydicom
+    pip install pydicom pytest pytest-cov
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
 elif [[ "$TEST_SUITE" == 'osx' ]]; then
     brew update
@@ -34,7 +29,7 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     pyenv activate venv
     python --version
     pip install --upgrade pip
-    pip install pydicom pytest
+    pip install pydicom pytest pytest-cov
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
 elif [[ "$TEST_SUITE" == 'conda' ]]; then
     deactivate
