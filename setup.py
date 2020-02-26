@@ -70,7 +70,7 @@ if platform.system() == 'Darwin':
     # Fix ill-defined HAVE_FOPEN64
     import fileinput
     conf = os.path.join(LIBJPEG_SRC, 'autoconfig.h')
-    with fopen(conf, 'r') as f:
+    with open(conf, 'r') as f:
         for line in f.readlines():
             if line.startswith('#define HAVE_FOPEN64'):
                 print('Before', line)
