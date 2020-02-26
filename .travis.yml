@@ -1,34 +1,55 @@
-dist: xenial
 language: python
 
 # Build against pydicom master and current release
 matrix:
     include:
+        - name: "Python 3.6, OSX"
+          os: osx
+          python: "3.6"
+          env: TEST_SUITE=osx
         - name: "Python 3.6, solo"
+          os: linux
+          dist: bionic
           python: "3.6"
           env: TEST_SUITE=solo
         - name: "Python 3.7, solo"
+          os: linux
+          dist: bionic
           python: "3.7"
           env: TEST_SUITE=solo
         - name: "Python 3.8, solo"
+          os: linux
+          dist: bionic
           python: "3.8"
           env: TEST_SUITE=solo
         - name: "Python 3.6, pydicom master"
+          os: linux
+          dist: bionic
           python: "3.6"
           env: TEST_SUITE=pydicom_master
         - name: "Python 3.7, pydicom master"
+          os: linux
+          dist: bionic
           python: "3.7"
           env: TEST_SUITE=pydicom_master
         - name: "Python 3.8, pydicom master"
+          os: linux
+          dist: bionic
           python: "3.8"
           env: TEST_SUITE=pydicom_master
         - name: "Python 3.6, pydicom release"
+          os: linux
+          dist: bionic
           python: "3.6"
           env: TEST_SUITE=pydicom_release
         - name: "Python 3.7, pydicom release"
+          os: linux
+          dist: bionic
           python: "3.7"
           env: TEST_SUITE=pydicom_release
         - name: "Python 3.8, pydicom release"
+          os: linux
+          dist: bionic
           python: "3.8"
           env: TEST_SUITE=pydicom_release
 
@@ -39,7 +60,7 @@ install:
 
 # Command to run tests
 script:
-    - pytest --cov pylibjpeg --ignore=pydicom --ignore=pydicom-master
+    - pytest --cov pylibjpeg
 
 after_success:
     # Upload coverage results to codecov.io
