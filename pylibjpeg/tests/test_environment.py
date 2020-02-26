@@ -39,7 +39,7 @@ class TestBuilds(object):
             raise RuntimeError("No 'TRAVIS_OS_NAME' envar has been set")
 
         if os_name == 'osx':
-            assert platform.system() == 'darwin'
+            assert platform.system() == 'Darwin'
         elif os_name == 'linux':
             assert platform.system() == 'Linux'
             assert "CPython" in platform.python_implementation()
