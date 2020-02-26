@@ -35,7 +35,7 @@ class TestBuilds(object):
     def test_os(self):
         """Test that the OS is correct."""
         os_name = get_envar('TRAVIS_OS_NAME')
-        if not distrib:
+        if not os_name:
             raise RuntimeError("No 'TRAVIS_OS_NAME' envar has been set")
 
         if os_name == 'osx':
@@ -57,12 +57,10 @@ class TestBuilds(object):
 
     def test_pydicom(self):
         """Test that pydicom is absent/present."""
-
         if not get_envar('TEST_SUITE'):
             raise RuntimeError("No TEST_SUITE' envar has been set")
 
-        have_pydicom = 'pydicom' in get_envar('TEST_SUITE')
-        if have_pydicom:
+        if 'pydicom' in get_envar('TEST_SUITE'):
             try:
                 import pydicom
             except ImportError:
