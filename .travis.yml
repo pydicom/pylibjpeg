@@ -75,7 +75,7 @@ before_install: |
 # Install dependencies and package
 install:
     - source build_tools/travis/install.sh
-    - python -m pip install .
+    - python -m pip install . -v
 
 # Command to run tests
 script:

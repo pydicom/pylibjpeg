@@ -67,8 +67,9 @@ if 'TRAVIS_OS_NAME' in os.environ and os.environ.get('TRAVIS_OS_NAME') == 'osx':
     import fileinput
     conf = os.path.join(LIBJPEG_SRC, 'autoconfig.h')
     with fileinput.input(files=(conf, )) as f:
-        for line in f if line.startswith('#define HAVE_FOPEN64'):
-            line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0'
+        for line in f:
+            if line.startswith('#define HAVE_FOPEN64'):
+                line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0'
 
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
