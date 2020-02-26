@@ -22,6 +22,7 @@ elif [[ "$TEST_SUITE" == "pydicom_release" ]]; then
 elif [[ "$TEST_SUITE" == 'osx' ]]; then
     brew update
     brew install openssl readline
+    pyenv install $PYTHON
     brew outdated pyenv || brew upgrade pyenv
     brew install pyenv-virtualenv
     export PYENV_VERSION=$PYTHON
@@ -31,7 +32,6 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     export PATH="/Users/travis/.pyenv/shims:${PATH}"
     pyenv virtualenv venv
     source venv/bin/activate
-    pyenv install $PYTHON
     python --version
     pip install --upgrade pip
     pip install pydicom
