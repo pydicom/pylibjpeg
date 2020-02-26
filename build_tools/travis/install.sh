@@ -33,7 +33,7 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     pip install --upgrade pip
     pip install pydicom
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
-elif [[ "TEST_SUITE" == 'conda' ]]; then
+elif [[ "$TEST_SUITE" == 'conda' ]]; then
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
     bash miniconda.sh -b -p $HOME/miniconda
     source "$HOME/miniconda/etc/profile.d/conda.sh"
