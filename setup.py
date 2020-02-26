@@ -2,6 +2,7 @@
 import os
 import sys
 from pathlib import Path
+import platform
 import setuptools
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
@@ -59,7 +60,7 @@ extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
 # OSX fixes
-if os.platform.system() == 'Darwin':
+if platform.system() == 'Darwin':
     # For clang we need -mno-sse to use -mfpmath=387
     extra_compile_args.append('-mno-sse')
     # Fix ill-defined HAVE_FOPEN64
