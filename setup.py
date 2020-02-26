@@ -74,6 +74,11 @@ if platform.system() == 'Darwin':
             else:
                 print(line.rstrip())
 
+    with fopen(conf, 'r') as f:
+        for line in f.readlines():
+            if line.startswith('#define HAVE_FOPEN64'):
+                print(line)
+
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
 
