@@ -59,17 +59,19 @@ extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
 # OSX fixes
-IN_OSX = os.environ.get('TRAVIS_OS_NAME', 'undefined') == 'osx'
-if IN_OSX:
+if os.platform.system() == 'Darwin':
     # For clang we need -mno-sse to use -mfpmath=387
     extra_compile_args.append('-mno-sse')
     # Fix ill-defined HAVE_FOPEN64
     import fileinput
     conf = os.path.join(LIBJPEG_SRC, 'autoconfig.h')
-    with fileinput.input(files=(conf, )) as f:
+    with fileinput.input(files=(conf, ), inplace=True) as f:
         for line in f:
             if line.startswith('#define HAVE_FOPEN64'):
-                line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0')
+                new = line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0')
+                print(new.rstrip())
+            else:
+                print(line.rstrip())
 
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
