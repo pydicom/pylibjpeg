@@ -59,7 +59,8 @@ extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
 # OSX with clang we need -mno-sse to use -mfpmath=387
-if 'TEST_SUITE' in os.environ and os.environ.get('TEST_SUITE') == 'osx':
+print(os.environ)
+if 'TRAVIS_OS_NAME' in os.environ and os.environ.get('TRAVIS_OS_NAME') == 'osx':
     extra_compile_args.append('-mno-sse')
 
 extra_link_args = []
