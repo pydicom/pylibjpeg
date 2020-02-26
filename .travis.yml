@@ -21,7 +21,7 @@ matrix:
           env: TEST_SUITE=pydicom_master
         - name: "Python 3.8, pydicom master"
           python: "3.8"
-          env: TEST_SUITE=pydicom_mastere
+          env: TEST_SUITE=pydicom_master
         - name: "Python 3.6, pydicom release"
           python: "3.6"
           env: TEST_SUITE=pydicom_release
@@ -39,7 +39,7 @@ install:
 
 # Command to run tests
 script:
-    - pytest --cov pylibjpeg --ignore=pydicom,pydicom-master
+    - pytest --cov pylibjpeg --ignore=pydicom --ignore=pydicom-master
 
 after_success:
     # Upload coverage results to codecov.io
