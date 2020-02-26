@@ -1,3 +1,7 @@
+branches:
+    only:
+        - "master"
+
 language: python
 
 # Build against pydicom master and current release

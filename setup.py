@@ -59,8 +59,8 @@ extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
 # OSX fixes
-#print(os.environ)
-if 'TRAVIS_OS_NAME' in os.environ and os.environ.get('TRAVIS_OS_NAME') == 'osx':
+IN_OSX = os.environ.get('TRAVIS_OS_NAME', False)
+if IN_OSX:
     # For clang we need -mno-sse to use -mfpmath=387
     extra_compile_args.append('-mno-sse')
     # Fix ill-defined HAVE_FOPEN64
@@ -69,7 +69,7 @@ if 'TRAVIS_OS_NAME' in os.environ and os.environ.get('TRAVIS_OS_NAME') == 'osx':
     with fileinput.input(files=(conf, )) as f:
         for line in f:
             if line.startswith('#define HAVE_FOPEN64'):
-                line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0'
+                line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0')
 
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
