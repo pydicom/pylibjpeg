@@ -29,7 +29,7 @@ INDEX = {
         'WindowCenter' : ('DS', '600'),
         'WindowWidth' : ('DS', '1600'),
     },
-    'RG1_JLSL' : {
+    'RG1_JLSL.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.80'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME1'),
@@ -45,7 +45,7 @@ INDEX = {
         'WindowWidth' : ('DS', '30000'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
     },
-    'RG2_JLSL' : {
+    'RG2_JLSL.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.80'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),

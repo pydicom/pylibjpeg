@@ -1,7 +1,7 @@
 """1.2.840.10008.1.2.4.81 - JPEG-LS Lossy (Near-Lossless) Image Compression"""
 
 INDEX = {
-    'CT1_JLSN' : {
+    'CT1_JLSN.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.80'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
@@ -17,7 +17,7 @@ INDEX = {
         'RescaleSlope' : ('DS', '1'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
     },
-    'MG1_JLSN' : {
+    'MG1_JLSN.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.80'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
@@ -33,7 +33,7 @@ INDEX = {
         'WindowWidth' : ('DS', '4095'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
     },
-    'RG1_JLSN' : {
+    'RG1_JLSN.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.80'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME1'),
@@ -49,7 +49,7 @@ INDEX = {
         'WindowWidth' : ('DS', '30000'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
     },
-    'RG2_JLSN' : {
+    'RG2_JLSN.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.80'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),

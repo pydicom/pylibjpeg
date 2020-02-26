@@ -43,7 +43,7 @@ INDEX = {
         'Status' : ('US', 0xC000),
         'ImageComments' : ('LT', 'SOS::Se invalid value 0 (should be 63)'),
     },
-    'RG2_JPLY' : {
+    'RG2_JPLY.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
@@ -61,7 +61,7 @@ INDEX = {
         'Status' : ('US', 0xC000),
         'ImageComments' : ('LT', 'SOS::Se invalid value 0 (should be 63)'),
     },
-    'RG2_JPLY_fixed' : {
+    'RG2_JPLY_fixed.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.51'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),

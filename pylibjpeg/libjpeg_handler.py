@@ -69,6 +69,8 @@ from pydicom.uid import (
     JPEGLSLossless,
     JPEGLSLossy,
 )
+#except ImportError:
+#    pass
 
 
 HANDLER_NAME = 'pylibjpeg'

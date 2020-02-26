@@ -44,7 +44,7 @@ INDEX = {
         'HighBit' : ('US', 15),
         'PixelRepresentation' : ('US', 0),
     },
-    'MG1_JPLL' : {
+    'MG1_JPLL.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.70'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),
@@ -60,7 +60,7 @@ INDEX = {
         'WindowWidth' : ('DS', '4095'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
     },
-    'RG1_JPLL' : {
+    'RG1_JPLL.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.70'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME1'),
@@ -76,7 +76,7 @@ INDEX = {
         'WindowWidth' : ('DS', '30000'),
         'RetrieveURI' : ('UR', 'ftp://medical.nema.org/MEDICAL/Dicom/DataSets/WG04'),
     },
-    'RG2_JPLL' : {
+    'RG2_JPLL.dcm' : {
         'TransferSyntaxUID' : ('UI', '1.2.840.10008.1.2.4.70'),
         'SamplesPerPixel' : ('US', 1),
         'PhotometricInterpretation' : ('CS', 'MONOCHROME2'),

@@ -1,0 +1,2 @@
+recursive-include pylibjpeg/data *.dcm
+recursive-include pylibjpeg/src *

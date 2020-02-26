@@ -1,7 +1,10 @@
 
 import os
 
-from pydicom import dcmread
+try:
+    from pydicom import dcmread
+except ImportError:
+    pass
 
 from pylibjpeg.data.ds import (
     JPEG2000_IDX, JPEG2000Lossless_IDX, JPEGBaseline_IDX,
