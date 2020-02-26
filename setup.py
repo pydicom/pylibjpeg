@@ -58,10 +58,17 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
 extra_compile_args = []
 extra_compile_args.extend(opts['ADDOPTS'])
 
-# OSX with clang we need -mno-sse to use -mfpmath=387
-print(os.environ)
+# OSX fixes
+#print(os.environ)
 if 'TRAVIS_OS_NAME' in os.environ and os.environ.get('TRAVIS_OS_NAME') == 'osx':
+    # For clang we need -mno-sse to use -mfpmath=387
     extra_compile_args.append('-mno-sse')
+    # Fix ill-defined HAVE_FOPEN64
+    import fileinput
+    conf = os.path.join(LIBJPEG_SRC, 'autoconfig.h')
+    with fileinput.input(files=(conf, )) as f:
+        for line in f if line.startswith('#define HAVE_FOPEN64'):
+            line.replace('HAVE_FOPEN64 1', 'HAVE_FOPEN64 0'
 
 extra_link_args = []
 extra_link_args.extend(opts['EXTRA_LIBS'])
