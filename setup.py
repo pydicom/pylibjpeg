@@ -31,7 +31,7 @@ PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
     current_dir = os.path.getcwd()
     os.chdir(LIBJPEG_SRC)
-    subprocess.call(os.path.join(LIBJPEG_SRC, 'configure'))
+    subprocess.call('configure')
     os.chdir(current_dir)
 
 # Get compilation options
