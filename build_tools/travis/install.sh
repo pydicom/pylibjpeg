@@ -31,7 +31,7 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     eval "$(pyenv virtualenv-init -)"
     export PATH="/Users/travis/.pyenv/shims:${PATH}"
     pyenv virtualenv venv
-    source venv/bin/activate
+    pyenv activate venv
     python --version
     pip install --upgrade pip
     pip install pydicom
