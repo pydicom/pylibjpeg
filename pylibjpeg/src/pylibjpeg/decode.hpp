@@ -35,8 +35,6 @@
     };
 
     struct JPEGParameters {
-        // Add enough info to determine process number
-        UBYTE marker;  // SOF marker
         ULONG columns;  // width in pixels
         ULONG rows;  // height in pixels
         UWORD samples_per_pixel;  // number of components

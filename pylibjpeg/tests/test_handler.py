@@ -26,6 +26,8 @@ from pylibjpeg.data import get_indexed_datasets
 @pytest.mark.skipif(not HAS_PYDICOM, reason="pydicom unavailable")
 def test_add_handler():
     """Test adding the handler to pydicom."""
+    assert libjpeg_handler in pydicom.config.pixel_data_handlers
+    remove_handler()
     assert libjpeg_handler not in pydicom.config.pixel_data_handlers
     add_handler()
     assert libjpeg_handler in pydicom.config.pixel_data_handlers
@@ -118,7 +120,7 @@ class TestLibrary(object):
             r"be applied"
         )
         with pytest.warns(UserWarning, match=msg):
-            decode(np.frombuffer(data, 'uint8'), 1, -1)
+            decode(np.frombuffer(data, 'uint8'), -1)
 
     def test_invalid_buffer(self):
         """Test that an invalid colour transform raises an exception."""
@@ -126,7 +128,7 @@ class TestLibrary(object):
             r"Buffer dtype mismatch, expected 'uint8_t' but got 'double'"
         )
         with pytest.raises(ValueError, match=msg):
-            decode(np.zeros(1), 1, 'YBR_FULL')
+            decode(np.zeros(1), 'YBR_FULL')
 
 
 # ISO/IEC 10918 JPEG

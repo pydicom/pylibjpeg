@@ -65,15 +65,13 @@ def add_handler():
         pydicom.config.pixel_data_handlers.append(libjpeg_handler)
 
 
-def decode(arr, nr_bytes, colourspace='YBR_FULL'):
+def decode(arr, colourspace='YBR_FULL', reshape=True):
     """Return the decoded JPEG data from `arr` as a 1D numpy array.
 
     Parameters
     ----------
     arr : numpy.ndarray
         A 1D array of np.uint8 containing the raw encoded JPEG image.
-    nr_bytes : int
-        The expected length of the uncompressed image data in bytes.
     colourspace : str, optional
         One of 'MONOCHROME1', 'MONOCHROME2', 'RGB', 'YBR_FULL', 'YBR_FULL_422'.
 
@@ -104,7 +102,7 @@ def decode(arr, nr_bytes, colourspace='YBR_FULL'):
         )
         transform = 0
 
-    status, out = _libjpeg.decode(arr, nr_bytes, transform)
+    status, out, params = _libjpeg.decode(arr, transform)
     status = status.decode("utf-8")
     code, msg = status.split("::::")
     code = int(code)

@@ -34,10 +34,8 @@ Assuming you already have *pydicom* installed:
 from pydicom import dcmread
 from pydicom.data import get_testdata_file
 
-from pylibjpeg import add_handler
-
-# Add the pylibjpeg pixel data handler to pydicom
-add_handler()
+# Importing the package automatically adds the pixel data handler
+import pylibjpeg
 
 # Use pydicom as normal
 ds = dcmread(get_testdata_file('JPEG-LL.dcm'))
