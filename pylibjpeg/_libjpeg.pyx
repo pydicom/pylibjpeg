@@ -17,6 +17,19 @@ cdef extern from "decode.hpp":
         int colourspace,
     )
 
+    cdef struct JPEGParameters:
+        int marker
+        long columns
+        long rows
+        int samples_per_pixel
+        char bits_per_sample
+
+    cdef string GetJPEGParameters(
+        char *inArray,
+        int inLength,
+        JPEGParameters *param,
+    )
+
 
 def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes, colourspace):
     """Return the decoded JPEG data from `input_buffer`.
@@ -58,6 +71,50 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, nr_bytes, colourspace):
     )
 
     return status, output_buffer
+
+
+def get_parameters(np.ndarray[np.uint8_t, ndim=1] input_buffer):
+    """Return a :class:`dict` containing the JPEG image parameters.
+
+    Parameters
+    ----------
+    input_buffer : numpy.ndarray
+        A 1D array of np.uint8 containing the raw encoded JPEG image.
+
+    Returns
+    -------
+    dict
+        A ``dict`` containing the JPEG image parameters.
+    """
+    cdef JPEGParameters param
+    param.marker = 0
+    param.columns = 0
+    param.rows = 0
+    param.samples_per_pixel = 0
+    param.bits_per_sample = 0
+
+    # Pointer to the JPEGParameters object
+    cdef JPEGParameters *pParam = &param
+
+    # Pointer to first element in input array
+    cdef char *pInput = <char *>np.PyArray_DATA(input_buffer)
+
+    # Decode the data - output is written to output_buffer
+    status = GetJPEGParameters(
+        pInput,
+        input_buffer.shape[0],
+        pParam
+    )
+
+    parameters = {
+        'marker' : param.marker,
+        'rows' : param.rows,
+        'columns' : param.columns,
+        'samples_per_pixel' : param.samples_per_pixel,
+        'bits_per_sample' : param.bits_per_sample,
+    }
+
+    return status, parameters
 
 
 cdef extern from "cmd/reconstruct.hpp":

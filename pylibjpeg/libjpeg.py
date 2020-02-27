@@ -126,6 +126,28 @@ def decode(arr, nr_bytes, colourspace='YBR_FULL'):
     )
 
 
+def get_parameters(arr):
+    status, params = _libjpeg.get_parameters(arr)
+    status = status.decode("utf-8")
+    code, msg = status.split("::::")
+    code = int(code)
+
+    if code == 0:
+        return params
+
+    try:
+        raise RuntimeError(
+            "libjpeg error code '{}' returned from Decode(): {} - {}"
+            .format(code, LIBJPEG_ERROR_CODES[code], msg)
+        )
+    except KeyError:
+        pass
+
+    raise RuntimeError(
+        "Unknown error code '{}' returned from Decode(): {}"
+        .format(status, msg)
+    )
+
 def reconstruct(fin, fout, colourspace=1, falpha=None, upsample=True):
     """Simple wrapper for the libjpeg cmd/reconstruct::Reconstruct() function.
 
