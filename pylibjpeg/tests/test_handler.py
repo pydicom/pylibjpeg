@@ -116,10 +116,10 @@ class TestLibrary(object):
         ds = ds_list['color3d_jpeg_baseline.dcm']['ds']
         data = defragment_data(ds.PixelData)
         msg = (
-            r"Unsupported colour space '-1', no colour transform will "
-            r"be applied"
+            r"Unknown error code '-8194' returned from Decode\(\): "
+            r"Invalid colourTransform value"
         )
-        with pytest.warns(UserWarning, match=msg):
+        with pytest.raises(RuntimeError, match=msg):
             decode(np.frombuffer(data, 'uint8'), -1)
 
     def test_invalid_buffer(self):

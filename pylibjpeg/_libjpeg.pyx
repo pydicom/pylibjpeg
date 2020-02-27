@@ -39,7 +39,7 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, colourspace):
     Parameters
     ----------
     input_buffer : numpy.ndarray
-        A 1D array of np.uint8 containing the raw encoded JPEG image.
+        A 1D array of ``np.uint8`` containing the raw encoded JPEG image.
     colourspace : int
         | ``0`` : ``JPGFLAG_MATRIX_COLORTRANSFORMATION_NONE``
         | ``1`` : ``JPGFLAG_MATRIX_COLORTRANSFORMATION_YCBCR``
@@ -52,14 +52,14 @@ def decode(np.ndarray[np.uint8_t, ndim=1] input_buffer, colourspace):
     bytes
         The status and any error message of the decoding operation.
     numpy.ndarray or None
-        A 1D array of np.uint8 containing the decoded image data. Returns
+        A 1D array of ``np.uint8`` containing the decoded image data. Returns
         ``None`` if the decode fails.
     dict
-        A dict containing the image parameters.
+        A :class:`dict` containing the image parameters.
     """
     # Get the image parameters
     status, param = get_parameters(input_buffer)
-    
+
     # Pointer to first element in input array
     cdef char *pInput = <char *>np.PyArray_DATA(input_buffer)
 
@@ -89,12 +89,12 @@ def get_parameters(np.ndarray[np.uint8_t, ndim=1] input_buffer):
     Parameters
     ----------
     input_buffer : numpy.ndarray
-        A 1D array of np.uint8 containing the raw encoded JPEG image.
+        A 1D array of ``np.uint8`` containing the encoded JPEG image.
 
     Returns
     -------
     dict
-        A ``dict`` containing the JPEG image parameters.
+        A :class:`dict` containing the JPEG image parameters.
     """
     cdef JPEGParameters param
     param.columns = 0

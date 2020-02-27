@@ -1,4 +1,6 @@
+""""""
 
+from math import ceil
 import pathlib
 import warnings
 
@@ -50,7 +52,7 @@ LIBJPEG_ERROR_CODES = {
 
 
 def add_handler():
-    """Add the pylibjpeg pixel data handler to pydicom.
+    """Add the pixel data handler to *pydicom*.
 
     Raises
     ------
@@ -66,19 +68,24 @@ def add_handler():
 
 
 def decode(arr, colourspace='YBR_FULL', reshape=True):
-    """Return the decoded JPEG data from `arr` as a 1D numpy array.
+    """Return the decoded JPEG data from `arr` as a :class:`numpy.ndarray`.
 
     Parameters
     ----------
-    arr : numpy.ndarray
-        A 1D array of np.uint8 containing the raw encoded JPEG image.
+    arr : numpy.ndarray or bytes
+        A 1D array of ``np.uint8``, or a Python :class:`bytes` object
+        containing the encoded JPEG image.
     colourspace : str, optional
-        One of 'MONOCHROME1', 'MONOCHROME2', 'RGB', 'YBR_FULL', 'YBR_FULL_422'.
+        One of ``'MONOCHROME1'``, ``'MONOCHROME2'``, ``'RGB'``, ``'YBR_FULL'``,
+        ``'YBR_FULL_422'``.
+    reshape : bool, optional
+        Reshape and review the output array so it matches the image data
+        (default), otherwise return a 1D array of ``np.uint8``.
 
     Returns
     -------
     numpy.ndarray
-        A 1D array of np.uint8 containing the decoded image data.
+        An array of containing the decoded image data.
 
     Raises
     ------
@@ -91,6 +98,7 @@ def decode(arr, colourspace='YBR_FULL', reshape=True):
         'RGB' : 1,
         'YBR_FULL' : 0,
         'YBR_FULL_422' : 0,
+        -1 : -1,  # For unit testing only
     }
 
     try:
@@ -102,29 +110,65 @@ def decode(arr, colourspace='YBR_FULL', reshape=True):
         )
         transform = 0
 
+    if isinstance(arr, bytes):
+        arr = np.frombuffer(arr, 'uint8')
+
     status, out, params = _libjpeg.decode(arr, transform)
     status = status.decode("utf-8")
     code, msg = status.split("::::")
     code = int(code)
 
-    if code == 0:
+    if code == 0 and reshape is True:
+        bpp = ceil(params['bits_per_sample'] / 8)
+        if bpp <= 8:
+            dtype = 'uint8'
+        elif 9 <= bpp <= 16:
+            dtype = 'uint16'
+
+        out = out.view(dtype)
+        out.reshape(
+            params['rows'], params['columns'], params['samples_per_pixel']
+        )
+        return out
+    elif code == 0 and reshape is False:
         return out
 
-    try:
+    if code in LIBJPEG_ERROR_CODES:
         raise RuntimeError(
             "libjpeg error code '{}' returned from Decode(): {} - {}"
             .format(code, LIBJPEG_ERROR_CODES[code], msg)
         )
-    except KeyError:
-        pass
 
     raise RuntimeError(
         "Unknown error code '{}' returned from Decode(): {}"
-        .format(status, msg)
+        .format(code, msg)
     )
 
 
 def get_parameters(arr):
+    """Return a :class:`dict` containing JPEG image parameters.
+
+    Parameters
+    ----------
+    arr : numpy.ndarray or bytes
+        A 1D array of ``np.uint8``, or a Python :class:`bytes` object
+        containing the raw encoded JPEG image.
+
+    Returns
+    -------
+    dict
+        A :class:`dict` containing JPEG image parameters with keys including
+        ``'rows'``, ``'columns'``, ``'samples_per_pixel'`` and
+        ``'bits_per_sample'``.
+
+    Raises
+    ------
+    RuntimeError
+        If reading the encoded JPEG data failed.
+    """
+    if isinstance(arr, bytes):
+        arr = np.frombuffer(arr, 'uint8')
+
     status, params = _libjpeg.get_parameters(arr)
     status = status.decode("utf-8")
     code, msg = status.split("::::")
@@ -133,28 +177,28 @@ def get_parameters(arr):
     if code == 0:
         return params
 
-    try:
+    if code in LIBJPEG_ERROR_CODES:
         raise RuntimeError(
             "libjpeg error code '{}' returned from Decode(): {} - {}"
             .format(code, LIBJPEG_ERROR_CODES[code], msg)
         )
-    except KeyError:
-        pass
 
     raise RuntimeError(
         "Unknown error code '{}' returned from Decode(): {}"
         .format(status, msg)
     )
 
+
 def reconstruct(fin, fout, colourspace=1, falpha=None, upsample=True):
-    """Simple wrapper for the libjpeg cmd/reconstruct::Reconstruct() function.
+    """Simple wrapper for the libjpeg ``cmd/reconstruct::Reconstruct()``
+    function.
 
     Parameters
     ----------
     fin : bytes
         The path to the JPEG file to be decoded.
     fout : bytes
-        The path to the decoded PPM or PGM (is `falpha` is ``True``) file(s).
+        The path to the decoded PPM or PGM (if `falpha` is ``True``) file(s).
     colourspace : int, optional
         The colourspace transform to apply.
         | ``0`` : ``JPGFLAG_MATRIX_COLORTRANSFORMATION_NONE``  (``-c`` flag)
@@ -188,7 +232,7 @@ def reconstruct(fin, fout, colourspace=1, falpha=None, upsample=True):
 
 
 def remove_handler():
-    """Remove the pylibjpeg pixel data handler from pydicom.
+    """Remove the pixel data handler from *pydicom*.
 
     Raises
     ------
