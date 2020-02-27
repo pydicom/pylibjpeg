@@ -1,0 +1,1106 @@
+Parsed version of ' testb2 hdr p', May 8, 1994, WBP and JLM (IBM)
+0      SOI (ffd8)
+2      COM (fffe) Lc=391 'Compressed test data stream B2 for ITU-T Rec. 
+         T.83 | ISO/IEC 10918-2:1994 (JPEG). Abbreviated format for comp
+         ressed image data. Validated Nov. 1993 by Chris Hepburn (Micros
+         tar Software Ltd., Canada) and Birger Niss (AutoGraph Internati
+         onal, Denmark). Revised and validated May 1994 by Chris Hepburn
+          (Microstar Software Ltd., Canada), William Pennebaker, and Joa
+         n Mitchell (IBM Corp., USA).'
+395    SOF0(ffc0) Lf=773 P=8 Y=257 X=255 Nf=255  (baseline seq. DCT)
+             Ci=254 HV=11 Tqi=0
+             Ci=253 HV=12 Tqi=1
+             Ci=252 HV=31 Tqi=2
+             Ci=251 HV=14 Tqi=3
+             Ci=250 HV=11 Tqi=0
+             Ci=249 HV=11 Tqi=0
+             Ci=248 HV=11 Tqi=0
+             Ci=247 HV=11 Tqi=0
+             Ci=246 HV=11 Tqi=0
+             Ci=245 HV=11 Tqi=0
+             Ci=244 HV=11 Tqi=0
+             Ci=243 HV=11 Tqi=0
+             Ci=242 HV=11 Tqi=0
+             Ci=241 HV=11 Tqi=0
+             Ci=240 HV=11 Tqi=0
+             Ci=239 HV=11 Tqi=0
+             Ci=238 HV=11 Tqi=0
+             Ci=237 HV=11 Tqi=0
+             Ci=236 HV=11 Tqi=0
+             Ci=235 HV=11 Tqi=0
+             Ci=234 HV=11 Tqi=0
+             Ci=233 HV=11 Tqi=0
+             Ci=232 HV=11 Tqi=0
+             Ci=231 HV=11 Tqi=0
+             Ci=230 HV=11 Tqi=0
+             Ci=229 HV=11 Tqi=0
+             Ci=228 HV=11 Tqi=0
+             Ci=227 HV=11 Tqi=0
+             Ci=226 HV=11 Tqi=0
+             Ci=225 HV=11 Tqi=0
+             Ci=224 HV=11 Tqi=0
+             Ci=223 HV=11 Tqi=0
+             Ci=222 HV=11 Tqi=0
+             Ci=221 HV=11 Tqi=0
+             Ci=220 HV=11 Tqi=0
+             Ci=219 HV=11 Tqi=0
+             Ci=218 HV=11 Tqi=0
+             Ci=217 HV=11 Tqi=0
+             Ci=216 HV=11 Tqi=0
+             Ci=215 HV=11 Tqi=0
+             Ci=214 HV=11 Tqi=0
+             Ci=213 HV=11 Tqi=0
+             Ci=212 HV=11 Tqi=0
+             Ci=211 HV=11 Tqi=0
+             Ci=210 HV=11 Tqi=0
+             Ci=209 HV=11 Tqi=0
+             Ci=208 HV=11 Tqi=0
+             Ci=207 HV=11 Tqi=0
+             Ci=206 HV=11 Tqi=0
+             Ci=205 HV=11 Tqi=0
+             Ci=204 HV=11 Tqi=0
+             Ci=203 HV=11 Tqi=0
+             Ci=202 HV=11 Tqi=0
+             Ci=201 HV=11 Tqi=0
+             Ci=200 HV=11 Tqi=0
+             Ci=199 HV=11 Tqi=0
+             Ci=198 HV=11 Tqi=0
+             Ci=197 HV=11 Tqi=0
+             Ci=196 HV=11 Tqi=0
+             Ci=195 HV=11 Tqi=0
+             Ci=194 HV=11 Tqi=0
+             Ci=193 HV=11 Tqi=0
+             Ci=192 HV=11 Tqi=0
+             Ci=191 HV=11 Tqi=0
+             Ci=190 HV=11 Tqi=0
+             Ci=189 HV=11 Tqi=0
+             Ci=188 HV=11 Tqi=0
+             Ci=187 HV=11 Tqi=0
+             Ci=186 HV=11 Tqi=0
+             Ci=185 HV=11 Tqi=0
+             Ci=184 HV=11 Tqi=0
+             Ci=183 HV=11 Tqi=0
+             Ci=182 HV=11 Tqi=0
+             Ci=181 HV=11 Tqi=0
+             Ci=180 HV=11 Tqi=0
+             Ci=179 HV=11 Tqi=0
+             Ci=178 HV=11 Tqi=0
+             Ci=177 HV=11 Tqi=0
+             Ci=176 HV=11 Tqi=0
+             Ci=175 HV=11 Tqi=0
+             Ci=174 HV=11 Tqi=0
+             Ci=173 HV=11 Tqi=0
+             Ci=172 HV=11 Tqi=0
+             Ci=171 HV=11 Tqi=0
+             Ci=170 HV=11 Tqi=0
+             Ci=169 HV=11 Tqi=0
+             Ci=168 HV=11 Tqi=0
+             Ci=167 HV=11 Tqi=0
+             Ci=166 HV=11 Tqi=0
+             Ci=165 HV=11 Tqi=0
+             Ci=164 HV=11 Tqi=0
+             Ci=163 HV=11 Tqi=0
+             Ci=162 HV=11 Tqi=0
+             Ci=161 HV=11 Tqi=0
+             Ci=160 HV=11 Tqi=0
+             Ci=159 HV=11 Tqi=0
+             Ci=158 HV=11 Tqi=0
+             Ci=157 HV=11 Tqi=0
+             Ci=156 HV=11 Tqi=0
+             Ci=155 HV=11 Tqi=0
+             Ci=154 HV=11 Tqi=0
+             Ci=153 HV=11 Tqi=0
+             Ci=152 HV=11 Tqi=0
+             Ci=151 HV=11 Tqi=0
+             Ci=150 HV=11 Tqi=0
+             Ci=149 HV=11 Tqi=0
+             Ci=148 HV=11 Tqi=0
+             Ci=147 HV=11 Tqi=0
+             Ci=146 HV=11 Tqi=0
+             Ci=145 HV=11 Tqi=0
+             Ci=144 HV=11 Tqi=0
+             Ci=143 HV=11 Tqi=0
+             Ci=142 HV=11 Tqi=0
+             Ci=141 HV=11 Tqi=0
+             Ci=140 HV=11 Tqi=0
+             Ci=139 HV=11 Tqi=0
+             Ci=138 HV=11 Tqi=0
+             Ci=137 HV=11 Tqi=0
+             Ci=136 HV=11 Tqi=0
+             Ci=135 HV=11 Tqi=0
+             Ci=134 HV=11 Tqi=0
+             Ci=133 HV=11 Tqi=0
+             Ci=132 HV=11 Tqi=0
+             Ci=131 HV=11 Tqi=0
+             Ci=130 HV=11 Tqi=0
+             Ci=129 HV=11 Tqi=0
+             Ci=128 HV=11 Tqi=0
+             Ci=127 HV=11 Tqi=0
+             Ci=126 HV=11 Tqi=0
+             Ci=125 HV=11 Tqi=0
+             Ci=124 HV=11 Tqi=0
+             Ci=123 HV=11 Tqi=0
+             Ci=122 HV=11 Tqi=0
+             Ci=121 HV=11 Tqi=0
+             Ci=120 HV=11 Tqi=0
+             Ci=119 HV=11 Tqi=0
+             Ci=118 HV=11 Tqi=0
+             Ci=117 HV=11 Tqi=0
+             Ci=116 HV=11 Tqi=0
+             Ci=115 HV=11 Tqi=0
+             Ci=114 HV=11 Tqi=0
+             Ci=113 HV=11 Tqi=0
+             Ci=112 HV=11 Tqi=0
+             Ci=111 HV=11 Tqi=0
+             Ci=110 HV=11 Tqi=0
+             Ci=109 HV=11 Tqi=0
+             Ci=108 HV=11 Tqi=0
+             Ci=107 HV=11 Tqi=0
+             Ci=106 HV=11 Tqi=0
+             Ci=105 HV=11 Tqi=0
+             Ci=104 HV=11 Tqi=0
+             Ci=103 HV=11 Tqi=0
+             Ci=102 HV=11 Tqi=0
+             Ci=101 HV=11 Tqi=0
+             Ci=100 HV=11 Tqi=0
+             Ci= 99 HV=11 Tqi=0
+             Ci= 98 HV=11 Tqi=0
+             Ci= 97 HV=11 Tqi=0
+             Ci= 96 HV=11 Tqi=0
+             Ci= 95 HV=11 Tqi=0
+             Ci= 94 HV=11 Tqi=0
+             Ci= 93 HV=11 Tqi=0
+             Ci= 92 HV=11 Tqi=0
+             Ci= 91 HV=11 Tqi=0
+             Ci= 90 HV=11 Tqi=0
+             Ci= 89 HV=11 Tqi=0
+             Ci= 88 HV=11 Tqi=0
+             Ci= 87 HV=11 Tqi=0
+             Ci= 86 HV=11 Tqi=0
+             Ci= 85 HV=11 Tqi=0
+             Ci= 84 HV=11 Tqi=0
+             Ci= 83 HV=11 Tqi=0
+             Ci= 82 HV=11 Tqi=0
+             Ci= 81 HV=11 Tqi=0
+             Ci= 80 HV=11 Tqi=0
+             Ci= 79 HV=11 Tqi=0
+             Ci= 78 HV=11 Tqi=0
+             Ci= 77 HV=11 Tqi=0
+             Ci= 76 HV=11 Tqi=0
+             Ci= 75 HV=11 Tqi=0
+             Ci= 74 HV=11 Tqi=0
+             Ci= 73 HV=11 Tqi=0
+             Ci= 72 HV=11 Tqi=0
+             Ci= 71 HV=11 Tqi=0
+             Ci= 70 HV=11 Tqi=0
+             Ci= 69 HV=11 Tqi=0
+             Ci= 68 HV=11 Tqi=0
+             Ci= 67 HV=11 Tqi=0
+             Ci= 66 HV=11 Tqi=0
+             Ci= 65 HV=11 Tqi=0
+             Ci= 64 HV=11 Tqi=0
+             Ci= 63 HV=11 Tqi=0
+             Ci= 62 HV=11 Tqi=0
+             Ci= 61 HV=11 Tqi=0
+             Ci= 60 HV=11 Tqi=0
+             Ci= 59 HV=11 Tqi=0
+             Ci= 58 HV=11 Tqi=0
+             Ci= 57 HV=11 Tqi=0
+             Ci= 56 HV=11 Tqi=0
+             Ci= 55 HV=11 Tqi=0
+             Ci= 54 HV=11 Tqi=0
+             Ci= 53 HV=11 Tqi=0
+             Ci= 52 HV=11 Tqi=0
+             Ci= 51 HV=11 Tqi=0
+             Ci= 50 HV=11 Tqi=0
+             Ci= 49 HV=11 Tqi=0
+             Ci= 48 HV=11 Tqi=0
+             Ci= 47 HV=11 Tqi=0
+             Ci= 46 HV=11 Tqi=0
+             Ci= 45 HV=11 Tqi=0
+             Ci= 44 HV=11 Tqi=0
+             Ci= 43 HV=11 Tqi=0
+             Ci= 42 HV=11 Tqi=0
+             Ci= 41 HV=11 Tqi=0
+             Ci= 40 HV=11 Tqi=0
+             Ci= 39 HV=11 Tqi=0
+             Ci= 38 HV=11 Tqi=0
+             Ci= 37 HV=11 Tqi=0
+             Ci= 36 HV=11 Tqi=0
+             Ci= 35 HV=11 Tqi=0
+             Ci= 34 HV=11 Tqi=0
+             Ci= 33 HV=11 Tqi=0
+             Ci= 32 HV=11 Tqi=0
+             Ci= 31 HV=11 Tqi=0
+             Ci= 30 HV=11 Tqi=0
+             Ci= 29 HV=11 Tqi=0
+             Ci= 28 HV=11 Tqi=0
+             Ci= 27 HV=11 Tqi=0
+             Ci= 26 HV=11 Tqi=0
+             Ci= 25 HV=11 Tqi=0
+             Ci= 24 HV=11 Tqi=0
+             Ci= 23 HV=11 Tqi=0
+             Ci= 22 HV=11 Tqi=0
+             Ci= 21 HV=11 Tqi=0
+             Ci= 20 HV=11 Tqi=0
+             Ci= 19 HV=11 Tqi=0
+             Ci= 18 HV=11 Tqi=0
+             Ci= 17 HV=11 Tqi=0
+             Ci= 16 HV=11 Tqi=0
+             Ci= 15 HV=11 Tqi=0
+             Ci= 14 HV=11 Tqi=0
+             Ci= 13 HV=11 Tqi=0
+             Ci= 12 HV=11 Tqi=0
+             Ci= 11 HV=11 Tqi=0
+             Ci= 10 HV=11 Tqi=0
+             Ci=  9 HV=11 Tqi=0
+             Ci=  8 HV=11 Tqi=0
+             Ci=  7 HV=11 Tqi=0
+             Ci=  6 HV=11 Tqi=0
+             Ci=  5 HV=11 Tqi=0
+             Ci=  4 HV=11 Tqi=0
+             Ci=  3 HV=11 Tqi=0
+             Ci=  2 HV=12 Tqi=1
+             Ci=  1 HV=31 Tqi=2
+             Ci=  0 HV=14 Tqi=3
+1170   DRI (ffdd) Lr=4 Ri=11
+1176   SOS (ffda) Ls=8 Ns=1
+             Csk=254 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+       5 FIL bytes
+4482   SOS (ffffffffffffda) Ls=8 Ns=1
+             Csk=253 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+9617   SOS (ffda) Ls=8 Ns=1
+             Csk=252 Td=1 Ta=1
+             Ss=0 Se=63 Ah=0 Al=0
+20040  SOS (ffda) Ls=8 Ns=1
+             Csk=251 Td=1 Ta=1
+             Ss=0 Se=63 Ah=0 Al=0
+32292  SOS (ffda) Ls=8 Ns=1
+             Csk=250 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+35593  SOS (ffda) Ls=8 Ns=1
+             Csk=249 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+38894  SOS (ffda) Ls=8 Ns=1
+             Csk=248 Td=1 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+42207  SOS (ffda) Ls=8 Ns=1
+             Csk=247 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+45508  SOS (ffda) Ls=8 Ns=1
+             Csk=246 Td=0 Ta=1
+             Ss=0 Se=63 Ah=0 Al=0
+       1 FIL bytes
+49152  SOS (ffffda) Ls=8 Ns=1
+             Csk=245 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+52453  SOS (ffda) Ls=8 Ns=1
+             Csk=244 Td=1 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+55766  SOS (ffda) Ls=8 Ns=1
+             Csk=243 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+59067  SOS (ffda) Ls=8 Ns=1
+             Csk=242 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+62368  SOS (ffda) Ls=8 Ns=1
+             Csk=241 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+65669  SOS (ffda) Ls=8 Ns=1
+             Csk=240 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+68970  DQT (ffdb) Lq=132
+Qtable 0,  Precision = 1 byte.
+              9    9   12   24   50   50   50   50
+              9   11   13   33   50   50   50   50
+             12   13   28   50   50   50   50   50
+             24   33   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+Qtable 0,  Precision = 1 byte.
+              8    6    5    8   12   20   26   30
+              6    6    7   10   13   29   30   28
+              7    7    8   12   20   29   35   28
+              7    9   11   15   26   44   40   31
+              9   11   19   28   34   55   52   39
+             12   18   28   32   41   52   57   46
+             25   32   39   44   52   61   60   51
+             36   46   48   49   56   50   52   50
+       2 FIL bytes
+69106  DHT (ffffffc4) Lq=165
+AC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 02 02 02 01 04 01 02 03 06 03 06 05 05 00 00 :(values/length (hex))
+   01 02                                           :(hex values, L= 2)
+   03 11                                           :(hex values, L= 3)
+   04 12                                           :(hex values, L= 4)
+   00                                              :(hex values, L= 5)
+   05 13 21 22                                     :(hex values, L= 6)
+   31                                              :(hex values, L= 7)
+   14 32                                           :(hex values, L= 8)
+   06 23 41                                        :(hex values, L= 9)
+   15 33 42 72 73 b3                               :(hex values, L=10)
+   34 51 b2                                        :(hex values, L=11)
+   35 36 37 62 71 b4                               :(hex values, L=12)
+   07 24 43 52 74                                  :(hex values, L=13)
+   61 75 82 c2 c3                                  :(hex values, L=14)
+Lossless/DC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 03 01 01 01 01 01 00 00 00 00 00 00 00 00 00 :(values/length (hex))
+   03 04 05                                        :(hex values, L= 2)
+   02                                              :(hex values, L= 3)
+   01                                              :(hex values, L= 4)
+   06                                              :(hex values, L= 5)
+   00                                              :(hex values, L= 6)
+   07                                              :(hex values, L= 7)
+Lossless/DC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 03 01 01 01 01 00 00 00 00 00 00 00 00 00 00 :(values/length (hex))
+   02 03 04                                        :(hex values, L= 2)
+   01                                              :(hex values, L= 3)
+   00                                              :(hex values, L= 4)
+   05                                              :(hex values, L= 5)
+   06                                              :(hex values, L= 6)
+AC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 03 00 02 03 00 02 01 03 01 05 06 05 04 03 00 :(values/length (hex))
+   01 02 03                                        :(hex values, L= 2)
+   11 12                                           :(hex values, L= 4)
+   00 04 13                                        :(hex values, L= 5)
+   21 22                                           :(hex values, L= 7)
+   23                                              :(hex values, L= 8)
+   14 31 32                                        :(hex values, L= 9)
+   05                                              :(hex values, L=10)
+   33 34 41 73 b4                                  :(hex values, L=11)
+   b3 74 35 42 72 b2                               :(hex values, L=12)
+   24 71 75 b1 b5                                  :(hex values, L=13)
+   43 52 83 c3                                     :(hex values, L=14)
+   82 84 c2                                        :(hex values, L=15)
+69273  DRI (ffdd) Lr=4 Ri=0
+69279  SOS (ffda) Ls=8 Ns=1
+             Csk=239 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+72493  SOS (ffda) Ls=8 Ns=1
+             Csk=238 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+75707  SOS (ffda) Ls=8 Ns=1
+             Csk=237 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+78921  SOS (ffda) Ls=8 Ns=1
+             Csk=236 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+82135  SOS (ffda) Ls=8 Ns=1
+             Csk=235 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+85349  SOS (ffda) Ls=8 Ns=1
+             Csk=234 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+88563  SOS (ffda) Ls=8 Ns=1
+             Csk=233 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+91777  SOS (ffda) Ls=8 Ns=1
+             Csk=232 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+94991  SOS (ffda) Ls=8 Ns=1
+             Csk=231 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+98205  SOS (ffda) Ls=8 Ns=1
+             Csk=230 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+101419 SOS (ffda) Ls=8 Ns=1
+             Csk=229 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+104633 SOS (ffda) Ls=8 Ns=1
+             Csk=228 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+107847 SOS (ffda) Ls=8 Ns=1
+             Csk=227 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+111061 SOS (ffda) Ls=8 Ns=1
+             Csk=226 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+114275 SOS (ffda) Ls=8 Ns=1
+             Csk=225 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+117489 SOS (ffda) Ls=8 Ns=1
+             Csk=224 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+120703 SOS (ffda) Ls=8 Ns=1
+             Csk=223 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+123917 SOS (ffda) Ls=8 Ns=1
+             Csk=222 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+127131 SOS (ffda) Ls=8 Ns=1
+             Csk=221 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+130345 SOS (ffda) Ls=8 Ns=1
+             Csk=220 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+133559 SOS (ffda) Ls=8 Ns=1
+             Csk=219 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+136773 SOS (ffda) Ls=8 Ns=1
+             Csk=218 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+139987 SOS (ffda) Ls=8 Ns=1
+             Csk=217 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+143201 SOS (ffda) Ls=8 Ns=1
+             Csk=216 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+146415 SOS (ffda) Ls=8 Ns=1
+             Csk=215 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+149629 SOS (ffda) Ls=8 Ns=1
+             Csk=214 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+152843 SOS (ffda) Ls=8 Ns=1
+             Csk=213 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+156057 SOS (ffda) Ls=8 Ns=1
+             Csk=212 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+159271 SOS (ffda) Ls=8 Ns=1
+             Csk=211 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+162485 SOS (ffda) Ls=8 Ns=1
+             Csk=210 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+165699 SOS (ffda) Ls=8 Ns=1
+             Csk=209 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+168913 SOS (ffda) Ls=8 Ns=1
+             Csk=208 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+172127 SOS (ffda) Ls=8 Ns=1
+             Csk=207 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+175341 SOS (ffda) Ls=8 Ns=1
+             Csk=206 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+178555 SOS (ffda) Ls=8 Ns=1
+             Csk=205 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+181769 SOS (ffda) Ls=8 Ns=1
+             Csk=204 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+184983 SOS (ffda) Ls=8 Ns=1
+             Csk=203 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+188197 SOS (ffda) Ls=8 Ns=1
+             Csk=202 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+191411 SOS (ffda) Ls=8 Ns=1
+             Csk=201 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+194625 SOS (ffda) Ls=8 Ns=1
+             Csk=200 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+197839 SOS (ffda) Ls=8 Ns=1
+             Csk=199 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+201053 SOS (ffda) Ls=8 Ns=1
+             Csk=198 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+204267 SOS (ffda) Ls=8 Ns=1
+             Csk=197 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+207481 SOS (ffda) Ls=8 Ns=1
+             Csk=196 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+210695 SOS (ffda) Ls=8 Ns=1
+             Csk=195 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+213909 SOS (ffda) Ls=8 Ns=1
+             Csk=194 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+217123 SOS (ffda) Ls=8 Ns=1
+             Csk=193 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+220337 SOS (ffda) Ls=8 Ns=1
+             Csk=192 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+223551 SOS (ffda) Ls=8 Ns=1
+             Csk=191 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+226765 SOS (ffda) Ls=8 Ns=1
+             Csk=190 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+229979 SOS (ffda) Ls=8 Ns=1
+             Csk=189 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+233193 SOS (ffda) Ls=8 Ns=1
+             Csk=188 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+236407 SOS (ffda) Ls=8 Ns=1
+             Csk=187 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+239621 SOS (ffda) Ls=8 Ns=1
+             Csk=186 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+242835 SOS (ffda) Ls=8 Ns=1
+             Csk=185 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+246049 SOS (ffda) Ls=8 Ns=1
+             Csk=184 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+249263 SOS (ffda) Ls=8 Ns=1
+             Csk=183 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+252477 SOS (ffda) Ls=8 Ns=1
+             Csk=182 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+255691 SOS (ffda) Ls=8 Ns=1
+             Csk=181 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+258905 SOS (ffda) Ls=8 Ns=1
+             Csk=180 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+262119 SOS (ffda) Ls=8 Ns=1
+             Csk=179 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+265333 SOS (ffda) Ls=8 Ns=1
+             Csk=178 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+268547 SOS (ffda) Ls=8 Ns=1
+             Csk=177 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+271761 SOS (ffda) Ls=8 Ns=1
+             Csk=176 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+274975 SOS (ffda) Ls=8 Ns=1
+             Csk=175 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+278189 SOS (ffda) Ls=8 Ns=1
+             Csk=174 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+281403 SOS (ffda) Ls=8 Ns=1
+             Csk=173 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+284617 SOS (ffda) Ls=8 Ns=1
+             Csk=172 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+287831 SOS (ffda) Ls=8 Ns=1
+             Csk=171 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+291045 SOS (ffda) Ls=8 Ns=1
+             Csk=170 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+294259 SOS (ffda) Ls=8 Ns=1
+             Csk=169 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+297473 SOS (ffda) Ls=8 Ns=1
+             Csk=168 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+300687 SOS (ffda) Ls=8 Ns=1
+             Csk=167 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+303901 SOS (ffda) Ls=8 Ns=1
+             Csk=166 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+307115 SOS (ffda) Ls=8 Ns=1
+             Csk=165 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+310329 SOS (ffda) Ls=8 Ns=1
+             Csk=164 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+313543 SOS (ffda) Ls=8 Ns=1
+             Csk=163 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+316757 SOS (ffda) Ls=8 Ns=1
+             Csk=162 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+319971 SOS (ffda) Ls=8 Ns=1
+             Csk=161 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+323185 SOS (ffda) Ls=8 Ns=1
+             Csk=160 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+326399 SOS (ffda) Ls=8 Ns=1
+             Csk=159 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+329613 SOS (ffda) Ls=8 Ns=1
+             Csk=158 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+332827 SOS (ffda) Ls=8 Ns=1
+             Csk=157 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+336041 SOS (ffda) Ls=8 Ns=1
+             Csk=156 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+339255 SOS (ffda) Ls=8 Ns=1
+             Csk=155 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+342469 SOS (ffda) Ls=8 Ns=1
+             Csk=154 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+345683 SOS (ffda) Ls=8 Ns=1
+             Csk=153 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+348897 SOS (ffda) Ls=8 Ns=1
+             Csk=152 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+352111 SOS (ffda) Ls=8 Ns=1
+             Csk=151 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+355325 SOS (ffda) Ls=8 Ns=1
+             Csk=150 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+358539 SOS (ffda) Ls=8 Ns=1
+             Csk=149 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+361753 SOS (ffda) Ls=8 Ns=1
+             Csk=148 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+364967 SOS (ffda) Ls=8 Ns=1
+             Csk=147 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+368181 SOS (ffda) Ls=8 Ns=1
+             Csk=146 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+371395 SOS (ffda) Ls=8 Ns=1
+             Csk=145 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+374609 SOS (ffda) Ls=8 Ns=1
+             Csk=144 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+377823 SOS (ffda) Ls=8 Ns=1
+             Csk=143 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+381037 SOS (ffda) Ls=8 Ns=1
+             Csk=142 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+384251 SOS (ffda) Ls=8 Ns=1
+             Csk=141 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+387465 SOS (ffda) Ls=8 Ns=1
+             Csk=140 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+390679 SOS (ffda) Ls=8 Ns=1
+             Csk=139 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+393893 SOS (ffda) Ls=8 Ns=1
+             Csk=138 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+397107 SOS (ffda) Ls=8 Ns=1
+             Csk=137 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+400321 SOS (ffda) Ls=8 Ns=1
+             Csk=136 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+403535 SOS (ffda) Ls=8 Ns=1
+             Csk=135 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+406749 SOS (ffda) Ls=8 Ns=1
+             Csk=134 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+409963 SOS (ffda) Ls=8 Ns=1
+             Csk=133 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+413177 SOS (ffda) Ls=8 Ns=1
+             Csk=132 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+416391 SOS (ffda) Ls=8 Ns=1
+             Csk=131 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+419605 SOS (ffda) Ls=8 Ns=1
+             Csk=130 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+422819 SOS (ffda) Ls=8 Ns=1
+             Csk=129 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+426033 SOS (ffda) Ls=8 Ns=1
+             Csk=128 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+429247 SOS (ffda) Ls=8 Ns=1
+             Csk=127 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+432461 SOS (ffda) Ls=8 Ns=1
+             Csk=126 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+435675 SOS (ffda) Ls=8 Ns=1
+             Csk=125 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+438889 SOS (ffda) Ls=8 Ns=1
+             Csk=124 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+442103 SOS (ffda) Ls=8 Ns=1
+             Csk=123 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+445317 SOS (ffda) Ls=8 Ns=1
+             Csk=122 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+448531 SOS (ffda) Ls=8 Ns=1
+             Csk=121 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+451745 SOS (ffda) Ls=8 Ns=1
+             Csk=120 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+454959 SOS (ffda) Ls=8 Ns=1
+             Csk=119 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+458173 SOS (ffda) Ls=8 Ns=1
+             Csk=118 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+461387 SOS (ffda) Ls=8 Ns=1
+             Csk=117 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+464601 SOS (ffda) Ls=8 Ns=1
+             Csk=116 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+467815 SOS (ffda) Ls=8 Ns=1
+             Csk=115 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+471029 SOS (ffda) Ls=8 Ns=1
+             Csk=114 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+474243 SOS (ffda) Ls=8 Ns=1
+             Csk=113 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+477457 SOS (ffda) Ls=8 Ns=1
+             Csk=112 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+480671 SOS (ffda) Ls=8 Ns=1
+             Csk=111 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+483885 SOS (ffda) Ls=8 Ns=1
+             Csk=110 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+487099 SOS (ffda) Ls=8 Ns=1
+             Csk=109 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+490313 SOS (ffda) Ls=8 Ns=1
+             Csk=108 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+493527 SOS (ffda) Ls=8 Ns=1
+             Csk=107 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+496741 SOS (ffda) Ls=8 Ns=1
+             Csk=106 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+499955 SOS (ffda) Ls=8 Ns=1
+             Csk=105 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+503169 SOS (ffda) Ls=8 Ns=1
+             Csk=104 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+506383 SOS (ffda) Ls=8 Ns=1
+             Csk=103 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+509597 SOS (ffda) Ls=8 Ns=1
+             Csk=102 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+512811 SOS (ffda) Ls=8 Ns=1
+             Csk=101 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+516025 SOS (ffda) Ls=8 Ns=1
+             Csk=100 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+519239 SOS (ffda) Ls=8 Ns=1
+             Csk= 99 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+522453 SOS (ffda) Ls=8 Ns=1
+             Csk= 98 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+525667 SOS (ffda) Ls=8 Ns=1
+             Csk= 97 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+528881 SOS (ffda) Ls=8 Ns=1
+             Csk= 96 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+532095 SOS (ffda) Ls=8 Ns=1
+             Csk= 95 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+535309 SOS (ffda) Ls=8 Ns=1
+             Csk= 94 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+538523 SOS (ffda) Ls=8 Ns=1
+             Csk= 93 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+541737 SOS (ffda) Ls=8 Ns=1
+             Csk= 92 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+544951 SOS (ffda) Ls=8 Ns=1
+             Csk= 91 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+548165 SOS (ffda) Ls=8 Ns=1
+             Csk= 90 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+551379 SOS (ffda) Ls=8 Ns=1
+             Csk= 89 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+554593 SOS (ffda) Ls=8 Ns=1
+             Csk= 88 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+557807 SOS (ffda) Ls=8 Ns=1
+             Csk= 87 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+561021 SOS (ffda) Ls=8 Ns=1
+             Csk= 86 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+564235 SOS (ffda) Ls=8 Ns=1
+             Csk= 85 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+567449 SOS (ffda) Ls=8 Ns=1
+             Csk= 84 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+570663 SOS (ffda) Ls=8 Ns=1
+             Csk= 83 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+573877 SOS (ffda) Ls=8 Ns=1
+             Csk= 82 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+577091 SOS (ffda) Ls=8 Ns=1
+             Csk= 81 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+580305 SOS (ffda) Ls=8 Ns=1
+             Csk= 80 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+583519 SOS (ffda) Ls=8 Ns=1
+             Csk= 79 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+586733 SOS (ffda) Ls=8 Ns=1
+             Csk= 78 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+589947 SOS (ffda) Ls=8 Ns=1
+             Csk= 77 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+593161 SOS (ffda) Ls=8 Ns=1
+             Csk= 76 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+596375 SOS (ffda) Ls=8 Ns=1
+             Csk= 75 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+599589 SOS (ffda) Ls=8 Ns=1
+             Csk= 74 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+602803 SOS (ffda) Ls=8 Ns=1
+             Csk= 73 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+606017 SOS (ffda) Ls=8 Ns=1
+             Csk= 72 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+609231 SOS (ffda) Ls=8 Ns=1
+             Csk= 71 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+612445 SOS (ffda) Ls=8 Ns=1
+             Csk= 70 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+615659 SOS (ffda) Ls=8 Ns=1
+             Csk= 69 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+618873 SOS (ffda) Ls=8 Ns=1
+             Csk= 68 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+622087 SOS (ffda) Ls=8 Ns=1
+             Csk= 67 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+625301 SOS (ffda) Ls=8 Ns=1
+             Csk= 66 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+628515 SOS (ffda) Ls=8 Ns=1
+             Csk= 65 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+631729 SOS (ffda) Ls=8 Ns=1
+             Csk= 64 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+634943 SOS (ffda) Ls=8 Ns=1
+             Csk= 63 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+638157 SOS (ffda) Ls=8 Ns=1
+             Csk= 62 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+641371 SOS (ffda) Ls=8 Ns=1
+             Csk= 61 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+644585 SOS (ffda) Ls=8 Ns=1
+             Csk= 60 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+647799 SOS (ffda) Ls=8 Ns=1
+             Csk= 59 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+651013 SOS (ffda) Ls=8 Ns=1
+             Csk= 58 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+654227 SOS (ffda) Ls=8 Ns=1
+             Csk= 57 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+657441 SOS (ffda) Ls=8 Ns=1
+             Csk= 56 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+660655 SOS (ffda) Ls=8 Ns=1
+             Csk= 55 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+663869 SOS (ffda) Ls=8 Ns=1
+             Csk= 54 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+667083 SOS (ffda) Ls=8 Ns=1
+             Csk= 53 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+670297 SOS (ffda) Ls=8 Ns=1
+             Csk= 52 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+673511 SOS (ffda) Ls=8 Ns=1
+             Csk= 51 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+676725 SOS (ffda) Ls=8 Ns=1
+             Csk= 50 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+679939 SOS (ffda) Ls=8 Ns=1
+             Csk= 49 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+683153 SOS (ffda) Ls=8 Ns=1
+             Csk= 48 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+686367 SOS (ffda) Ls=8 Ns=1
+             Csk= 47 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+689581 SOS (ffda) Ls=8 Ns=1
+             Csk= 46 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+692795 SOS (ffda) Ls=8 Ns=1
+             Csk= 45 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+696009 SOS (ffda) Ls=8 Ns=1
+             Csk= 44 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+699223 SOS (ffda) Ls=8 Ns=1
+             Csk= 43 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+702437 SOS (ffda) Ls=8 Ns=1
+             Csk= 42 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+705651 SOS (ffda) Ls=8 Ns=1
+             Csk= 41 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+708865 SOS (ffda) Ls=8 Ns=1
+             Csk= 40 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+712079 SOS (ffda) Ls=8 Ns=1
+             Csk= 39 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+715293 SOS (ffda) Ls=8 Ns=1
+             Csk= 38 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+718507 SOS (ffda) Ls=8 Ns=1
+             Csk= 37 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+721721 SOS (ffda) Ls=8 Ns=1
+             Csk= 36 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+724935 SOS (ffda) Ls=8 Ns=1
+             Csk= 35 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+728149 SOS (ffda) Ls=8 Ns=1
+             Csk= 34 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+731363 SOS (ffda) Ls=8 Ns=1
+             Csk= 33 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+734577 SOS (ffda) Ls=8 Ns=1
+             Csk= 32 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+737791 SOS (ffda) Ls=8 Ns=1
+             Csk= 31 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+741005 SOS (ffda) Ls=8 Ns=1
+             Csk= 30 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+744219 SOS (ffda) Ls=8 Ns=1
+             Csk= 29 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+747433 SOS (ffda) Ls=8 Ns=1
+             Csk= 28 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+750647 SOS (ffda) Ls=8 Ns=1
+             Csk= 27 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+753861 SOS (ffda) Ls=8 Ns=1
+             Csk= 26 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+757075 SOS (ffda) Ls=8 Ns=1
+             Csk= 25 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+760289 SOS (ffda) Ls=8 Ns=1
+             Csk= 24 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+763503 SOS (ffda) Ls=8 Ns=1
+             Csk= 23 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+766717 SOS (ffda) Ls=8 Ns=1
+             Csk= 22 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+769931 SOS (ffda) Ls=8 Ns=1
+             Csk= 21 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+773145 SOS (ffda) Ls=8 Ns=1
+             Csk= 20 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+776359 SOS (ffda) Ls=8 Ns=1
+             Csk= 19 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+779573 SOS (ffda) Ls=8 Ns=1
+             Csk= 18 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+782787 SOS (ffda) Ls=8 Ns=1
+             Csk= 17 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+786001 SOS (ffda) Ls=8 Ns=1
+             Csk= 16 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+789215 SOS (ffda) Ls=8 Ns=1
+             Csk= 15 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+792429 SOS (ffda) Ls=8 Ns=1
+             Csk= 14 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+795643 SOS (ffda) Ls=8 Ns=1
+             Csk= 13 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+798857 SOS (ffda) Ls=8 Ns=1
+             Csk= 12 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+802071 SOS (ffda) Ls=8 Ns=1
+             Csk= 11 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+805285 SOS (ffda) Ls=8 Ns=1
+             Csk= 10 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+808499 SOS (ffda) Ls=8 Ns=1
+             Csk=  9 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+811713 SOS (ffda) Ls=8 Ns=1
+             Csk=  8 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+814927 SOS (ffda) Ls=8 Ns=1
+             Csk=  7 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+818141 SOS (ffda) Ls=8 Ns=1
+             Csk=  6 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+821355 SOS (ffda) Ls=8 Ns=1
+             Csk=  5 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+824569 SOS (ffda) Ls=8 Ns=1
+             Csk=  4 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+827783 SOS (ffda) Ls=8 Ns=1
+             Csk=  3 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+830997 SOS (ffda) Ls=8 Ns=1
+             Csk=  2 Td=0 Ta=0
+             Ss=0 Se=63 Ah=0 Al=0
+835899 SOS (ffda) Ls=8 Ns=1
+             Csk=  1 Td=1 Ta=1
+             Ss=0 Se=63 Ah=0 Al=0
+844400 SOS (ffda) Ls=8 Ns=1
+             Csk=  0 Td=1 Ta=1
+             Ss=0 Se=63 Ah=0 Al=0
+       1 FIL bytes
+854772 EOI (ffffd9)
+263 markers found in 854774 bytes of compressed data

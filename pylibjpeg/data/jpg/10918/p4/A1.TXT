@@ -1,0 +1,133 @@
+Parsed version of ' testa1 hdr p', May 8, 1994, WBP and JLM (IBM)
+0      SOI (ffd8)
+2      COM (fffe) Lc=368 'Compressed test data stream A1 for ITU-T Rec. 
+         T.83 | ISO/IEC 10918-2:1994 (JPEG). Interchange format. Validat
+         ed Nov. 1993 by Birger Niss (AutoGraph International, Denmark) 
+         and Chris Hepburn (Microstar Software Ltd., Canada). Revised an
+         d validated May 1994 by William B. Pennebaker, Chris Hepburn (M
+         icrostar Software Ltd., Canada), and Joan Mitchell (IBM Corp., 
+         USA).'
+372    DQT (ffdb) Lq=262
+Qtable 0,  Precision = 1 byte.
+              8    6    5    8   12   20   26   30
+              6    6    7   10   13   29   30   28
+              7    7    8   12   20   29   35   28
+              7    9   11   15   26   44   40   31
+              9   11   19   28   34   55   52   39
+             12   18   28   32   41   52   57   46
+             25   32   39   44   52   61   60   51
+             36   46   48   49   56   50   52   50
+Qtable 1,  Precision = 1 byte.
+              9    9   12   24   50   50   50   50
+              9   11   13   33   50   50   50   50
+             12   13   28   50   50   50   50   50
+             24   33   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+             50   50   50   50   50   50   50   50
+Qtable 2,  Precision = 1 byte.
+             16   17   18   19   20   21   22   23
+             17   18   19   20   21   22   23   24
+             18   19   20   21   22   23   24   25
+             19   20   21   22   23   24   25   26
+             20   21   22   23   24   25   26   27
+             21   22   23   24   25   26   27   28
+             22   23   24   25   26   27   28   29
+             23   24   25   26   27   28   29   30
+Qtable 3,  Precision = 1 byte.
+             16   16   19   22   26   27   29   34
+             16   16   22   24   27   29   34   37
+             19   22   26   27   29   34   34   38
+             22   22   26   27   29   34   37   40
+             22   26   27   29   32   35   40   48
+             26   27   29   32   35   40   48   58
+             26   27   29   34   38   46   56   69
+             27   29   35   38   46   56   69   83
+636    DRI (ffdd) Lr=4 Ri=5
+642    SOF0(ffc0) Lf=20 P=8 Y=257 X=255 Nf=4  (baseline seq. DCT)
+             Ci=200 HV=11 Tqi=0
+             Ci=150 HV=12 Tqi=1
+             Ci=100 HV=31 Tqi=2
+             Ci= 50 HV=14 Tqi=3
+664    DHT (ffc4) Lq=418
+Lossless/DC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 01 05 01 01 01 01 01 01 00 00 00 00 00 00 00 :(values/length (hex))
+   00                                              :(hex values, L= 2)
+   01 02 03 04 05                                  :(hex values, L= 3)
+   06                                              :(hex values, L= 4)
+   07                                              :(hex values, L= 5)
+   08                                              :(hex values, L= 6)
+   09                                              :(hex values, L= 7)
+   0a                                              :(hex values, L= 8)
+   0b                                              :(hex values, L= 9)
+AC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 02 01 03 03 02 04 03 05 05 04 04 00 00 01 7d :(values/length (hex))
+   01 02                                           :(hex values, L= 2)
+   03                                              :(hex values, L= 3)
+   00 04 11                                        :(hex values, L= 4)
+   05 12 21                                        :(hex values, L= 5)
+   31 41                                           :(hex values, L= 6)
+   06 13 51 61                                     :(hex values, L= 7)
+   07 22 71                                        :(hex values, L= 8)
+   14 32 81 91 a1                                  :(hex values, L= 9)
+   08 23 42 b1 c1                                  :(hex values, L=10)
+   15 52 d1 f0                                     :(hex values, L=11)
+   24 33 62 72                                     :(hex values, L=12)
+   82                                              :(hex values, L=15)
+   09 0a 16 17 18 19 1a 25 26 27 28 29 2a 34 35 36 :(hex values, L=16)
+   37 38 39 3a 43 44 45 46 47 48 49 4a 53 54 55 56 :(hex values, L=16)
+   57 58 59 5a 63 64 65 66 67 68 69 6a 73 74 75 76 :(hex values, L=16)
+   77 78 79 7a 83 84 85 86 87 88 89 8a 92 93 94 95 :(hex values, L=16)
+   96 97 98 99 9a a2 a3 a4 a5 a6 a7 a8 a9 aa b2 b3 :(hex values, L=16)
+   b4 b5 b6 b7 b8 b9 ba c2 c3 c4 c5 c6 c7 c8 c9 ca :(hex values, L=16)
+   d2 d3 d4 d5 d6 d7 d8 d9 da e1 e2 e3 e4 e5 e6 e7 :(hex values, L=16)
+   e8 e9 ea f1 f2 f3 f4 f5 f6 f7 f8 f9 fa          :(hex values, L=16)
+Lossless/DC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 03 01 01 01 01 01 01 01 01 01 00 00 00 00 00 :(values/length (hex))
+   00 01 02                                        :(hex values, L= 2)
+   03                                              :(hex values, L= 3)
+   04                                              :(hex values, L= 4)
+   05                                              :(hex values, L= 5)
+   06                                              :(hex values, L= 6)
+   07                                              :(hex values, L= 7)
+   08                                              :(hex values, L= 8)
+   09                                              :(hex values, L= 9)
+   0a                                              :(hex values, L=10)
+   0b                                              :(hex values, L=11)
+AC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 02 01 02 04 04 03 04 07 05 04 04 00 01 02 77 :(values/length (hex))
+   00 01                                           :(hex values, L= 2)
+   02                                              :(hex values, L= 3)
+   03 11                                           :(hex values, L= 4)
+   04 05 21 31                                     :(hex values, L= 5)
+   06 12 41 51                                     :(hex values, L= 6)
+   07 61 71                                        :(hex values, L= 7)
+   13 22 32 81                                     :(hex values, L= 8)
+   08 14 42 91 a1 b1 c1                            :(hex values, L= 9)
+   09 23 33 52 f0                                  :(hex values, L=10)
+   15 62 72 d1                                     :(hex values, L=11)
+   0a 16 24 34                                     :(hex values, L=12)
+   e1                                              :(hex values, L=14)
+   25 f1                                           :(hex values, L=15)
+   17 18 19 1a 26 27 28 29 2a 35 36 37 38 39 3a 43 :(hex values, L=16)
+   44 45 46 47 48 49 4a 53 54 55 56 57 58 59 5a 63 :(hex values, L=16)
+   64 65 66 67 68 69 6a 73 74 75 76 77 78 79 7a 82 :(hex values, L=16)
+   83 84 85 86 87 88 89 8a 92 93 94 95 96 97 98 99 :(hex values, L=16)
+   9a a2 a3 a4 a5 a6 a7 a8 a9 aa b2 b3 b4 b5 b6 b7 :(hex values, L=16)
+   b8 b9 ba c2 c3 c4 c5 c6 c7 c8 c9 ca d2 d3 d4 d5 :(hex values, L=16)
+   d6 d7 d8 d9 da e2 e3 e4 e5 e6 e7 e8 e9 ea f2 f3 :(hex values, L=16)
+   f4 f5 f6 f7 f8 f9 fa                            :(hex values, L=16)
+1084   APP0(ffe0) Lp=46 'This field contains a simulated APP0 segment'
+1132   SOS (ffda) Ls=14 Ns=4
+             Csk=200 Td=0 Ta=0
+             Csk=150 Td=0 Ta=0
+             Csk=100 Td=1 Ta=1
+             Csk= 50 Td=1 Ta=1
+             Ss=0 Se=63 Ah=0 Al=0
+32106  EOI (ffd9)
+9 markers found in 32108 bytes of compressed data
