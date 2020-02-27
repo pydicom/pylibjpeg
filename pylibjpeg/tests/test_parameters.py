@@ -1,5 +1,7 @@
 """Tests for the pylibjpeg pixel data handler."""
 
+from io import BytesIO
+import os
 import pytest
 import warnings
 
@@ -22,8 +24,12 @@ except ImportError:
 from pylibjpeg import add_handler, remove_handler, get_parameters
 from pylibjpeg.data import get_indexed_datasets
 
+TEST_DIR = os.path.abspath(os.path.dirname(__file__))
+DATA_DIR = os.path.join(TEST_DIR, '../data')
+DIR_10918 = os.path.join(DATA_DIR, 'jpg', '10918')
+DIR_14495 = os.path.join(DATA_DIR, 'jpg', '14495')
 
-REFERENCE = {
+REF_DCM = {
     '1.2.840.10008.1.2.4.50' : [
         # filename, (rows, columns, samples/px, bits/sample)
         ('JPEGBaseline_1s_1f_u_08_08.dcm', (100, 100, 1, 8)),
@@ -66,17 +72,17 @@ REFERENCE = {
 
 
 # ISO/IEC 10918 JPEG
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
-class TestGetParameters(object):
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
+class TestGetParametersDCM(object):
     """Tests for get_parameters()."""
     def generate_frames(self, ds):
         nr_frames = ds.get('NumberOfFrames', 1)
         return generate_pixel_data_frame(ds.PixelData, nr_frames)
 
-    @pytest.mark.parametrize("fname, info", REFERENCE['1.2.840.10008.1.2.4.50'])
+    @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.50'])
     def test_baseline(self, fname, info):
         """Test get_parameters() for the baseline datasets."""
-        #info: (marker, rows, columns, spp, bps)
+        #info: (rows, columns, spp, bps)
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
         ds = index[fname]['ds']
 
@@ -87,10 +93,10 @@ class TestGetParameters(object):
         assert info[2] == params['samples_per_pixel']
         assert info[3] == params['bits_per_sample']
 
-    @pytest.mark.parametrize("fname, info", REFERENCE['1.2.840.10008.1.2.4.51'])
+    @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.51'])
     def test_extended(self, fname, info):
         """Test get_parameters() for the baseline datasets."""
-        #info: (marker, rows, columns, spp, bps)
+        #info: (rows, columns, spp, bps)
         index = get_indexed_datasets('1.2.840.10008.1.2.4.51')
         ds = index[fname]['ds']
 
@@ -101,10 +107,10 @@ class TestGetParameters(object):
         assert info[2] == params['samples_per_pixel']
         assert info[3] == params['bits_per_sample']
 
-    @pytest.mark.parametrize("fname, info", REFERENCE['1.2.840.10008.1.2.4.57'])
+    @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.57'])
     def test_lossless(self, fname, info):
         """Test get_parameters() for the lossless datasets."""
-        #info: (marker, rows, columns, spp, bps)
+        #info: (rows, columns, spp, bps)
         index = get_indexed_datasets('1.2.840.10008.1.2.4.57')
         ds = index[fname]['ds']
 
@@ -115,10 +121,10 @@ class TestGetParameters(object):
         assert info[2] == params['samples_per_pixel']
         assert info[3] == params['bits_per_sample']
 
-    @pytest.mark.parametrize("fname, info", REFERENCE['1.2.840.10008.1.2.4.70'])
+    @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.70'])
     def test_lossless_sv1(self, fname, info):
         """Test get_parameters() for the lossless SV1 datasets."""
-        #info: (marker, rows, columns, spp, bps)
+        #info: (rows, columns, spp, bps)
         index = get_indexed_datasets('1.2.840.10008.1.2.4.70')
         ds = index[fname]['ds']
 
@@ -129,10 +135,10 @@ class TestGetParameters(object):
         assert info[2] == params['samples_per_pixel']
         assert info[3] == params['bits_per_sample']
 
-    @pytest.mark.parametrize("fname, info", REFERENCE['1.2.840.10008.1.2.4.80'])
+    @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.80'])
     def test_extended(self, fname, info):
         """Test get_parameters() for the LS lossless datasets."""
-        #info: (marker, rows, columns, spp, bps)
+        #info: (rows, columns, spp, bps)
         index = get_indexed_datasets('1.2.840.10008.1.2.4.80')
         ds = index[fname]['ds']
 
@@ -143,15 +149,133 @@ class TestGetParameters(object):
         assert info[2] == params['samples_per_pixel']
         assert info[3] == params['bits_per_sample']
 
-    @pytest.mark.parametrize("fname, info", REFERENCE['1.2.840.10008.1.2.4.81'])
+    @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.81'])
     def test_extended(self, fname, info):
         """Test get_parameters() for the LS lossy datasets."""
-        #info: (marker, rows, columns, spp, bps)
+        #info: (rows, columns, spp, bps)
         index = get_indexed_datasets('1.2.840.10008.1.2.4.81')
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
         params = get_parameters(np.frombuffer(frame, 'uint8'))
+
+        assert (info[0], info[1]) == (params['rows'], params['columns'])
+        assert info[2] == params['samples_per_pixel']
+        assert info[3] == params['bits_per_sample']
+
+
+REF_JPG = {
+    '10918' : {
+        'p1' : [
+            ('A1.JPG', (257, 255, 4, 8)),
+            #('B1.JPG', (1, 1, 1, 1)),
+            #('B2.JPG', (1, 1, 1, 1)), missing DHT marker (its in B1.JPG)
+        ],
+        'p2' : [
+            ('A1.JPG', (257, 255, 4, 8)),
+            #('B1.JPG', ()),
+            #('B2.JPG', ()), missing DHT (in B1)
+            ('C1.JPG', (257, 255, 4, 8)),
+            ('C2.JPG', (257, 255, 4, 8)),
+        ],
+        'p4' : [
+            ('A1.JPG', (257, 255, 4, 8)),
+            #('B1.JPG', ()),
+            #('B2.JPG', ()),
+            ('C1.JPG', (257, 255, 4, 8)),
+            ('C2.JPG', (257, 255, 4, 8)),
+            ('E1.JPG', (257, 255, 4, 12)),
+            ('E2.JPG', (257, 255, 4, 12)),
+        ],
+        'p14' : [
+            ('O1.JPG', (257, 255, 4, 8)),
+            ('O2.JPG', (257, 255, 4, 16)),
+        ],
+    },
+    '14495' : {
+        'JLS' : [
+            ('T8C0E0.JLS', (256, 256, 3, 8)),
+            ('T8C0E3.JLS', (256, 256, 3, 8)),
+            ('T8C1E0.JLS', (256, 256, 3, 8)),
+            ('T8C1E3.JLS', (256, 256, 3, 8)),
+            ('T8C2E0.JLS', (256, 256, 3, 8)),
+            ('T8C2E3.JLS', (256, 256, 3, 8)),
+            ('T8NDE0.JLS', (128, 128, 1, 8)),
+            ('T8NDE3.JLS', (128, 128, 1, 8)),
+            ('T8SSE0.JLS', (256, 256, 3, 8)),
+            ('T8SSE3.JLS', (256, 256, 3, 8)),
+            ('T16E0.JLS', (256, 256, 1, 12)),
+            ('T16E3.JLS', (256, 256, 1, 12)),
+        ],
+        'JNL' : [],
+    },
+    '15444' : {},
+}
+
+class TestGetParametersJPG(object):
+    """"""
+    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p1'])
+    def test_baseline(self, fname, info):
+        """Test get_parameters() for the baseline compliance images."""
+        #info: (rows, columns, spp, bps)
+        with open(os.path.join(DIR_10918, 'p1', fname), 'rb') as fp:
+            data = fp.read()
+
+        params = get_parameters(np.frombuffer(data, 'uint8'))
+
+        assert (info[0], info[1]) == (params['rows'], params['columns'])
+        assert info[2] == params['samples_per_pixel']
+        assert info[3] == params['bits_per_sample']
+
+    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p2'])
+    def test_extended_p2(self, fname, info):
+        """Test get_parameters() for the extended p2 compliance images."""
+        #info: (rows, columns, spp, bps)
+        with open(os.path.join(DIR_10918, 'p2', fname), 'rb') as fp:
+            data = fp.read()
+
+        params = get_parameters(np.frombuffer(data, 'uint8'))
+
+        assert (info[0], info[1]) == (params['rows'], params['columns'])
+        assert info[2] == params['samples_per_pixel']
+        assert info[3] == params['bits_per_sample']
+
+    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p4'])
+    def test_extended_p4(self, fname, info):
+        """Test get_parameters() for the extended p4 compliance images."""
+        #info: (rows, columns, spp, bps)
+        with open(os.path.join(DIR_10918, 'p4', fname), 'rb') as fp:
+            data = fp.read()
+
+        params = get_parameters(np.frombuffer(data, 'uint8'))
+
+        assert (info[0], info[1]) == (params['rows'], params['columns'])
+        assert info[2] == params['samples_per_pixel']
+        assert info[3] == params['bits_per_sample']
+
+    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p14'])
+    def test_lossless_p14(self, fname, info):
+        """Test get_parameters() for the extended p14 compliance images."""
+        #info: (rows, columns, spp, bps)
+        with open(os.path.join(DIR_10918, 'p14', fname), 'rb') as fp:
+            data = fp.read()
+
+        params = get_parameters(np.frombuffer(data, 'uint8'))
+        print(params)
+
+        assert (info[0], info[1]) == (params['rows'], params['columns'])
+        assert info[2] == params['samples_per_pixel']
+        assert info[3] == params['bits_per_sample']
+
+    @pytest.mark.parametrize("fname, info", REF_JPG['14495']['JLS'])
+    def test_jls(self, fname, info):
+        """Test get_parameters() for the JPEG-LS compliance images."""
+        #info: (rows, columns, spp, bps)
+        with open(os.path.join(DIR_14495, 'JLS', fname), 'rb') as fp:
+            data = fp.read()
+
+        params = get_parameters(np.frombuffer(data, 'uint8'))
+        print(params)
 
         assert (info[0], info[1]) == (params['rows'], params['columns'])
         assert info[2] == params['samples_per_pixel']
