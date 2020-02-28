@@ -108,8 +108,9 @@ setup(
         "jpeg jpeg-ls"
     ),
     project_urls = {
+        # Might give it it's own docs eventually
         'Documentation' : 'https://pydicom.github.io/pydicom/'
-    }
+    },
     classifiers = [
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Intended Audience :: Developers",
@@ -128,7 +129,7 @@ setup(
         "Operating System :: OS Independent",  # In theory...
         "Topic :: Scientific/Engineering :: Medical Science Apps.",
         "Topic :: Software Development :: Libraries",
-    ]
+    ],
     packages = find_packages(),
     package_data = {'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
     include_package_data = True,
