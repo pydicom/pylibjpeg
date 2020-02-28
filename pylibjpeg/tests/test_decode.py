@@ -68,8 +68,13 @@ REF_DCM = {
 }
 
 
+# TODO: convert to using straight JPG data
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 def test_decode_bytes():
     """Test decode using bytes."""
+    with open(os.path.join(DIR_10918, 'p1', fname), 'rb') as fp:
+        data = fp.read()
+
     index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
     ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
     nr_frames = ds.get('NumberOfFrames', 1)
@@ -92,6 +97,8 @@ def test_decode_bytes():
     assert 255 == arr[95, 50]
 
 
+# TODO: convert to using straight JPG data
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 def test_invalid_colourspace_warns():
     """Test that using an unknown colourspace gives a warning."""
     index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
