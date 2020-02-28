@@ -87,16 +87,55 @@ VERSION_FILE = os.path.join('pylibjpeg', '_version.py')
 with open(VERSION_FILE) as fp:
     exec(fp.read())
 
+with open('README.md', 'r') as fp:
+    long_description = fp.read()
+
 setup(
-    name='pylibjpeg',
-    packages=find_packages(),
-    python_requires=">=3.6",
-    package_data={'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
+    name = 'pylibjpeg',
+    description = (
+        "A Python wrapper for libjpeg, with a focus on JPEG support "
+        "for pydicom"
+    ),
+    long_description = long_description,
+    long_description_content_type = 'text/markdown',
+    version = __version__,
+    author = "scaramallion",
+    author_email = "scaramallion@users.noreply.github.com",
+    url = "https://github.com/pydicom/pylibjpeg",
+    license = "GPL V3.0",
+    keywords = (
+        "dicom pydicom python medicalimaging radiotherapy oncology imaging "
+        "jpeg jpeg-ls"
+    ),
+    project_urls = {
+        'Documentation' : 'https://pydicom.github.io/pydicom/'
+    }
+    classifiers = [
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Healthcare Industry",
+        "Intended Audience :: Science/Research",
+        "Development Status :: 3 - Alpha",
+        #"Development Status :: 4 - Beta",
+        #"Development Status :: 5 - Production/Stable",
+        "Natural Language :: English",
+        "Programming Language :: C++",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Operating System :: MacOS :: MacOS X",  # Tested OK
+        "Operating System :: POSIX :: Linux",  # Tested OK
+        "Operating System :: OS Independent",  # In theory...
+        "Topic :: Scientific/Engineering :: Medical Science Apps.",
+        "Topic :: Software Development :: Libraries",
+    ]
+    packages = find_packages(),
+    package_data = {'': ['*.txt', '*.cpp', '*.h', '*.hpp', '*.pyx']},
     include_package_data = True,
-    version=__version__,
-    zip_safe=False,
-    setup_requires=['setuptools>=18.0', 'cython', 'numpy'],
-    install_requires=['cython', "numpy"],
-    cmdclass={'build_ext': my_build_ext},
+    zip_safe = False,
+    python_requires = ">=3.6",
+    setup_requires = ['setuptools>=18.0', 'cython', 'numpy'],
+    install_requires = ['cython', "numpy"],
+    cmdclass = {'build_ext': my_build_ext},
     ext_modules = [ext],
 )
