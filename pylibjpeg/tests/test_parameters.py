@@ -5,11 +5,7 @@ import os
 import pytest
 import warnings
 
-try:
-    import numpy as np
-    HAS_NP = True
-except ImportError:
-    HAS_NP = False
+import numpy as np
 
 try:
     import pydicom

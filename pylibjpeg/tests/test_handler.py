@@ -3,11 +3,7 @@
 import pytest
 import warnings
 
-try:
-    import numpy as np
-    HAS_NP = True
-except ImportError:
-    HAS_NP = False
+import numpy as np
 
 try:
     import pydicom
@@ -21,6 +17,44 @@ except ImportError:
 
 from pylibjpeg import add_handler, remove_handler, decode
 from pylibjpeg.data import get_indexed_datasets
+from pylibjpeg import libjpeg_handler
+
+
+class TestHandler(object):
+    """Tests for the pixel data handler."""
+    def test_unsupported_syntax_raises(self):
+        """Test exception gets raised if unsupported transfer syntax."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.1')
+        ds = index['CT_small.dcm']['ds']
+        assert '1.2.840.10008.1.2.1' == ds.file_meta.TransferSyntaxUID
+        msg = (
+            r"Unable to convert the pixel data as the transfer syntax "
+            r"is not supported by the pylibjpeg pixel data handler."
+        )
+        with pytest.raises(NotImplementedError, match=msg):
+            libjpeg_handler.get_pixeldata(ds)
+
+    def test_missing_element_raises(self):
+        """Test exception gets raised if required element missing."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        del ds.BitsAllocated
+        assert 'BitsAllocated' not in ds
+        msg = (
+            r"Unable to convert the pixel data as the following required "
+            r"elements are missing from the dataset: BitsAllocated"
+        )
+        with pytest.raises(AttributeError, match=msg):
+            libjpeg_handler.get_pixeldata(ds)
+
+    def test_should_change_pi(self):
+        """Test the pointless function."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        func = (
+            libjpeg_handler.should_change_PhotometricInterpretation_to_RGB
+        )
+        assert not func(ds)
 
 
 @pytest.mark.skipif(not HAS_PYDICOM, reason="pydicom unavailable")
@@ -86,7 +120,7 @@ class HandlerTestBase(object):
         plt.show()
 
 
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestLibrary(object):
     """Tests for libjpeg itself."""
     def setup(self):
@@ -132,7 +166,7 @@ class TestLibrary(object):
 
 
 # ISO/IEC 10918 JPEG
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGBaseline(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
@@ -364,7 +398,7 @@ class TestJPEGBaseline(HandlerTestBase):
         assert (255, 255, 255) == tuple(arr[95, 50, :])
 
 
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGExtended(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
@@ -497,7 +531,7 @@ class TestJPEGExtended(HandlerTestBase):
         ] == arr[41, 105:115].tolist()
 
 
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLossless(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
@@ -578,7 +612,7 @@ class TestJPEGLossless(HandlerTestBase):
         )
 
 
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLosslessSV1(HandlerTestBase):
     """Test the handler with ISO 10918 JPEG images.
 
@@ -779,7 +813,7 @@ class TestJPEGLosslessSV1(HandlerTestBase):
 
 
 # ISO/IEC 14495 JPEG-LS
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLSLossless(HandlerTestBase):
     """Test the handler with ISO 14495 JPEG-LS images.
 
@@ -878,7 +912,7 @@ class TestJPEGLSLossless(HandlerTestBase):
         )
 
 
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEGLS(HandlerTestBase):
     """Test the handler with ISO 14495 JPEG-LS images.
 
@@ -1019,7 +1053,7 @@ class TestJPEGLS(HandlerTestBase):
 
 
 # ISO/IEC 15444 JPEG 2000 - Expected fail
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEG2000Lossless(HandlerTestBase):
     """Test the handler with ISO 15444 JPEG2000 images.
 
@@ -1064,7 +1098,7 @@ class TestJPEG2000Lossless(HandlerTestBase):
             arr = ds.pixel_array
 
 
-@pytest.mark.skipif(not HAS_NP or not HAS_PYDICOM, reason="No dependencies")
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No dependencies")
 class TestJPEG2000(HandlerTestBase):
     """Test the handler with ISO 15444 JPEG2000 images.
 

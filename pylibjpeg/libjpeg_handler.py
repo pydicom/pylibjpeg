@@ -46,19 +46,7 @@ values given in the table below.
 
 """
 
-try:
-    import numpy as np
-    HAVE_NP = True
-except ImportError:
-    HAVE_NP = False
-
-try:
-    import pylibjpeg
-    from pylibjpeg.libjpeg import decode
-    HAVE_LIBJPEG = True
-except ImportError:
-    HAVE_LIBJPEG = False
-
+import numpy as np
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
 from pydicom.uid import (
@@ -69,8 +57,8 @@ from pydicom.uid import (
     JPEGLSLossless,
     JPEGLSLossy,
 )
-#except ImportError:
-#    pass
+
+from pylibjpeg.libjpeg import decode
 
 
 HANDLER_NAME = 'pylibjpeg'
@@ -91,7 +79,7 @@ SUPPORTED_TRANSFER_SYNTAXES = [
 
 def is_available():
     """Return ``True`` if the handler has its dependencies met."""
-    return HAVE_NP and HAVE_LIBJPEG
+    return True
 
 
 def supports_transfer_syntax(tsyntax):
