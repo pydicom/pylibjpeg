@@ -70,54 +70,8 @@ std::string Decode(char *inArray, char *outArray, int inLength, int outLength, i
         struct JPG_TagItem tags[] = {
             JPG_PointerTag(JPGTAG_HOOK_IOHOOK, &streamhook),
             JPG_PointerTag(JPGTAG_HOOK_IOSTREAM, in.pData),
-            #ifdef TEST_MARKER_INJECTION
-                // Stop after the image header...
-                JPG_ValueTag(
-                    JPGTAG_DECODER_STOP, JPGFLAG_DECODER_STOP_FRAME
-                ),
-            #endif
             JPG_EndTag
         };
-
-        #ifdef TEST_MARKER_INJECTION
-            LONG marker;
-
-            // Check whether this is a marker we care about. Note that
-            // due to the stop-flag the code aborts within each marker in
-            // the main header.
-            do {
-                // First read the header, or the next part of it.
-                ok = jpeg->Read(tags);
-                // Get the next marker that could be potentially of some
-                // interest for this code.
-                marker = jpeg->PeekMarker(NULL);
-                if (marker == 0xffe9) {
-                    UBYTE buffer[4]; // For the marker and the size.
-                    ok = (
-                        jpeg->ReadMarker(buffer, sizeof(buffer), NULL) == sizeof(buffer)
-                    );
-
-                    if (ok) {
-                        int markersize = (buffer[2] << 8) + buffer[3];
-                        // This should better be >= 2!
-                        if (markersize < 2) {
-                            ok = 0;
-                        } else {
-                            ok = (
-                                jpeg->SkipMarker(markersize - 2, NULL) != -1
-                            );
-                        }
-                    }
-                }
-
-                // Abort when we hit an essential marker that ends the
-                // tables/misc section.
-            } while(marker && marker != -1L && ok);
-
-            // Ok, we found the first frame header, do not go for other
-            // tables at all, and disable now the stop-flag
-            tags->SetTagData(JPGTAG_DECODER_STOP, 0);
-        #endif
 
         // Reads the data and stores various parameters in a struct
         if (ok && jpeg->Read(tags)) {
@@ -276,6 +230,85 @@ std::string Decode(char *inArray, char *outArray, int inLength, int outLength, i
                     // Unable to allocate memory to buffer the image
                     return "-8192::::Unable to allocate memory to buffer the image";
                 }
+            } else ok = 0;
+        } else ok = 0;
+
+        if (!ok) {
+            const char *error;
+            int code = jpeg->LastError(error);
+            std::ostringstream status;
+            status << code << "::::" << error;
+            return status.str();
+        }
+        JPEG::Destruct(jpeg);
+    } else {
+        // Failed to construct the JPEG object
+        return "-8193::::Failed to construct the JPEG object";
+    }
+    // Success
+    return "0::::";
+}
+
+
+std::string GetJPEGParameters(char *inArray, int inLength, struct JPEGParameters *param)
+{
+    /*
+
+    Parameters
+    ----------
+    char *inArray
+        Pointer to the first element of a numpy.ndarray containing the JPEG
+        data to be read.
+    int inLength
+        Length of the input array
+
+    */
+
+    // Create a struct for the input
+    StreamData in = {
+        inArray, 0, inLength, &inArray[0], &inArray[inLength - 1]
+    };
+
+    // Our custom hook handler
+    struct JPG_Hook streamhook(IStreamHook, &in);
+    // JPEG representation from main library interface
+    class JPEG *jpeg = JPEG::Construct(NULL);
+
+    if (jpeg) {
+        int ok = 1;
+
+        struct JPG_TagItem tags[] = {
+            JPG_PointerTag(JPGTAG_HOOK_IOHOOK, &streamhook),
+            JPG_PointerTag(JPGTAG_HOOK_IOSTREAM, in.pData),
+            JPG_EndTag,
+        };
+
+        // Reads the data and stores various parameters in a struct
+        // Peek marker is useless, returns 0 for most markers
+        if (ok && jpeg->Read(tags)) {
+            UBYTE subx[4], suby[4];
+            struct JPG_TagItem itags[] = {
+                JPG_ValueTag(JPGTAG_IMAGE_WIDTH, 0),
+                JPG_ValueTag(JPGTAG_IMAGE_HEIGHT, 0),
+                JPG_ValueTag(JPGTAG_IMAGE_DEPTH, 0),
+                JPG_ValueTag(JPGTAG_IMAGE_PRECISION, 0),
+                JPG_ValueTag(JPGTAG_IMAGE_IS_FLOAT, false),
+                JPG_PointerTag(JPGTAG_IMAGE_SUBX, subx),
+                JPG_PointerTag(JPGTAG_IMAGE_SUBY, suby),
+                JPG_ValueTag(JPGTAG_IMAGE_SUBLENGTH, 4),
+                JPG_EndTag
+            };
+
+            if (jpeg->GetInformation(itags)) {
+                ULONG width  = itags->GetTagData(JPGTAG_IMAGE_WIDTH);
+                ULONG height = itags->GetTagData(JPGTAG_IMAGE_HEIGHT);
+                UBYTE depth  = itags->GetTagData(JPGTAG_IMAGE_DEPTH);
+                UBYTE prec   = itags->GetTagData(JPGTAG_IMAGE_PRECISION);
+
+                param->columns = width;
+                param->rows = height;
+                param->samples_per_pixel = depth;
+                param->bits_per_sample = prec;
             } else ok = 0;
         } else ok = 0;
 

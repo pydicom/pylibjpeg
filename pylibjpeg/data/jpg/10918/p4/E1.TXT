@@ -1,0 +1,243 @@
+Parser output for 'teste1.jpg', May 9, 1994, WBP and JLM (IBM)
+0      SOI (ffd8)
+2      COM (fffe) Lc=289 'Compressed test data stream E1 for ITU-T Rec. 
+         T.83 | ISO/IEC 10918-2:1994 (JPEG). Extended sequential Huffman
+         , 12-bit sample precision. Interleaved data format. Validated M
+         ay 1994 by William Pennebaker, Joan Mitchell (IBM Corp., USA), 
+         and Chris Hepburn (Microstar Software Ltd., Canada).'
+293    DQT (ffdb) Lq=518
+Qtable 0,  Precision = 2 bytes.  Source must be > 8 bits.
+              32     24     20     32     48     80    104    120
+              24     24     28     40     52    116    120    112
+              28     28     32     48     80    116    140    112
+              28     36     44     60    104    176    160    124
+              36     44     76    112    136    220    208    156
+              48     72    112    128    164    208    228    184
+             100    128    156    176    208    244    240    204
+             144    184    192    196    224    200    208    200
+Qtable 1,  Precision = 2 bytes.  Source must be > 8 bits.
+              36     36     48     96    200    200    200    200
+              36     44     52    132    200    200    200    200
+              48     52    112    200    200    200    200    200
+              96    132    200    200    200    200    200    200
+             200    200    200    200    200    200    200    200
+             200    200    200    200    200    200    200    200
+             200    200    200    200    200    200    200    200
+             200    200    200    200    200    200    200    200
+Qtable 2,  Precision = 2 bytes.  Source must be > 8 bits.
+              64     68     72     76     80     84     88     92
+              68     72     76     80     84     88     92     96
+              72     76     80     84     88     92     96    100
+              76     80     84     88     92     96    100    104
+              80     84     88     92     96    100    104    108
+              84     88     92     96    100    104    108    112
+              88     92     96    100    104    108    112    116
+              92     96    100    104    108    112    116    120
+Qtable 3,  Precision = 2 bytes.  Source must be > 8 bits.
+              64     64     76     88    104    108    116    136
+              64     64     88     96    108    116    136    148
+              76     88    104    108    116    136    136    152
+              88     88    104    108    116    136    148    160
+              88    104    108    116    128    140    160    192
+             104    108    116    128    140    160    192    232
+             104    108    116    136    152    184    224    276
+             108    116    140    152    184    224    276    332
+813    DRI (ffdd) Lr=4 Ri=10
+819    SOF1(ffc1) Lf=20 P=12 Y=257 X=255 Nf=4  (ext. seq. DCT/Huff.)
+             Ci=200 HV=11 Tqi=0
+             Ci=150 HV=12 Tqi=1
+             Ci=100 HV=31 Tqi=2
+             Ci= 50 HV=14 Tqi=3
+841    DHT (ffc4) Lq=1106
+Lossless/DC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 00 06 03 01 01 01 01 01 01 01 00 00 00 00 00 :(values/length (hex))
+   03 04 05 06 07 08                               :(hex values, L= 3)
+   00 02 09                                        :(hex values, L= 4)
+   01                                              :(hex values, L= 5)
+   0a                                              :(hex values, L= 6)
+   0b                                              :(hex values, L= 7)
+   0c                                              :(hex values, L= 8)
+   0d                                              :(hex values, L= 9)
+   0e                                              :(hex values, L=10)
+   0f                                              :(hex values, L=11)
+AC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 01 03 03 03 03 03 02 04 04 01 01 01 00 02 c3 :(values/length (hex))
+   01                                              :(hex values, L= 2)
+   02 03 04                                        :(hex values, L= 3)
+   00 05 11                                        :(hex values, L= 4)
+   06 12 21                                        :(hex values, L= 5)
+   07 31 41                                        :(hex values, L= 6)
+   08 13 51                                        :(hex values, L= 7)
+   22 61                                           :(hex values, L= 8)
+   14 32 71 81                                     :(hex values, L= 9)
+   09 15 23 42                                     :(hex values, L=10)
+   91                                              :(hex values, L=11)
+   a1                                              :(hex values, L=12)
+   0a                                              :(hex values, L=13)
+   16 33                                           :(hex values, L=15)
+   52 b1 c1 d1 24 62 17 43 72 e1 0b 25 34 82 f0 f1 :(hex values, L=16)
+   53 18 92 0c 26 35 63 a2 b2 44 73 c2 83 19 36 54 :(hex values, L=16)
+   0d 0e 1a 1b 1c 1d 1e 27 28 29 2a 2b 2c 2d 2e 37 :(hex values, L=16)
+   38 39 3a 3b 3c 3d 3e 45 46 47 48 49 4a 4b 4c 4d :(hex values, L=16)
+   4e 55 56 57 58 59 5a 5b 5c 5d 5e 64 65 66 67 68 :(hex values, L=16)
+   69 6a 6b 6c 6d 6e 74 75 76 77 78 79 7a 7b 7c 7d :(hex values, L=16)
+   7e 84 85 86 87 88 89 8a 8b 8c 8d 8e 93 94 95 96 :(hex values, L=16)
+   97 98 99 9a 9b 9c 9d 9e a3 a4 a5 a6 a7 a8 a9 aa :(hex values, L=16)
+   ab ac ad ae b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be :(hex values, L=16)
+   c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce d2 d3 d4 d5 :(hex values, L=16)
+   d6 d7 d8 d9 da db dc dd de e2 e3 e4 e5 e6 e7 e8 :(hex values, L=16)
+   e9 ea eb ec ed ee f2 f3 f4 f5 f6 f7 f8 f9 fa fb :(hex values, L=16)
+   fc fd fe                                        :(hex values, L=16)
+Lossless/DC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 00 06 03 01 01 01 01 01 01 01 00 00 00 00 00 :(values/length (hex))
+   03 04 05 06 07 08                               :(hex values, L= 3)
+   00 02 09                                        :(hex values, L= 4)
+   01                                              :(hex values, L= 5)
+   0a                                              :(hex values, L= 6)
+   0b                                              :(hex values, L= 7)
+   0c                                              :(hex values, L= 8)
+   0d                                              :(hex values, L= 9)
+   0e                                              :(hex values, L=10)
+   0f                                              :(hex values, L=11)
+AC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 01 03 03 03 03 03 02 04 04 01 01 01 00 02 c3 :(values/length (hex))
+   01                                              :(hex values, L= 2)
+   02 03 04                                        :(hex values, L= 3)
+   00 05 11                                        :(hex values, L= 4)
+   06 12 21                                        :(hex values, L= 5)
+   07 31 41                                        :(hex values, L= 6)
+   08 13 51                                        :(hex values, L= 7)
+   22 61                                           :(hex values, L= 8)
+   14 32 71 81                                     :(hex values, L= 9)
+   09 15 23 42                                     :(hex values, L=10)
+   91                                              :(hex values, L=11)
+   a1                                              :(hex values, L=12)
+   0a                                              :(hex values, L=13)
+   16 33                                           :(hex values, L=15)
+   52 b1 c1 d1 24 62 17 43 72 e1 0b 25 34 82 f0 f1 :(hex values, L=16)
+   53 18 92 0c 26 35 63 a2 b2 44 73 c2 83 19 36 54 :(hex values, L=16)
+   0d 0e 1a 1b 1c 1d 1e 27 28 29 2a 2b 2c 2d 2e 37 :(hex values, L=16)
+   38 39 3a 3b 3c 3d 3e 45 46 47 48 49 4a 4b 4c 4d :(hex values, L=16)
+   4e 55 56 57 58 59 5a 5b 5c 5d 5e 64 65 66 67 68 :(hex values, L=16)
+   69 6a 6b 6c 6d 6e 74 75 76 77 78 79 7a 7b 7c 7d :(hex values, L=16)
+   7e 84 85 86 87 88 89 8a 8b 8c 8d 8e 93 94 95 96 :(hex values, L=16)
+   97 98 99 9a 9b 9c 9d 9e a3 a4 a5 a6 a7 a8 a9 aa :(hex values, L=16)
+   ab ac ad ae b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be :(hex values, L=16)
+   c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce d2 d3 d4 d5 :(hex values, L=16)
+   d6 d7 d8 d9 da db dc dd de e2 e3 e4 e5 e6 e7 e8 :(hex values, L=16)
+   e9 ea eb ec ed ee f2 f3 f4 f5 f6 f7 f8 f9 fa fb :(hex values, L=16)
+   fc fd fe                                        :(hex values, L=16)
+Lossless/DC Huffman table 2
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 00 06 03 01 01 01 01 01 01 01 00 00 00 00 00 :(values/length (hex))
+   03 04 05 06 07 08                               :(hex values, L= 3)
+   00 02 09                                        :(hex values, L= 4)
+   01                                              :(hex values, L= 5)
+   0a                                              :(hex values, L= 6)
+   0b                                              :(hex values, L= 7)
+   0c                                              :(hex values, L= 8)
+   0d                                              :(hex values, L= 9)
+   0e                                              :(hex values, L=10)
+   0f                                              :(hex values, L=11)
+AC Huffman table 2
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 01 03 03 03 03 03 02 04 04 01 01 01 00 02 c3 :(values/length (hex))
+   01                                              :(hex values, L= 2)
+   02 03 04                                        :(hex values, L= 3)
+   00 05 11                                        :(hex values, L= 4)
+   06 12 21                                        :(hex values, L= 5)
+   07 31 41                                        :(hex values, L= 6)
+   08 13 51                                        :(hex values, L= 7)
+   22 61                                           :(hex values, L= 8)
+   14 32 71 81                                     :(hex values, L= 9)
+   09 15 23 42                                     :(hex values, L=10)
+   91                                              :(hex values, L=11)
+   a1                                              :(hex values, L=12)
+   0a                                              :(hex values, L=13)
+   16 33                                           :(hex values, L=15)
+   52 b1 c1 d1 24 62 17 43 72 e1 0b 25 34 82 f0 f1 :(hex values, L=16)
+   53 18 92 0c 26 35 63 a2 b2 44 73 c2 83 19 36 54 :(hex values, L=16)
+   0d 0e 1a 1b 1c 1d 1e 27 28 29 2a 2b 2c 2d 2e 37 :(hex values, L=16)
+   38 39 3a 3b 3c 3d 3e 45 46 47 48 49 4a 4b 4c 4d :(hex values, L=16)
+   4e 55 56 57 58 59 5a 5b 5c 5d 5e 64 65 66 67 68 :(hex values, L=16)
+   69 6a 6b 6c 6d 6e 74 75 76 77 78 79 7a 7b 7c 7d :(hex values, L=16)
+   7e 84 85 86 87 88 89 8a 8b 8c 8d 8e 93 94 95 96 :(hex values, L=16)
+   97 98 99 9a 9b 9c 9d 9e a3 a4 a5 a6 a7 a8 a9 aa :(hex values, L=16)
+   ab ac ad ae b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be :(hex values, L=16)
+   c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce d2 d3 d4 d5 :(hex values, L=16)
+   d6 d7 d8 d9 da db dc dd de e2 e3 e4 e5 e6 e7 e8 :(hex values, L=16)
+   e9 ea eb ec ed ee f2 f3 f4 f5 f6 f7 f8 f9 fa fb :(hex values, L=16)
+   fc fd fe                                        :(hex values, L=16)
+Lossless/DC Huffman table 3
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 00 06 03 01 01 01 01 01 01 01 00 00 00 00 00 :(values/length (hex))
+   03 04 05 06 07 08                               :(hex values, L= 3)
+   00 02 09                                        :(hex values, L= 4)
+   01                                              :(hex values, L= 5)
+   0a                                              :(hex values, L= 6)
+   0b                                              :(hex values, L= 7)
+   0c                                              :(hex values, L= 8)
+   0d                                              :(hex values, L= 9)
+   0e                                              :(hex values, L=10)
+   0f                                              :(hex values, L=11)
+AC Huffman table 3
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 01 03 03 03 03 03 02 04 04 01 01 01 00 02 c3 :(values/length (hex))
+   01                                              :(hex values, L= 2)
+   02 03 04                                        :(hex values, L= 3)
+   00 05 11                                        :(hex values, L= 4)
+   06 12 21                                        :(hex values, L= 5)
+   07 31 41                                        :(hex values, L= 6)
+   08 13 51                                        :(hex values, L= 7)
+   22 61                                           :(hex values, L= 8)
+   14 32 71 81                                     :(hex values, L= 9)
+   09 15 23 42                                     :(hex values, L=10)
+   91                                              :(hex values, L=11)
+   a1                                              :(hex values, L=12)
+   0a                                              :(hex values, L=13)
+   16 33                                           :(hex values, L=15)
+   52 b1 c1 d1 24 62 17 43 72 e1 0b 25 34 82 f0 f1 :(hex values, L=16)
+   53 18 92 0c 26 35 63 a2 b2 44 73 c2 83 19 36 54 :(hex values, L=16)
+   0d 0e 1a 1b 1c 1d 1e 27 28 29 2a 2b 2c 2d 2e 37 :(hex values, L=16)
+   38 39 3a 3b 3c 3d 3e 45 46 47 48 49 4a 4b 4c 4d :(hex values, L=16)
+   4e 55 56 57 58 59 5a 5b 5c 5d 5e 64 65 66 67 68 :(hex values, L=16)
+   69 6a 6b 6c 6d 6e 74 75 76 77 78 79 7a 7b 7c 7d :(hex values, L=16)
+   7e 84 85 86 87 88 89 8a 8b 8c 8d 8e 93 94 95 96 :(hex values, L=16)
+   97 98 99 9a 9b 9c 9d 9e a3 a4 a5 a6 a7 a8 a9 aa :(hex values, L=16)
+   ab ac ad ae b3 b4 b5 b6 b7 b8 b9 ba bb bc bd be :(hex values, L=16)
+   c3 c4 c5 c6 c7 c8 c9 ca cb cc cd ce d2 d3 d4 d5 :(hex values, L=16)
+   d6 d7 d8 d9 da db dc dd de e2 e3 e4 e5 e6 e7 e8 :(hex values, L=16)
+   e9 ea eb ec ed ee f2 f3 f4 f5 f6 f7 f8 f9 fa fb :(hex values, L=16)
+   fc fd fe                                        :(hex values, L=16)
+1949   SOS (ffda) Ls=14 Ns=4
+             Csk=200 Td=0 Ta=0
+             Csk=150 Td=1 Ta=1
+             Csk=100 Td=2 Ta=2
+             Csk= 50 Td=3 Ta=3
+             Ss=0 Se=63 Ah=0 Al=0
+       5091 bytes of entropy-coded data
+7065   RST0(ffd0)
+       5023 bytes of entropy-coded data
+12100  RST1(ffd1)
+       4997 bytes of entropy-coded data
+17105  RST2(ffd2)
+       5034 bytes of entropy-coded data
+22146  RST3(ffd3)
+       5041 bytes of entropy-coded data
+27194  RST4(ffd4)
+       5035 bytes of entropy-coded data
+32239  RST5(ffd5)
+       5032 bytes of entropy-coded data
+37279  RST6(ffd6)
+       5040 bytes of entropy-coded data
+42335  RST7(ffd7)
+       4179 bytes of entropy-coded data
+46531  RST0(ffd0)
+       784 bytes of entropy-coded data
+47367  EOI (ffd9)
+17 markers found in 47369 bytes of compressed data
+

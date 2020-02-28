@@ -1,0 +1,61 @@
+
+This directory contains source image test data and reference test data
+referred to by ITU-T T.83 | ISO/IEC 10918-2, "Digital compression and 
+coding of continuous-tone still images:  Compliance testing".  This 
+data are used for compliance testing of proposed encoders and decoders.
+
+
+- Source image and reference test data of ITU-T T.83 | ISO/IEC 10918-2 -
+
+A8.SRC
+B8.SRC
+C8.SRC
+D8.SRC
+        8-bit Source image test data
+        8-bit lossless decoder reference data.
+        
+A16.SRC
+B16.SRC
+C16.SRC
+D16.SRC
+        16-bit lossless decoder reference data, constructed
+        from the 8-bit data.
+
+EREF_A8.DCT
+EREF_B8.DCT
+EREF_C8.DCT
+EREF_D8.DCT
+        8-bit Encoder reference test data (DCT-based processes).
+        These files give the DCT coefficients for each 8-by-8 block
+        from components A, B, C, D respectively, including blocks at
+        the edges that were completed by extension.
+        The coefficients are given as 16-bit integers in zig-zag order.
+        
+DREF_A8.DCT
+DREF_B8.DCT
+DREF_C8.DCT
+DREF_D8.DCT
+        8-bit Decoder reference test data (DCT-based processes).
+        Same format as the encoder reference test data described above.
+        
+EREF_A12.DCT
+EREF_B12.DCT
+EREF_C12.DCT
+EREF_D12.DCT
+        12-bit Encoder reference test data (DCT-based processes).
+        These files give the DCT coefficients for each 8-by-8 block
+        from components A, B, C, D respectively, including blocks at
+        the edges that were completed by extension.
+        The coefficients are given as 16-bit integers in zig-zag order.
+        
+DREF_A12.DCT
+DREF_B12.DCT
+DREF_C12.DCT
+DREF_D12.DCT
+        12-bit Decoder reference test data (DCT-based processes).
+        Same format as the encoder reference test data described above.
+
+------------------------------------------------------------------------        
+
+This data was generated and validated by the participants of the ISO/IEC
+JTC1/SC29/WG1 SG on JPEG.  Many thanks to all those who contributed.

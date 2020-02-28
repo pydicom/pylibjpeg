@@ -26,6 +26,8 @@ from pylibjpeg.data import get_indexed_datasets
 @pytest.mark.skipif(not HAS_PYDICOM, reason="pydicom unavailable")
 def test_add_handler():
     """Test adding the handler to pydicom."""
+    assert libjpeg_handler in pydicom.config.pixel_data_handlers
+    remove_handler()
     assert libjpeg_handler not in pydicom.config.pixel_data_handlers
     add_handler()
     assert libjpeg_handler in pydicom.config.pixel_data_handlers
@@ -114,11 +116,11 @@ class TestLibrary(object):
         ds = ds_list['color3d_jpeg_baseline.dcm']['ds']
         data = defragment_data(ds.PixelData)
         msg = (
-            r"Unsupported colour space '-1', no colour transform will "
-            r"be applied"
+            r"Unknown error code '-8194' returned from Decode\(\): "
+            r"Invalid colourTransform value"
         )
-        with pytest.warns(UserWarning, match=msg):
-            decode(np.frombuffer(data, 'uint8'), 1, -1)
+        with pytest.raises(RuntimeError, match=msg):
+            decode(np.frombuffer(data, 'uint8'), -1)
 
     def test_invalid_buffer(self):
         """Test that an invalid colour transform raises an exception."""
@@ -126,7 +128,7 @@ class TestLibrary(object):
             r"Buffer dtype mismatch, expected 'uint8_t' but got 'double'"
         )
         with pytest.raises(ValueError, match=msg):
-            decode(np.zeros(1), 1, 'YBR_FULL')
+            decode(np.zeros(1), 'YBR_FULL')
 
 
 # ISO/IEC 10918 JPEG

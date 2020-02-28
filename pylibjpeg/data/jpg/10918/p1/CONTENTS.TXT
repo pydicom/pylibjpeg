@@ -1,0 +1,45 @@
+
+This directory contains compressed test data streams for the generic
+decoder compliance tests defined in ITU-T T.83 | ISO/IEC 10918-2,  
+"Information technology - Digital compression and coding of
+continuous-tone still images:  Compliance testing".  
+
+The table below summarizes the structure of the compressed test data 
+streams.  Refer to Annex C of ITU-T T.83 | ISO/IEC 10918-2 for a 
+more detailed specification of the compressed test data streams.
+
+
+----- Compressed test data streams of ITU-T T.83 | ISO/IEC 10918-2 ----
+
+DATA     JPEG   Precision   Entropy    Code       Nf   Inter-    DRI
+STREAM   mode    (bits)     Coder      Tables          leave
+----------------------------------------------------------------------- 
+A1       S(B)       8       Huff       sample      4     yes     yes 
+B1       abbr.      -       Huff       sample      -       -       -   
+B2       S(B)       8       Huff       custom    255      no     yes 
+C1       S(E)       8       Huff       custom      4     yes     yes 
+C2       S(E)       8       Huff       custom      4      no     yes 
+D1       S(E)       8       arith      custom      4     yes     yes 
+D2       S(E)       8       arith      custom      4      no     yes 
+E1       S(E)      12       Huff       custom      4     yes     yes 
+E2       S(E)      12       Huff       custom      4      no     yes 
+F1       S(E)      12       arith      custom      4     yes     yes 
+F2       S(E)      12       arith      custom      4      no     yes 
+G1       P(SS)      8       Huff       custom      4     yes     yes  
+H1       P(SS)      8       arith      custom      4     yes     yes  
+J1       P(SS)     12       arith      custom      4     yes     yes  
+K1       P(Full)    8       Huff       custom      4     yes     yes  
+L1       P(Full)    8       arith      custom      4     yes     yes  
+N1       P(Full)   12       arith      custom      4     yes     yes  
+O1       LL         8       Huff       sample      4     yes     yes  
+O2       LL        16       Huff       sample      4      no     yes  
+P1       LL         8       arith      default     4     yes     yes  
+P2       LL        16       arith      custom      4      no     yes  
+
+Compressed test data streams I1, M1, Q1, Q2, R1, R2, S1, S2, T1, and T2 
+are not available at this time.
+-----------------------------------------------------------------------
+
+This data was generated and validated by the participants of the ISO/IEC
+JTC1/SC29/WG1 SG on JPEG.  Many thanks to all those who contributed.
+

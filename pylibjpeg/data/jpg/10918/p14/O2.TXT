@@ -1,0 +1,262 @@
+Parser output for 'testo2.jpg', May 11, 1994, WBP and JLM (IBM)
+0      SOI (ffd8)
+2      COM (fffe) Lc=297 'Compressed test data stream O2 for ITU-T Rec. 
+         T.83 | ISO/IEC 10918-2:1994 (JPEG). Lossless Huffman decoding, 
+         16-bit sample precision. One scan per component format. Validat
+         ed Nov. 1993 by Hisashi Ibaraki (NTT, Japan) and Fuminobu Ogawa
+          (Mitsubishi Electric Corp., Japan). Comment added May 1994.'
+301    SOF3(ffc3) Lf=20 P=16 Y=257 X=255 Nf=4  (seq. lossless/Huff)
+             Ci=200 HV=11 Tqi=0
+             Ci=150 HV=12 Tqi=0
+             Ci=100 HV=31 Tqi=0
+             Ci= 50 HV=14 Tqi=0
+323    DHT (ffc4) Lq=70
+Lossless/DC Huffman table 0
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 01 05 01 01 01 01 01 01 01 01 01 01 01 00 00 :(values/length (hex))
+   00                                              :(hex values, L= 2)
+   01 02 03 04 05                                  :(hex values, L= 3)
+   06                                              :(hex values, L= 4)
+   07                                              :(hex values, L= 5)
+   08                                              :(hex values, L= 6)
+   09                                              :(hex values, L= 7)
+   0a                                              :(hex values, L= 8)
+   0b                                              :(hex values, L= 9)
+   0c                                              :(hex values, L=10)
+   0d                                              :(hex values, L=11)
+   0e                                              :(hex values, L=12)
+   0f                                              :(hex values, L=13)
+   10                                              :(hex values, L=14)
+Lossless/DC Huffman table 1
+:(  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16   code lengths       )
+   00 03 01 01 01 01 01 01 01 01 01 01 01 01 01 01 :(values/length (hex))
+   00 01 02                                        :(hex values, L= 2)
+   03                                              :(hex values, L= 3)
+   04                                              :(hex values, L= 4)
+   05                                              :(hex values, L= 5)
+   06                                              :(hex values, L= 6)
+   07                                              :(hex values, L= 7)
+   08                                              :(hex values, L= 8)
+   09                                              :(hex values, L= 9)
+   0a                                              :(hex values, L=10)
+   0b                                              :(hex values, L=11)
+   0c                                              :(hex values, L=12)
+   0d                                              :(hex values, L=13)
+   0e                                              :(hex values, L=14)
+   0f                                              :(hex values, L=15)
+   10                                              :(hex values, L=16)
+395    DRI (ffdd) Lr=4 Ri=170
+401    SOS (ffda) Ls=8 Ns=1
+             Csk=200 Td=0 Ta=0
+             P sel=7 Pt=0
+       548 bytes of entropy-coded data
+1141   RST0(ffd0)
+       546 bytes of entropy-coded data
+1883   RST1(ffd1)
+       550 bytes of entropy-coded data
+2597   RST2(ffd2)
+       553 bytes of entropy-coded data
+3343   RST3(ffd3)
+       556 bytes of entropy-coded data
+4082   RST4(ffd4)
+       556 bytes of entropy-coded data
+4823   RST5(ffd5)
+       552 bytes of entropy-coded data
+5559   RST6(ffd6)
+       549 bytes of entropy-coded data
+6288   RST7(ffd7)
+       555 bytes of entropy-coded data
+7025   RST0(ffd0)
+       553 bytes of entropy-coded data
+7764   RST1(ffd1)
+       546 bytes of entropy-coded data
+8485   RST2(ffd2)
+       556 bytes of entropy-coded data
+9231   RST3(ffd3)
+       559 bytes of entropy-coded data
+9983   RST4(ffd4)
+       549 bytes of entropy-coded data
+10709  RST5(ffd5)
+       544 bytes of entropy-coded data
+11439  RST6(ffd6)
+       546 bytes of entropy-coded data
+12161  RST7(ffd7)
+       550 bytes of entropy-coded data
+12880  RST0(ffd0)
+       550 bytes of entropy-coded data
+13623  RST1(ffd1)
+       558 bytes of entropy-coded data
+14377  RST2(ffd2)
+       551 bytes of entropy-coded data
+15099  RST3(ffd3)
+       548 bytes of entropy-coded data
+15840  RST4(ffd4)
+       550 bytes of entropy-coded data
+16563  RST5(ffd5)
+       544 bytes of entropy-coded data
+17297  RST6(ffd6)
+       554 bytes of entropy-coded data
+18046  RST7(ffd7)
+       559 bytes of entropy-coded data
+18798  RST0(ffd0)
+       552 bytes of entropy-coded data
+19532  RST1(ffd1)
+       551 bytes of entropy-coded data
+20269  RST2(ffd2)
+       543 bytes of entropy-coded data
+20993  RST3(ffd3)
+       553 bytes of entropy-coded data
+21729  RST4(ffd4)
+       557 bytes of entropy-coded data
+22463  RST5(ffd5)
+       565 bytes of entropy-coded data
+23221  RST6(ffd6)
+       557 bytes of entropy-coded data
+23972  RST7(ffd7)
+       277 bytes of entropy-coded data
+24333  DRI (ffdd) Lr=4 Ri=0
+24339  SOS (ffda) Ls=8 Ns=1
+             Csk=150 Td=1 Ta=0
+             P sel=7 Pt=0
+       38331 bytes of entropy-coded data
+76763  DRI (ffdd) Lr=4 Ri=255
+76769  SOS (ffda) Ls=8 Ns=1
+             Csk=100 Td=0 Ta=0
+             P sel=1 Pt=0
+       831 bytes of entropy-coded data
+77912  RST0(ffd0)
+       832 bytes of entropy-coded data
+79033  RST1(ffd1)
+       835 bytes of entropy-coded data
+80165  RST2(ffd2)
+       827 bytes of entropy-coded data
+81291  RST3(ffd3)
+       827 bytes of entropy-coded data
+82394  RST4(ffd4)
+       828 bytes of entropy-coded data
+83512  RST5(ffd5)
+       833 bytes of entropy-coded data
+84658  RST6(ffd6)
+       829 bytes of entropy-coded data
+85772  RST7(ffd7)
+       832 bytes of entropy-coded data
+86893  RST0(ffd0)
+       823 bytes of entropy-coded data
+87970  RST1(ffd1)
+       829 bytes of entropy-coded data
+89098  RST2(ffd2)
+       817 bytes of entropy-coded data
+90212  RST3(ffd3)
+       812 bytes of entropy-coded data
+91304  RST4(ffd4)
+       832 bytes of entropy-coded data
+92429  RST5(ffd5)
+       829 bytes of entropy-coded data
+93557  RST6(ffd6)
+       824 bytes of entropy-coded data
+94658  RST7(ffd7)
+       835 bytes of entropy-coded data
+95782  RST0(ffd0)
+       819 bytes of entropy-coded data
+96893  RST1(ffd1)
+       826 bytes of entropy-coded data
+98003  RST2(ffd2)
+       830 bytes of entropy-coded data
+99127  RST3(ffd3)
+       828 bytes of entropy-coded data
+100229 RST4(ffd4)
+       829 bytes of entropy-coded data
+101360 RST5(ffd5)
+       830 bytes of entropy-coded data
+102474 RST6(ffd6)
+       822 bytes of entropy-coded data
+103590 RST7(ffd7)
+       814 bytes of entropy-coded data
+104690 RST0(ffd0)
+       826 bytes of entropy-coded data
+105800 RST1(ffd1)
+       822 bytes of entropy-coded data
+106902 RST2(ffd2)
+       824 bytes of entropy-coded data
+108009 RST3(ffd3)
+       821 bytes of entropy-coded data
+109110 RST4(ffd4)
+       831 bytes of entropy-coded data
+110225 RST5(ffd5)
+       824 bytes of entropy-coded data
+111333 RST6(ffd6)
+       827 bytes of entropy-coded data
+112444 RST7(ffd7)
+       821 bytes of entropy-coded data
+113550 RST0(ffd0)
+       835 bytes of entropy-coded data
+114677 RST1(ffd1)
+       822 bytes of entropy-coded data
+115786 RST2(ffd2)
+       822 bytes of entropy-coded data
+116876 RST3(ffd3)
+       822 bytes of entropy-coded data
+117984 RST4(ffd4)
+       830 bytes of entropy-coded data
+119085 RST5(ffd5)
+       827 bytes of entropy-coded data
+120194 RST6(ffd6)
+       819 bytes of entropy-coded data
+121292 RST7(ffd7)
+       835 bytes of entropy-coded data
+122399 RST0(ffd0)
+       828 bytes of entropy-coded data
+123519 RST1(ffd1)
+       826 bytes of entropy-coded data
+124639 RST2(ffd2)
+       823 bytes of entropy-coded data
+125741 RST3(ffd3)
+       820 bytes of entropy-coded data
+126838 RST4(ffd4)
+       823 bytes of entropy-coded data
+127952 RST5(ffd5)
+       826 bytes of entropy-coded data
+129064 RST6(ffd6)
+       832 bytes of entropy-coded data
+130186 RST7(ffd7)
+       840 bytes of entropy-coded data
+131317 RST0(ffd0)
+       821 bytes of entropy-coded data
+132415 RST1(ffd1)
+       832 bytes of entropy-coded data
+133531 RST2(ffd2)
+       826 bytes of entropy-coded data
+134630 RST3(ffd3)
+       821 bytes of entropy-coded data
+135730 RST4(ffd4)
+       822 bytes of entropy-coded data
+136839 RST5(ffd5)
+       819 bytes of entropy-coded data
+137950 RST6(ffd6)
+       824 bytes of entropy-coded data
+139069 RST7(ffd7)
+       828 bytes of entropy-coded data
+140175 RST0(ffd0)
+       830 bytes of entropy-coded data
+141265 RST1(ffd1)
+       815 bytes of entropy-coded data
+142343 RST2(ffd2)
+       822 bytes of entropy-coded data
+143458 RST3(ffd3)
+       824 bytes of entropy-coded data
+144541 RST4(ffd4)
+       826 bytes of entropy-coded data
+145638 RST5(ffd5)
+       822 bytes of entropy-coded data
+146736 RST6(ffd6)
+       828 bytes of entropy-coded data
+147856 RST7(ffd7)
+       826 bytes of entropy-coded data
+148987 DRI (ffdd) Lr=4 Ri=0
+148993 SOS (ffda) Ls=8 Ns=1
+             Csk= 50 Td=1 Ta=0
+             P sel=7 Pt=0
+       76362 bytes of entropy-coded data
+253501 EOI (ffd9)
+109 markers found in 253503 bytes of compressed data
+
