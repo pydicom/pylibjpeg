@@ -17,7 +17,6 @@ except ImportError:
 
 from pylibjpeg import add_handler, remove_handler, decode
 from pylibjpeg.data import get_indexed_datasets
-from pylibjpeg import libjpeg_handler
 
 
 class TestHandler(object):
