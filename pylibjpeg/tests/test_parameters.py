@@ -72,6 +72,47 @@ REF_DCM = {
 }
 
 
+def test_get_parameters_bytes():
+    """Test get_parameters() using bytes."""
+    with open(os.path.join(DIR_10918, 'p1', 'A1.JPG'), 'rb') as fp:
+        data = fp.read()
+
+    params = get_parameters(data)
+
+    info = (257, 255, 4, 8)
+
+    assert (info[0], info[1]) == (params['rows'], params['columns'])
+    assert info[2] == params['samples_per_pixel']
+    assert info[3] == params['bits_per_sample']
+
+
+def test_non_conformant_raises():
+    """Test that a non-conformant JPEG image raises an exception."""
+    ds_list = get_indexed_datasets('1.2.840.10008.1.2.4.51')
+    # Image has invalid Se value in the SOS marker segment
+    item = ds_list['JPEG-lossy.dcm']
+    assert 0xC000 == item['Status'][1]
+    ds = item['ds']
+
+    nr_frames = ds.get('NumberOfFrames', 1)
+    frame = next(generate_pixel_data_frame(ds.PixelData, nr_frames))
+
+    msg = (
+        r"libjpeg error code '-1038' returned from GetJPEGParameters\(\): A "
+        r"misplaced marker segment was found - scan start must be zero "
+        r"and scan stop must be 63 for the sequential operating modes"
+    )
+    with pytest.raises(RuntimeError, match=msg):
+        get_parameters(frame)
+
+
+@pytest.mark.skip("Not sure how to trigger exception")
+def test_unknown_error_raised():
+    """Test that an unknown error is handled properly."""
+    #get_parameters(b'')
+    pass
+
+
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 class TestGetParametersDCM(object):
     """Tests for get_parameters() using DICOM datasets."""

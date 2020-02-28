@@ -179,12 +179,12 @@ def get_parameters(arr):
 
     if code in LIBJPEG_ERROR_CODES:
         raise RuntimeError(
-            "libjpeg error code '{}' returned from Decode(): {} - {}"
-            .format(code, LIBJPEG_ERROR_CODES[code], msg)
+            "libjpeg error code '{}' returned from GetJPEGParameters(): "
+            "{} - {}".format(code, LIBJPEG_ERROR_CODES[code], msg)
         )
 
     raise RuntimeError(
-        "Unknown error code '{}' returned from Decode(): {}"
+        "Unknown error code '{}' returned from GetJPEGParameters(): {}"
         .format(status, msg)
     )
 
