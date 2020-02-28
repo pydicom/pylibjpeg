@@ -19,6 +19,7 @@ from pylibjpeg import add_handler, remove_handler, decode
 from pylibjpeg.data import get_indexed_datasets
 
 
+@pytest.mark.skipif(not HAS_PYDICOM, reason="pydicom unavailable")
 class TestHandler(object):
     """Tests for the pixel data handler."""
     def test_unsupported_syntax_raises(self):
