@@ -4,6 +4,8 @@ from math import ceil
 import pathlib
 import warnings
 
+import numpy as np
+
 import _libjpeg
 
 
@@ -120,16 +122,14 @@ def decode(arr, colourspace='YBR_FULL', reshape=True):
 
     if code == 0 and reshape is True:
         bpp = ceil(params['bits_per_sample'] / 8)
-        if bpp <= 8:
-            dtype = 'uint8'
-        elif 9 <= bpp <= 16:
-            dtype = 'uint16'
+        if bpp == 2:
+            out = out.view('uint16')
 
-        out = out.view(dtype)
-        out.reshape(
-            params['rows'], params['columns'], params['samples_per_pixel']
-        )
-        return out
+        shape = [params['rows'], params['columns']]
+        if params['samples_per_pixel'] > 1:
+            shape.append(params['samples_per_pixel'])
+
+        return out.reshape(*shape)
     elif code == 0 and reshape is False:
         return out
 

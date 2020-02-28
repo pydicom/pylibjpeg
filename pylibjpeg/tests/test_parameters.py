@@ -29,6 +29,7 @@ DATA_DIR = os.path.join(TEST_DIR, '../data')
 DIR_10918 = os.path.join(DATA_DIR, 'jpg', '10918')
 DIR_14495 = os.path.join(DATA_DIR, 'jpg', '14495')
 
+
 REF_DCM = {
     '1.2.840.10008.1.2.4.50' : [
         # filename, (rows, columns, samples/px, bits/sample)
@@ -71,11 +72,11 @@ REF_DCM = {
 }
 
 
-# ISO/IEC 10918 JPEG
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 class TestGetParametersDCM(object):
-    """Tests for get_parameters()."""
+    """Tests for get_parameters() using DICOM datasets."""
     def generate_frames(self, ds):
+        """Return a generator object with the dataset's pixel data frames."""
         nr_frames = ds.get('NumberOfFrames', 1)
         return generate_pixel_data_frame(ds.PixelData, nr_frames)
 
@@ -212,8 +213,9 @@ REF_JPG = {
     '15444' : {},
 }
 
+
 class TestGetParametersJPG(object):
-    """"""
+    """Tests for get_parameters() using JPEG compliance data."""
     @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p1'])
     def test_baseline(self, fname, info):
         """Test get_parameters() for the baseline compliance images."""
@@ -261,7 +263,6 @@ class TestGetParametersJPG(object):
             data = fp.read()
 
         params = get_parameters(np.frombuffer(data, 'uint8'))
-        print(params)
 
         assert (info[0], info[1]) == (params['rows'], params['columns'])
         assert info[2] == params['samples_per_pixel']
@@ -275,7 +276,6 @@ class TestGetParametersJPG(object):
             data = fp.read()
 
         params = get_parameters(np.frombuffer(data, 'uint8'))
-        print(params)
 
         assert (info[0], info[1]) == (params['rows'], params['columns'])
         assert info[2] == params['samples_per_pixel']

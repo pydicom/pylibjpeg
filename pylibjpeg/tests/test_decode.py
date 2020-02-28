@@ -67,7 +67,33 @@ REF_DCM = {
     ],
 }
 
-def test_invalid_colourspace_raises():
+
+def test_decode_bytes():
+    """Test decode using bytes."""
+    index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+    ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+    nr_frames = ds.get('NumberOfFrames', 1)
+    frame = next(generate_pixel_data_frame(ds.PixelData, nr_frames))
+    arr = decode(frame)
+    assert arr.flags.writeable
+    assert 'uint8' == arr.dtype
+    assert (ds.Rows, ds.Columns) == arr.shape
+
+    # Reference values from GDCM handler
+    assert  76 == arr[ 5, 50]
+    assert 167 == arr[15, 50]
+    assert 149 == arr[25, 50]
+    assert 203 == arr[35, 50]
+    assert  29 == arr[45, 50]
+    assert 142 == arr[55, 50]
+    assert   1 == arr[65, 50]
+    assert  64 == arr[75, 50]
+    assert 192 == arr[85, 50]
+    assert 255 == arr[95, 50]
+
+
+def test_invalid_colourspace_warns():
+    """Test that using an unknown colourspace gives a warning."""
     index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
     ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
     nr_frames = ds.get('NumberOfFrames', 1)
@@ -76,14 +102,30 @@ def test_invalid_colourspace_raises():
         r""
     )
     with pytest.warns(UserWarning, match=msg):
-        decode(np.frombuffer(frame, 'uint8'), colourspace='ANY')
+        arr = decode(np.frombuffer(frame, 'uint8'), colourspace='ANY')
+
+    assert arr.flags.writeable
+    assert 'uint8' == arr.dtype
+    assert (ds.Rows, ds.Columns) == arr.shape
+
+    # Reference values from GDCM handler
+    assert  76 == arr[ 5, 50]
+    assert 167 == arr[15, 50]
+    assert 149 == arr[25, 50]
+    assert 203 == arr[35, 50]
+    assert  29 == arr[45, 50]
+    assert 142 == arr[55, 50]
+    assert   1 == arr[65, 50]
+    assert  64 == arr[75, 50]
+    assert 192 == arr[85, 50]
+    assert 255 == arr[95, 50]
 
 
-# ISO/IEC 10918 JPEG
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 class TestDecodeDCM(object):
-    """Tests for get_parameters()."""
+    """Tests for get_parameters() using DICOM datasets."""
     def generate_frames(self, ds):
+        """Return a generator object with the dataset's pixel data frames."""
         nr_frames = ds.get('NumberOfFrames', 1)
         return generate_pixel_data_frame(ds.PixelData, nr_frames)
 
@@ -95,11 +137,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        params = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.51'])
     def test_extended(self, fname, info):
@@ -109,11 +157,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        params = get_parameters(np.frombuffer(frame, 'uint8'))
+        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.57'])
     def test_lossless(self, fname, info):
@@ -123,11 +177,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        params = get_parameters(np.frombuffer(frame, 'uint8'))
+        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.70'])
     def test_lossless_sv1(self, fname, info):
@@ -137,11 +197,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        params = get_parameters(np.frombuffer(frame, 'uint8'))
+        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.80'])
     def test_extended(self, fname, info):
@@ -151,11 +217,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        params = get_parameters(np.frombuffer(frame, 'uint8'))
+        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.81'])
     def test_extended(self, fname, info):
@@ -165,11 +237,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        params = get_parameters(np.frombuffer(frame, 'uint8'))
+        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
 
 
 REF_JPG = {
@@ -220,71 +298,145 @@ REF_JPG = {
     '15444' : {},
 }
 
+
 class TestDecodeJPG(object):
-    """"""
+    """Tests for get_parameters() using JPEG compliance data."""
+    # Needs reference values and support for 4 channel data
     @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p1'])
     def test_baseline(self, fname, info):
-        """Test get_parameters() for the baseline compliance images."""
+        """Test decoding the baseline compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p1', fname), 'rb') as fp:
             data = fp.read()
 
-        params = get_parameters(np.frombuffer(data, 'uint8'))
+        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert out.flags.writeable
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
 
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
+
+        #import matplotlib.pyplot as plt
+        #if info[2] == 1:
+        #    plt.imshow(out)
+        #else:
+        #    plt.imshow(out[:, :, 0])
+        #plt.show()
+
+    # Needs reference values and support for 4 channel data
     @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p2'])
     def test_extended_p2(self, fname, info):
-        """Test get_parameters() for the extended p2 compliance images."""
+        """Test decoding the extended p2 compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p2', fname), 'rb') as fp:
             data = fp.read()
 
-        params = get_parameters(np.frombuffer(data, 'uint8'))
+        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert out.flags.writeable
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
 
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
+
+        #import matplotlib.pyplot as plt
+        #if info[2] == 1:
+        #    plt.imshow(out)
+        #else:
+        #    plt.imshow(out[:, :, 0])
+        #plt.show()
+
+    # Needs reference values and support for 4 channel data
     @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p4'])
     def test_extended_p4(self, fname, info):
-        """Test get_parameters() for the extended p4 compliance images."""
+        """Test decoding the extended p4 compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p4', fname), 'rb') as fp:
             data = fp.read()
 
-        params = get_parameters(np.frombuffer(data, 'uint8'))
+        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert out.flags.writeable
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
 
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
+
+        #import matplotlib.pyplot as plt
+        #if info[2] == 1:
+        #    plt.imshow(out)
+        #else:
+        #    plt.imshow(out[:, :, 0])
+        #plt.show()
+
+    # Needs reference values and support for 4 channel data
     @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p14'])
     def test_lossless_p14(self, fname, info):
-        """Test get_parameters() for the extended p14 compliance images."""
+        """Test decoding the extended p14 compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p14', fname), 'rb') as fp:
             data = fp.read()
 
-        params = get_parameters(np.frombuffer(data, 'uint8'))
-        print(params)
+        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert out.flags.writeable
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
 
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
+
+        #import matplotlib.pyplot as plt
+        #if info[2] == 1:
+        #    plt.imshow(out)
+        #else:
+        #    plt.imshow(out[:, :, 0])
+        #plt.show()
+
+    # Needs reference values
     @pytest.mark.parametrize("fname, info", REF_JPG['14495']['JLS'])
     def test_jls(self, fname, info):
-        """Test get_parameters() for the JPEG-LS compliance images."""
+        """Test decoding the JPEG-LS compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_14495, 'JLS', fname), 'rb') as fp:
             data = fp.read()
 
-        params = get_parameters(np.frombuffer(data, 'uint8'))
-        print(params)
+        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert out.flags.writeable
 
-        assert (info[0], info[1]) == (params['rows'], params['columns'])
-        assert info[2] == params['samples_per_pixel']
-        assert info[3] == params['bits_per_sample']
+        if info[2] == 1:
+            assert (info[0], info[1]) == out.shape
+        else:
+            assert (info[0], info[1], info[2]) == out.shape
+
+        if 1 <= info[3] <= 8:
+            assert out.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert out.dtype == 'uint16'
+
+        #import matplotlib.pyplot as plt
+        #if info[2] == 1:
+        #    plt.imshow(out)
+        #else:
+        #    plt.imshow(out[:, :, 0])
+        #plt.show()
