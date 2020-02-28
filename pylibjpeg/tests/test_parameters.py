@@ -86,6 +86,7 @@ def test_get_parameters_bytes():
     assert info[3] == params['bits_per_sample']
 
 
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 def test_non_conformant_raises():
     """Test that a non-conformant JPEG image raises an exception."""
     ds_list = get_indexed_datasets('1.2.840.10008.1.2.4.51')
