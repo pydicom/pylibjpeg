@@ -29,12 +29,18 @@ LIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'libjpeg')
 PYLIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'pylibjpeg')
 
 # Run configure script once
+fpath = os.path.abspath(LIBJPEG_SRC)
+conf = os.path.join(fpath, 'configure')
+if platform.system() == 'Windows':
+    command = ['bash', '-c', conf]
+else:
+    command = [conf]
+
 if 'config.log' not in os.listdir(LIBJPEG_SRC):
     # Needs to be run from within the libjpeg directory
     current_dir = os.getcwd()
-    fpath = os.path.abspath(LIBJPEG_SRC)
     os.chdir(LIBJPEG_SRC)
-    subprocess.call(os.path.join(fpath, 'configure'))
+    subprocess.call(command)
     os.chdir(current_dir)
 
 # Get compilation options
@@ -49,10 +55,10 @@ print('automakefile options')
 for kk, vv in opts.items():
     print(kk, vv)
 
-# With MinGW hopefully
-if platform.system() == "Windows":
-    os.environ["CC"] = "x86_64-w64-mingw32-gcc.exe"
-    os.environ["CXX"] = "x86_64-w64-mingw32-g++.exe"
+# With MinGW hopefully - use Travis to set
+#if platform.system() == "Windows":
+#    os.environ["CC"] = "x86_64-w64-mingw32-gcc.exe"
+#    os.environ["CXX"] = "x86_64-w64-mingw32-g++.exe"
 
 # Cython extension.
 source_files = [
