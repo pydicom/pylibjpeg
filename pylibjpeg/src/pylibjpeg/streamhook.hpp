@@ -1,7 +1,6 @@
 #ifndef PYLIBJPEG_STREAMHOOK_HPP
 #define PYLIBJPEG_STREAMHOOK_HPP
 
-
 // Includes
 #include "../libjpeg/interface/types.hpp"
 #include "std/stdio.hpp"

@@ -1,3 +1,6 @@
+// Copyright 2020 pylibjpeg contributors
+//
+// This work is licensed under GPL-3.0-only, see LICENSE.txt for details.
 
 #include "decode.hpp"
 
@@ -19,9 +22,6 @@ void inline write_float(char *out, FLOAT f, bool bigendian)
         out++;
         *out = u.long_buf >> 0;
         out++;
-        //putc(u.long_buf >> 16, out);
-        //putc(u.long_buf >>  8, out);
-        //putc(u.long_buf >>  0, out);
     } else {
         *out = u.long_buf >>  0;
         out++;
