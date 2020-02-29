@@ -4,7 +4,7 @@
 ## pylibjpeg
 
 A Python wrapper for Thomas Richter's
-[libjpeg](https://github.com/thorfdbg/libjpeg) with a focus on providing JPEG
+[libjpeg](https://github.com/thorfdbg/libjpeg), with a focus on providing JPEG
 support for [pydicom](https://github.com/pydicom/pydicom).
 
 
@@ -14,6 +14,14 @@ support for [pydicom](https://github.com/pydicom/pydicom).
 git clone --recurse-submodules https://github.com/pydicom/pylibjpeg
 pip install pylibjpeg
 ```
+
+### Supported JPEG Formats
+
+| ISO/IEC Standard | ITU Equivalent | JPEG Format |
+| --- | --- | --- |
+| [10918](https://www.iso.org/standard/18902.html) | [T.81](https://www.itu.int/rec/T-REC-T.81/en) | [JPEG](https://jpeg.org/jpeg/index.html)    |
+| [14495](https://www.iso.org/standard/22397.html)   | [T.87](https://www.itu.int/rec/T-REC-T.87/en) | [JPEG-LS](https://jpeg.org/jpegls/index.html) |
+| [18477](https://www.iso.org/standard/62552.html)   | | [JPEG XT](https://jpeg.org/jpegxt/) |
 
 ### Supported Transfer Syntaxes
 
@@ -27,7 +35,7 @@ pip install pylibjpeg
 | 1.2.840.10008.1.2.4.81 | JPEG-LS Lossy (Near-Lossless) Image Compression |
 
 ### Usage
-
+#### With pydicom
 Assuming you already have *pydicom* installed:
 
 ```python
@@ -40,4 +48,15 @@ import pylibjpeg
 # Use pydicom as normal
 ds = dcmread(get_testdata_file('JPEG-LL.dcm'))
 arr = ds.pixel_array
+```
+
+#### Without pydicom
+
+Currently decoding is only supported for 1 or 3 component images.
+```python
+from pylibjpeg import decode
+
+with open('filename.jpg', 'wb') as f:
+    # Returns a numpy array
+    arr = decode(f.read())
 ```
