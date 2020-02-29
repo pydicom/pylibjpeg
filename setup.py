@@ -51,8 +51,8 @@ for kk, vv in opts.items():
 
 # With MinGW hopefully
 if platform.system() == "Windows":
-    os.environ["CC"] = "gcc"
-    os.environ["CXX"] = "g++"
+    os.environ["CC"] = "x86_64-w64-mingw32-gcc.exe"
+    os.environ["CXX"] = "x86_64-w64-mingw32-g++.exe"
 
 # Cython extension.
 source_files = [
