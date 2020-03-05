@@ -89,8 +89,6 @@ def test_decode_bytes():
     assert 192 == arr[85, 50]
     assert 255 == arr[95, 50]
 
-    print(len(frame))
-
 
 # TODO: convert to using straight JPG data
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
@@ -139,17 +137,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        arr = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.51'])
     def test_extended(self, fname, info):
@@ -159,17 +157,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        arr = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.57'])
     def test_lossless(self, fname, info):
@@ -179,17 +177,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        arr = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.70'])
     def test_lossless_sv1(self, fname, info):
@@ -199,17 +197,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        arr = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.80'])
     def test_extended(self, fname, info):
@@ -219,17 +217,17 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        arr = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
     @pytest.mark.parametrize("fname, info", REF_DCM['1.2.840.10008.1.2.4.81'])
     def test_extended(self, fname, info):
@@ -239,63 +237,155 @@ class TestDecodeDCM(object):
         ds = index[fname]['ds']
 
         frame = next(self.generate_frames(ds))
-        out = decode(np.frombuffer(frame, 'uint8'), reshape=True)
+        arr = decode(np.frombuffer(frame, 'uint8'), reshape=True)
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
 
 REF_JPG = {
     '10918' : {
+        # Reference values using libjpeg's `jpeg` app + imageJ
+        # Very circular but having issues with other programs interpreting
+        #   it as CYMK and doing weird stuff
         'p1' : [
-            ('A1.JPG', (257, 255, 4, 8)),
+            # ([top left pixel], [bottom right pixel])
+            (
+                'A1.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
             #('B1.JPG', (1, 1, 1, 1)),
             #('B2.JPG', (1, 1, 1, 1)), missing DHT marker (its in B1.JPG)
         ],
         'p2' : [
-            ('A1.JPG', (257, 255, 4, 8)),
+            (
+                'A1.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
             #('B1.JPG', ()),
             #('B2.JPG', ()), missing DHT (in B1)
-            ('C1.JPG', (257, 255, 4, 8)),
-            ('C2.JPG', (257, 255, 4, 8)),
+            (
+                'C1.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
+            (
+                'C2.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
         ],
         'p4' : [
-            ('A1.JPG', (257, 255, 4, 8)),
+            (
+                'A1.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
             #('B1.JPG', ()),
             #('B2.JPG', ()),
-            ('C1.JPG', (257, 255, 4, 8)),
-            ('C2.JPG', (257, 255, 4, 8)),
-            ('E1.JPG', (257, 255, 4, 12)),
-            ('E2.JPG', (257, 255, 4, 12)),
+            (
+                'C1.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
+            (
+                'C2.JPG', (257, 255, 4, 8),
+                ([138, 76, 239, 216], [155, 217, 191, 115])
+            ),
+            (
+                'E1.JPG', (257, 255, 4, 12),
+                ([2119, 1183, 3907, 3487], [2502, 3402, 3041, 1872])
+            ),
+            (
+                'E2.JPG', (257, 255, 4, 12),
+                ([2119, 1183, 3907, 3487], [2502, 3402, 3041, 1872])
+            ),
         ],
         'p14' : [
-            ('O1.JPG', (257, 255, 4, 8)),
-            ('O2.JPG', (257, 255, 4, 16)),
+            (
+                'O1.JPG', (257, 255, 4, 8),
+                ([132, 76, 245, 218], [156, 211, 191, 116])
+            ),
+            (
+                'O2.JPG', (257, 255, 4, 16),
+                ([33792, 19456, 62720, 55808], [39936, 53888, 48768, 29696])
+            ),
         ],
     },
     '14495' : {
-        'JLS' : [
-            ('T8C0E0.JLS', (256, 256, 3, 8)),
-            ('T8C0E3.JLS', (256, 256, 3, 8)),
-            ('T8C1E0.JLS', (256, 256, 3, 8)),
-            ('T8C1E3.JLS', (256, 256, 3, 8)),
-            ('T8C2E0.JLS', (256, 256, 3, 8)),
-            ('T8C2E3.JLS', (256, 256, 3, 8)),
-            ('T8NDE0.JLS', (128, 128, 1, 8)),
-            ('T8NDE3.JLS', (128, 128, 1, 8)),
-            ('T8SSE0.JLS', (256, 256, 3, 8)),
-            ('T8SSE3.JLS', (256, 256, 3, 8)),
-            ('T16E0.JLS', (256, 256, 1, 12)),
-            ('T16E3.JLS', (256, 256, 1, 12)),
+        'JLS' : [  # Lossless
+            (
+                # Reference values using GDCM
+                'T8C0E0.JLS', (256, 256, 3, 8),
+                ([161, 122, 108], [101, 99, 95])
+            ),
+            (
+                # GDCM and CharPyLS fail on this one - both use CharLS
+                 # Circular reference
+                'T8C1E0.JLS', (256, 256, 3, 8),
+                ([161, 122, 108], [101, 99, 95])
+            ),
+            (
+                # CharLS fails
+                # Circular reference
+                'T8C2E0.JLS', (256, 256, 3, 8),
+                ([161, 122, 108], [101, 99, 95])
+            ),
+            (
+                # Reference values using GDCM
+                'T8NDE0.JLS', (128, 128, 1, 8),
+                (108, 231)
+            ),
+            (
+                # CharLS fails
+                # Circular reference
+                'T8SSE0.JLS', (256, 256, 3, 8),
+                ([161, 122, 108], [101, 171, 231])
+            ),
+            (
+                # Reference values using GDCM
+                'T16E0.JLS', (256, 256, 1, 12),
+                (1963, 1596)
+            ),
         ],
-        'JNL' : [],
+        'JNL' : [  # Near lossless
+            (
+                # Reference values using GDCM
+                'T8C0E3.JLS', (256, 256, 3, 8),
+                ([161, 119, 105], [98, 96, 93])
+            ),
+            (
+                # CharLS fails
+                # Circular reference
+                'T8C1E3.JLS', (256, 256, 3, 8),
+                ([161, 119, 105], [101, 100, 97])
+            ),
+            (
+                # CharLS fails
+                # Circular reference
+                'T8C2E3.JLS', (256, 256, 3, 8),
+                ([161, 119, 105], [98, 96, 94])
+            ),
+            (
+                # Reference values using GDCM
+                'T8NDE3.JLS', (128, 128, 1, 8),
+                (105, 229)
+            ),
+            (
+                # CharLS fails
+                # Circular reference
+                'T8SSE3.JLS', (256, 256, 3, 8),
+                ([161, 119, 105], [102, 169, 234])
+            ),
+            (
+                # Reference values using GDCM
+                'T16E3.JLS', (256, 256, 1, 12),
+                (1960, 1593)
+            ),
+        ],
     },
     '15444' : {},
 }
@@ -303,142 +393,147 @@ REF_JPG = {
 
 class TestDecodeJPG(object):
     """Tests for get_parameters() using JPEG compliance data."""
-    # Needs reference values and support for 4 channel data
-    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p1'])
-    def test_baseline(self, fname, info):
+    @pytest.mark.parametrize("fname, info, ref", REF_JPG['10918']['p1'])
+    def test_baseline(self, fname, info, ref):
         """Test decoding the baseline compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p1', fname), 'rb') as fp:
             data = fp.read()
 
-        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
-        assert out.flags.writeable
+        arr = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert arr.flags.writeable
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
-        if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
-        if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+        # Process 1 is always 8-bit
+        assert arr.dtype == 'uint8'
 
-        #import matplotlib.pyplot as plt
-        #if info[2] == 1:
-        #    plt.imshow(out)
-        #else:
-        #    plt.imshow(out[:, :, 0])
-        #plt.show()
+        assert ref[0] == arr[0, 0, :].tolist()
+        assert ref[1] == arr[-1, -1, :].tolist()
 
-    # Needs reference values and support for 4 channel data
-    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p2'])
-    def test_extended_p2(self, fname, info):
+    @pytest.mark.parametrize("fname, info, ref", REF_JPG['10918']['p2'])
+    def test_extended_p2(self, fname, info, ref):
         """Test decoding the extended p2 compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p2', fname), 'rb') as fp:
             data = fp.read()
 
-        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
-        assert out.flags.writeable
+        arr = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert arr.flags.writeable
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
-        if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
-        if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+        # Process 2 is always 8-bit
+        assert arr.dtype == 'uint8'
 
-        #import matplotlib.pyplot as plt
-        #if info[2] == 1:
-        #    plt.imshow(out)
-        #else:
-        #    plt.imshow(out[:, :, 0])
-        #plt.show()
+        assert ref[0] == arr[0, 0, :].tolist()
+        assert ref[1] == arr[-1, -1, :].tolist()
 
-    # Needs reference values and support for 4 channel data
-    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p4'])
-    def test_extended_p4(self, fname, info):
+    @pytest.mark.parametrize("fname, info, ref", REF_JPG['10918']['p4'])
+    def test_extended_p4(self, fname, info, ref):
         """Test decoding the extended p4 compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p4', fname), 'rb') as fp:
             data = fp.read()
 
-        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
-        assert out.flags.writeable
+        arr = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert arr.flags.writeable
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
-        #import matplotlib.pyplot as plt
-        #if info[2] == 1:
-        #    plt.imshow(out)
-        #else:
-        #    plt.imshow(out[:, :, 0])
-        #plt.show()
+        assert ref[0] == arr[0, 0, :].tolist()
+        assert ref[1] == arr[-1, -1, :].tolist()
 
-    # Needs reference values and support for 4 channel data
-    @pytest.mark.parametrize("fname, info", REF_JPG['10918']['p14'])
-    def test_lossless_p14(self, fname, info):
+    @pytest.mark.parametrize("fname, info, ref", REF_JPG['10918']['p14'])
+    def test_lossless_p14(self, fname, info, ref):
         """Test decoding the extended p14 compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_10918, 'p14', fname), 'rb') as fp:
             data = fp.read()
 
-        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
-        assert out.flags.writeable
+        arr = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert arr.flags.writeable
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
-        #import matplotlib.pyplot as plt
-        #if info[2] == 1:
-        #    plt.imshow(out)
-        #else:
-        #    plt.imshow(out[:, :, 0])
-        #plt.show()
+        assert ref[0] == arr[0, 0, :].tolist()
+        assert ref[1] == arr[-1, -1, :].tolist()
 
-    # Needs reference values
-    @pytest.mark.parametrize("fname, info", REF_JPG['14495']['JLS'])
-    def test_jls(self, fname, info):
-        """Test decoding the JPEG-LS compliance images."""
+    @pytest.mark.parametrize("fname, info, ref", REF_JPG['14495']['JLS'])
+    def test_jls(self, fname, info, ref):
+        """Test decoding the JPEG-LS lossless compliance images."""
         #info: (rows, columns, spp, bps)
         with open(os.path.join(DIR_14495, 'JLS', fname), 'rb') as fp:
             data = fp.read()
 
-        out = decode(np.frombuffer(data, 'uint8'), reshape=True)
-        assert out.flags.writeable
+        arr = decode(
+            np.frombuffer(data, 'uint8'),
+            reshape=True,
+        )
+        assert arr.flags.writeable
 
         if info[2] == 1:
-            assert (info[0], info[1]) == out.shape
+            assert (info[0], info[1]) == arr.shape
         else:
-            assert (info[0], info[1], info[2]) == out.shape
+            assert (info[0], info[1], info[2]) == arr.shape
 
         if 1 <= info[3] <= 8:
-            assert out.dtype == 'uint8'
+            assert arr.dtype == 'uint8'
         if 9 <= info[3] <= 16:
-            assert out.dtype == 'uint16'
+            assert arr.dtype == 'uint16'
 
-        #import matplotlib.pyplot as plt
-        #if info[2] == 1:
-        #    plt.imshow(out)
-        #else:
-        #    plt.imshow(out[:, :, 0])
-        #plt.show()
+        if info[2] == 1:
+            assert ref[0] == arr[0, 0].tolist()
+            assert ref[1] == arr[-1, -1].tolist()
+        else:
+            assert ref[0] == arr[0, 0, :].tolist()
+            assert ref[1] == arr[-1, -1, :].tolist()
+
+    @pytest.mark.parametrize("fname, info, ref", REF_JPG['14495']['JNL'])
+    def test_jnl(self, fname, info, ref):
+        """Test decoding the JPEG-LS near lossless compliance images."""
+        #info: (rows, columns, spp, bps)
+        with open(os.path.join(DIR_14495, 'JNL', fname), 'rb') as fp:
+            data = fp.read()
+
+        arr = decode(np.frombuffer(data, 'uint8'), reshape=True)
+        assert arr.flags.writeable
+
+        if info[2] == 1:
+            assert (info[0], info[1]) == arr.shape
+        else:
+            assert (info[0], info[1], info[2]) == arr.shape
+
+        if 1 <= info[3] <= 8:
+            assert arr.dtype == 'uint8'
+        if 9 <= info[3] <= 16:
+            assert arr.dtype == 'uint16'
+
+        if info[2] == 1:
+            assert ref[0] == arr[0, 0].tolist()
+            assert ref[1] == arr[-1, -1].tolist()
+        else:
+            assert ref[0] == arr[0, 0, :].tolist()
+            assert ref[1] == arr[-1, -1, :].tolist()

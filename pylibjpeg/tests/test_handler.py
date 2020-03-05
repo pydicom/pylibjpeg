@@ -619,7 +619,7 @@ class TestJPEGLossless(HandlerTestBase):
 
         #self.plot(arr)
 
-        # Reference values from GDCM handler
+        # Reference values from GDCM handler - lossless must be identical!
         assert [392, 304, 238, 250, 224, 257, 221, 182, 166, 68] == (
             arr[779, 170:180].tolist()
         )
