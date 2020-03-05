@@ -52,7 +52,6 @@ arr = ds.pixel_array
 
 #### Without pydicom
 
-Currently decoding is only supported for 1 or 3 component images.
 ```python
 from pylibjpeg import decode
 

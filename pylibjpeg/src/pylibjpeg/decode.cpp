@@ -108,7 +108,6 @@ std::string Decode(char *inArray, char *outArray, int inLength, int outLength, i
                 bool doalpha = itags->GetTagData(JPGTAG_ALPHA_MODE, JPGFLAG_ALPHA_OPAQUE)?true:false;
                 bool apfm    = false;
                 bool aconvert= false;
-                bool writepgx= false;
 
                 if (alpha && doalpha) {
                     aprec    = atags->GetTagData(JPGTAG_IMAGE_PRECISION);
@@ -127,6 +126,11 @@ std::string Decode(char *inArray, char *outArray, int inLength, int outLength, i
                 if (pfm && convert == false) {
                     bytesperpixel = sizeof(FLOAT);
                     pixeltype     = CTYP_FLOAT;
+                }
+
+                // Make sure output array is the correct size
+                if (width * height * depth * bytesperpixel != outLength) {
+                    return "-8195::::Invalid output array size";
                 }
 
                 UBYTE alphabytesperpixel = sizeof(UBYTE);

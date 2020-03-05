@@ -89,6 +89,8 @@ def test_decode_bytes():
     assert 192 == arr[85, 50]
     assert 255 == arr[95, 50]
 
+    print(len(frame))
+
 
 # TODO: convert to using straight JPG data
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
