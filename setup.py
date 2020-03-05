@@ -7,22 +7,21 @@ import setuptools
 from setuptools import setup, find_packages
 from setuptools.extension import Extension
 import subprocess
-import distutils.sysconfig  # conda doesn't like not importing this
+from distutils.command.build import build as build_orig
+import distutils.sysconfig
 
 
 # Workaround for needing cython and numpy
-# Solution from: https://stackoverflow.com/a/54138355/12606901
-def my_build_ext(args):
-    from Cython.Distutils import build_ext as _build_ext
-
-    class build_ext(_build_ext):
-        def finalize_options(self):
-            _build_ext.finalize_options(self)
-            __builtins__.__NUMPY_SETUP__ = False
-            import numpy
-            self.include_dirs.append(numpy.get_include())
-
-    return build_ext(args)
+# Solution from: https://stackoverflow.com/a/54128391/12606901
+class build(build_orig):
+    def finalize_options(self):
+        super().finalize_options()
+        __builtins__.__NUMPY_SETUP__ = False
+        import numpy
+        extension = next(
+            m for m in self.distribution.ext_modules if m == ext
+        )
+        extension.include_dirs.append(numpy.get_include())
 
 
 LIBJPEG_SRC = os.path.join('pylibjpeg', 'src', 'libjpeg')
@@ -54,11 +53,6 @@ opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
 print('automakefile options')
 for kk, vv in opts.items():
     print(kk, vv)
-
-# With MinGW hopefully - use Travis to set
-#if platform.system() == "Windows":
-#    os.environ["CC"] = "x86_64-w64-mingw32-gcc.exe"
-#    os.environ["CXX"] = "x86_64-w64-mingw32-g++.exe"
 
 # Cython extension.
 source_files = [
@@ -145,6 +139,6 @@ setup(
     python_requires = ">=3.6",
     setup_requires = ['setuptools>=18.0', 'cython', 'numpy'],
     install_requires = ['cython', "numpy"],
-    cmdclass = {'build_ext': my_build_ext},
+    cmdclass = {'build': build},
     ext_modules = [ext],
 )

@@ -265,15 +265,21 @@ class TestJPEGBaseline(HandlerTestBase):
 
         #self.plot(arr)
 
-        # Reference values from GDCM handler - slightly different
+        # Reference values may be slightly different depending on handler
+        # Pillow: assert ( 76,  86, 251) == tuple(arr[ 5, 50, :])
         assert ( 76,  85, 254) == tuple(arr[ 5, 50, :])
-        # assert (166, 109, 190) == tuple(arr[15, 50, :])
-        assert (166, 108, 190) == tuple(arr[15, 50, :])  # Different
+        # GDCM:   assert (166, 109, 190) == tuple(arr[15, 50, :])
+        # Pillow: assert (166, 112, 185) == tuple(arr[15, 50, :])
+        assert (166, 108, 190) == tuple(arr[15, 50, :])
+        # Pillow: assert (150,  46,  17) == tuple(arr[25, 50, :])
         assert (150,  46,  21) == tuple(arr[25, 50, :])
-        # assert (203,  85,  74) == tuple(arr[35, 50, :])
-        assert (203,  86,  74) == tuple(arr[35, 50, :])  # Different
-        # assert ( 29, 255, 108) == tuple(arr[45, 50, :])
-        assert ( 29, 255, 107) == tuple(arr[45, 50, :])  # Different
+        # GDCM:   assert (203,  85,  74) == tuple(arr[35, 50, :])
+        # Pillow: assert (203,  95,  75) == tuple(arr[35, 50, :])
+        assert (203,  86,  74) == tuple(arr[35, 50, :])
+        # GDCM:   assert ( 29, 255, 108) == tuple(arr[45, 50, :])
+        # Pillow: assert ( 29, 255, 109) == tuple(arr[45, 50, :])
+        assert ( 29, 255, 107) == tuple(arr[45, 50, :])
+        # Pillow: assert (142, 189, 118) == tuple(arr[55, 50, :])
         assert (142, 192, 117) == tuple(arr[55, 50, :])
         assert (  0, 128, 128) == tuple(arr[65, 50, :])
         assert ( 64, 128, 128) == tuple(arr[75, 50, :])
@@ -299,8 +305,10 @@ class TestJPEGBaseline(HandlerTestBase):
 
         #self.plot(arr, index=3)
 
+        # GDCM: all match
         assert (41,  41,  41) == tuple(arr[3, 159, 290, :])
         assert (57,  57,  57) == tuple(arr[3, 169, 290, :])
+        # Pillow: assert (71, 168, 125) == tuple(arr[3, 41, 380, :])
         assert (72, 167, 125) == tuple(arr[3, 41, 380, :])
 
     # Non-conformant datasets
@@ -354,11 +362,16 @@ class TestJPEGBaseline(HandlerTestBase):
 
         #self.plot(arr)
 
+        # GDCM: all match
+        # Pillow: assert (248,   3,   2) == tuple(arr[ 5, 50, :])
         assert (253,   1,   0) == tuple(arr[ 5, 50, :])
+        # Pillow: assert (246, 131, 138) == tuple(arr[15, 50, :])
         assert (253, 129, 131) == tuple(arr[15, 50, :])
-        assert (  0, 255,   5) == tuple(arr[25, 50, :])
+        # Pillow: assert (129, 252, 145) == tuple(arr[35, 50, :])
         assert (127, 255, 129) == tuple(arr[35, 50, :])
+        # Pillow: assert (  2,   0, 254) == tuple(arr[45, 50, :])
         assert (  0,   0, 254) == tuple(arr[45, 50, :])
+        # Pillow: assert (128, 128, 250) == tuple(arr[55, 50, :])
         assert (127, 128, 255) == tuple(arr[55, 50, :])
         assert (  0,   0,   0) == tuple(arr[65, 50, :])
         assert ( 64,  64,  64) == tuple(arr[75, 50, :])
@@ -606,7 +619,7 @@ class TestJPEGLossless(HandlerTestBase):
 
         #self.plot(arr)
 
-        # Reference values from GDCM handler
+        # Reference values from GDCM handler - lossless must be identical!
         assert [392, 304, 238, 250, 224, 257, 221, 182, 166, 68] == (
             arr[779, 170:180].tolist()
         )

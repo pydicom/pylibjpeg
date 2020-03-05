@@ -22,7 +22,8 @@ Compressed images:
 ------------------
 	T8CxEy.JLS  x=0,1,2  y=0,3
 	   Image TEST8 compressed in color mode x with near-lossless error y
-	   (y=0 means lossless).
+	   (y=0 means lossless). x=0 scan-interleaved, 1 line interleaved
+       2 sample interleaved
 
 	T16Ey.JLS            y=0,3
 	   Image TEST16 compressed with near-lossless error y.
