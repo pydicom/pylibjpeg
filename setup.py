@@ -35,24 +35,25 @@ if platform.system() == 'Windows':
 else:
     command = [conf]
 
-if 'config.log' not in os.listdir(LIBJPEG_SRC):
-    # Needs to be run from within the libjpeg directory
-    current_dir = os.getcwd()
-    os.chdir(LIBJPEG_SRC)
-    subprocess.call(command)
-    os.chdir(current_dir)
+if platform.system() != 'Windows':
+    if 'config.log' not in os.listdir(LIBJPEG_SRC):
+        # Needs to be run from within the libjpeg directory
+        current_dir = os.getcwd()
+        os.chdir(LIBJPEG_SRC)
+        subprocess.call(command)
+        os.chdir(current_dir)
 
-# Get compilation options
-with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
-    lines = fp.readlines()
+    # Get compilation options
+    with open(os.path.join(LIBJPEG_SRC, 'automakefile')) as fp:
+        lines = fp.readlines()
 
-lines = [ll for ll in lines if not ll.startswith('#')]
-opts = [ll.split('=', 1) for ll in lines]
-opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
+    lines = [ll for ll in lines if not ll.startswith('#')]
+    opts = [ll.split('=', 1) for ll in lines]
+    opts = {vv[0].strip():list(vv[1].strip().split(' ')) for vv in opts}
 
-print('automakefile options')
-for kk, vv in opts.items():
-    print(kk, vv)
+    print('automakefile options')
+    for kk, vv in opts.items():
+        print(kk, vv)
 
 # Cython extension.
 source_files = [
@@ -65,10 +66,36 @@ for fname in Path(LIBJPEG_SRC).glob('*/*'):
         source_files.append(str(fname))
 
 extra_compile_args = []
-extra_compile_args.extend(opts['ADDOPTS'])
-
 extra_link_args = []
-extra_link_args.extend(opts['EXTRA_LIBS'])
+if platform.system() == 'Windows':
+    extra_compile_args.extend(
+        [
+            '/GS',  # Buffer security check
+            '/W3',  # Warning level
+            '/wd"4335"',  # Ignore warning 4335
+            '/Zc:wchar_t',  # Use windows char type
+            '/Zc:inline',  # Remove unreferenced function or data (...)
+            '/Zc:forScope',
+            '/Od',  # Disable optimisation
+            '/Oy-',  # (x86 only) don't omit frame pointer
+            '/openmp-',  # Disable #pragma omp directive
+            '/FC',  # Display full path of source code files
+            '/fp:precise',  # Floating-point behaviour
+            '/Gd',  # (x86 only) use __cdecl calling convention
+            '/GF-',  # Disable string pooling
+            '/GR',  # Enable run-time type info
+            '/RTC1',  # Enable run-time error checking
+            # /D defines constants and macros
+            '/DWIN64=1',  # Build 64-bit
+            #'/DWIN32=1',  # Build 32-bit
+            '/D_MSC_VER=1923',  # MSC version
+            '/D_UNICODE',
+            '/DUNICODE',
+        ]
+    )
+else:
+    extra_compile_args.extend(opts['ADDOPTS'])
+    extra_link_args.extend(opts['EXTRA_LIBS'])
 
 include_dirs = [
     LIBJPEG_SRC,

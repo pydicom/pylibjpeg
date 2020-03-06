@@ -141,7 +141,7 @@ class TestLibrary(object):
             r"and scan stop must be 63 for the sequential operating modes"
         )
         with pytest.raises(RuntimeError, match=msg):
-            arr = item['ds'].pixel_array
+            item['ds'].pixel_array
 
     def test_invalid_colour_transform(self):
         """Test that an invalid colour transform raises an exception."""
