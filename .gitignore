@@ -17,6 +17,7 @@
 # python byte-code files
 *.pyc
 *.pyo
+*.pyd
 
 # Build/dist files
 dist/*
