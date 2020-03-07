@@ -47,6 +47,16 @@ elif [[ "$TEST_SUITE" == 'conda' ]]; then
     conda activate test-environment
     conda install --yes nose pytest pytest-cov setuptools
     conda install --yes -c conda-forge pydicom
+elif [[ "$TEST_SUITE" == 'windows' ]]; then
+    choco install python --version $TRAVIS_PYTHON_VERSION
+    ls /c
+    ls /c/ProgramData/chocolatey/bin/
+    ls /c/Python38
+    echo $PATH
+    echo $CL
+    export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+    python -m pip install --upgrade pip
+    python -m pip install pydicom pytest pytest-cov
 else
     pip install pytest pytest-cov
 fi

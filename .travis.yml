@@ -14,6 +14,13 @@ matrix:
           env:
             - TEST_SUITE=osx
             - TRAVIS_PYTHON_VERSION=3.6.8
+        # Windows
+        - name: "Python 3.6, Windows + pydicom"
+          os: windows
+          language: shell
+          env:
+            - TEST_SUITE=windows
+            - TRAVIS_PYTHON_VERSION=3.6.8
         # Conda next, also takes a while
         - name: "Python 3.6, Ubuntu + conda + pydicom"
           os: linux
