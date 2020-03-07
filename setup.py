@@ -77,10 +77,11 @@ def get_gcc_args():
     # Run configure script once
     # Using GCC or clang, run `configure` bash script once
     if 'config.log' not in os.listdir(LIBJPEG_SRC):
+        # Needs to be determined before changing the working dir
+        fpath = os.path.abspath(LIBJPEG_SRC)
         # Needs to be run from within the src/libjpeg directory
         current_dir = os.getcwd()
         os.chdir(LIBJPEG_SRC)
-        fpath = os.path.abspath(LIBJPEG_SRC)
         subprocess.call([os.path.join(fpath, 'configure')])
         os.chdir(current_dir)
 
