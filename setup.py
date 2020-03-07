@@ -80,7 +80,8 @@ def get_gcc_args():
         # Needs to be run from within the src/libjpeg directory
         current_dir = os.getcwd()
         os.chdir(LIBJPEG_SRC)
-        subprocess.call(command)
+        fpath = os.path.abspath(LIBJPEG_SRC)
+        subprocess.call([os.path.join(fpath, 'configure')])
         os.chdir(current_dir)
 
     # Get compilation options
