@@ -15,12 +15,11 @@ except ImportError:
     HAS_PYDICOM = False
 
 from pylibjpeg import add_handler, remove_handler, decode
-from pylibjpeg.data import get_indexed_datasets
+from pylibjpeg.data import get_indexed_datasets, JPEG_DIRECTORY
 
-TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-DATA_DIR = os.path.join(TEST_DIR, '../data')
-DIR_10918 = os.path.join(DATA_DIR, 'jpg', '10918')
-DIR_14495 = os.path.join(DATA_DIR, 'jpg', '14495')
+
+DIR_10918 = os.path.join(JPEG_DIRECTORY, '10918')
+DIR_14495 = os.path.join(JPEG_DIRECTORY, '14495')
 
 REF_DCM = {
     '1.2.840.10008.1.2.4.50' : [
