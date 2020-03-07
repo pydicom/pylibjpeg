@@ -3,16 +3,19 @@
 
 ## pylibjpeg
 
-A Python wrapper for Thomas Richter's
+A Python 3.6+ wrapper for Thomas Richter's
 [libjpeg](https://github.com/thorfdbg/libjpeg), with a focus on providing JPEG
 support for [pydicom](https://github.com/pydicom/pydicom).
 
+Linux, OSX and Windows are all supported.
 
 ### Installation
 #### Installing the development version
+
+Make sure [Python](https://www.python.org/) and [Git](https://git-scm.com/) are installed. For Windows, you also need to install the [Microsoft's C++ Build Tools](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools&rel=16).
 ```bash
 git clone --recurse-submodules https://github.com/pydicom/pylibjpeg
-pip install pylibjpeg
+python -m pip install pylibjpeg
 ```
 
 ### Supported JPEG Formats
@@ -55,7 +58,7 @@ arr = ds.pixel_array
 ```python
 from pylibjpeg import decode
 
-with open('filename.jpg', 'wb') as f:
+with open('filename.jpg', 'rb') as f:
     # Returns a numpy array
     arr = decode(f.read())
 ```
