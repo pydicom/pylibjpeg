@@ -64,3 +64,5 @@ else
 fi
 
 python --version
+# Install the test data
+python -m pip install git+git://github.com/pydicom/pylibjpeg-data

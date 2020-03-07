@@ -7,11 +7,10 @@ from tempfile import NamedTemporaryFile
 import pytest
 
 from pylibjpeg.libjpeg import reconstruct
+from pylibjpeg.data import JPEG_DIRECTORY
 
-TEST_DIR = os.path.abspath(os.path.dirname(__file__))
-DATA_DIR = os.path.join(TEST_DIR, '../data')
-DIR_10918 = os.path.join(DATA_DIR, 'jpg', '10918')
-DIR_14495 = os.path.join(DATA_DIR, 'jpg', '14495')
+DIR_10918 = os.path.join(JPEG_DIRECTORY, '10918')
+DIR_14495 = os.path.join(JPEG_DIRECTORY, '14495')
 
 
 def test_reconstruct_no_alpha():
