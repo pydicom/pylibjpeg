@@ -49,12 +49,14 @@ elif [[ "$TEST_SUITE" == 'conda' ]]; then
     conda install --yes -c conda-forge pydicom
 elif [[ "$TEST_SUITE" == 'windows' ]]; then
     choco install python --version $TRAVIS_PYTHON_VERSION
-    ls /c
-    ls /c/ProgramData/chocolatey/bin/
-    ls /c/Python38
-    echo $PATH
-    echo $CL
-    export PATH="/c/Python38:/c/Python38/Scripts:$PATH"
+    #ls /c
+    #echo ""
+    #echo "chocolatey installs:"
+    #ls /c/ProgramData/chocolatey/bin/
+    #ls /c/Python36  # make this generic
+    #echo $PATH
+    #echo $CL
+    export PATH="/c/Python36:/c/Python36/Scripts:$PATH"  # make this generic
     python -m pip install --upgrade pip
     python -m pip install pydicom pytest pytest-cov
 else
