@@ -114,7 +114,9 @@ def get_source_files():
 extra_compile_args = []
 extra_link_args = []
 if platform.system() == 'Windows':
-    os.environ['LIB'] == os.path.join(sys.executable, '../', 'libs')
+    os.environ['LIB'] = os.path.abspath(
+        os.path.join(sys.executable, '../', 'libs')
+    )
     extra_compile_args = get_mscv_args()
 elif platform.system() in ['Darwin', 'Linux']:
     opts = get_gcc_args()

@@ -43,6 +43,8 @@ class TestBuilds(object):
         elif os_name == 'linux':
             assert platform.system() == 'Linux'
             assert "CPython" in platform.python_implementation()
+        elif os_name == 'windows':
+            assert platform.system() == 'Windows'
         else:
             raise NotImplementedError("Unknown 'TRAVIS_OS_NAME' value")
 
