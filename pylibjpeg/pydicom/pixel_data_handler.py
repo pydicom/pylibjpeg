@@ -1,15 +1,5 @@
-"""Use the `pylibjpeg <https://github.com/scaramallion/pylibjpeg/>`_ package
+"""Use the `pylibjpeg <https://github.com/pydicom/pylibjpeg/>`_ package
 to convert supported pixel data to a :class:`numpy.ndarray`.
-
-**Supported transfer syntaxes**
-
-* 1.2.840.10008.1.2.4.50 : JPEG Baseline (Process 1)
-* 1.2.840.10008.1.2.4.51 : JPEG Extended (Process 2 and 4)
-* 1.2.840.10008.1.2.4.57 : JPEG Lossless, Non-Hierarchical (Process 14)
-* 1.2.840.10008.1.2.4.70 : JPEG Lossless, Non-Hierarchical, First-Order
-  Prediction (Process 14 [Selection Value 1])
-* 1.2.840.10008.1.2.4.80 : JPEG-LS Lossless Image Compression
-* 1.2.840.10008.1.2.4.81 : JPEG-LS Lossy (Near-Lossless) Image Compression
 
 **Supported data**
 
@@ -49,32 +39,15 @@ values given in the table below.
 import numpy as np
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
-from pydicom.uid import (
-    JPEGBaseline,
-    JPEGExtended,
-    JPEGLosslessP14,
-    JPEGLossless,
-    JPEGLSLossless,
-    JPEGLSLossy,
-)
-
-from pylibjpeg.libjpeg import decode
 
 
 HANDLER_NAME = 'pylibjpeg'
-
+# Set this dynamically based on unavailable plugins
 DEPENDENCIES = {
     'numpy': ('http://www.numpy.org/', 'NumPy'),
 }
-
-SUPPORTED_TRANSFER_SYNTAXES = [
-    JPEGBaseline,
-    JPEGExtended,
-    JPEGLosslessP14,
-    JPEGLossless,
-    JPEGLSLossless,
-    JPEGLSLossy,
-]
+SUPPORTED_TRANSFER_SYNTAXES = []
+_DECODERS = {}
 
 
 def is_available():

@@ -4,7 +4,6 @@ branches:
 
 language: python
 
-# Build against pydicom master and current release
 matrix:
     include:
         # OSX first because it takes a long time to complete before_install
@@ -14,6 +13,7 @@ matrix:
           env:
             - TEST_SUITE=osx
             - TRAVIS_PYTHON_VERSION=3.6.8
+            - INSTALL_LIBJPEG=true
         # Windows
         - name: "Python 3.6, Windows + pydicom"
           os: windows
@@ -21,59 +21,50 @@ matrix:
           env:
             - TEST_SUITE=windows
             - TRAVIS_PYTHON_VERSION=3.6.8
-        # Conda next, also takes a while
-        - name: "Python 3.6, Ubuntu + conda + pydicom"
-          os: linux
-          dist: bionic
-          env:
-            - TEST_SUITE=conda
-            - TRAVIS_PYTHON_VERSION=3.6
-        # Ubuntu with pydicom master next to find any issues quickly
-        - name: "Python 3.6, Ubuntu + pydicom master"
-          os: linux
-          dist: bionic
-          python: "3.6"
-          env: TEST_SUITE=pydicom_master
-        - name: "Python 3.7, Ubuntu + pydicom master"
-          os: linux
-          dist: bionic
-          python: "3.7"
-          env: TEST_SUITE=pydicom_master
-        - name: "Python 3.8, Ubuntu + pydicom master"
-          os: linux
-          dist: bionic
-          python: "3.8"
-          env: TEST_SUITE=pydicom_master
+            - INSTALL_LIBJPEG=true
+        # Ubuntu
         - name: "Python 3.6, Ubuntu"
           os: linux
           dist: bionic
           python: "3.6"
-          env: TEST_SUITE=solo
+          env:
+            - TEST_SUITE=solo
+            - INSTALL_LIBJPEG=true
         - name: "Python 3.7, Ubuntu"
           os: linux
           dist: bionic
           python: "3.7"
-          env: TEST_SUITE=solo
+          env:
+            - TEST_SUITE=solo
+            - INSTALL_LIBJPEG=true
         - name: "Python 3.8, Ubuntu"
           os: linux
           dist: bionic
           python: "3.8"
-          env: TEST_SUITE=solo
+          env:
+            - TEST_SUITE=solo
+            - INSTALL_LIBJPEG=true
         - name: "Python 3.6, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.6"
-          env: TEST_SUITE=pydicom_release
+          env:
+            - TEST_SUITE=pydicom
+            - INSTALL_LIBJPEG=true
         - name: "Python 3.7, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.7"
-          env: TEST_SUITE=pydicom_release
+          env:
+            - TEST_SUITE=pydicom
+            - INSTALL_LIBJPEG=true
         - name: "Python 3.8, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.8"
-          env: TEST_SUITE=pydicom_release
+          env:
+            - TEST_SUITE=pydicom
+            - INSTALL_LIBJPEG=true
 
 # Install dependencies and package
 install:

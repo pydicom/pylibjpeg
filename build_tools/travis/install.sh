@@ -7,11 +7,7 @@ echo "Test suite: " $TEST_SUITE
 echo "Working directory: " $PWD
 echo ""
 
-if [[ "$TEST_SUITE" == "pydicom_master" ]]; then
-    pip install pytest pytest-cov
-    pip install git+https://github.com/pydicom/pydicom.git
-    python -c "import pydicom; print('pydicom version', pydicom.__version__)"
-elif [[ "$TEST_SUITE" == "pydicom_release" ]]; then
+if [[ "$TEST_SUITE" == "pydicom" ]]; then
     pip install pydicom pytest pytest-cov
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
 elif [[ "$TEST_SUITE" == 'osx' ]]; then
@@ -27,7 +23,6 @@ elif [[ "$TEST_SUITE" == 'osx' ]]; then
     export PATH="/Users/travis/.pyenv/shims:${PATH}"
     pyenv virtualenv venv
     pyenv activate venv
-    python --version
     pip install --upgrade pip
     pip install pydicom pytest pytest-cov
     python -c "import pydicom; print('pydicom version', pydicom.__version__)"
@@ -49,13 +44,6 @@ elif [[ "$TEST_SUITE" == 'conda' ]]; then
     conda install --yes -c conda-forge pydicom
 elif [[ "$TEST_SUITE" == 'windows' ]]; then
     choco install python --version $TRAVIS_PYTHON_VERSION
-    #ls /c
-    #echo ""
-    #echo "chocolatey installs:"
-    #ls /c/ProgramData/chocolatey/bin/
-    #ls /c/Python36  # make this generic
-    #echo $PATH
-    #echo $CL
     export PATH="/c/Python36:/c/Python36/Scripts:$PATH"  # make this generic
     python -m pip install --upgrade pip
     python -m pip install pydicom pytest pytest-cov
@@ -63,6 +51,14 @@ else
     pip install pytest pytest-cov
 fi
 
-python --version
 # Install the test data
 python -m pip install git+git://github.com/pydicom/pylibjpeg-data
+
+# Install plugins
+if [[ "$INSTALL_LIBJPEG" == 'true' ]]; then
+    python -m pip install git+git://github.com/pydicom/pylibjpeg-libjpeg
+fi
+
+
+
+python --version
