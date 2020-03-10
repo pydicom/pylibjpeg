@@ -2,6 +2,7 @@
 omit =
     pylibjpeg/tests/*
     pylibjpeg/scripts/*
+    pylibjpeg/tools/*
     pylibjpeg-data/*
     pylibjpeg-libjpeg/*
     pydicom/*
