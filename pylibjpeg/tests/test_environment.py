@@ -56,19 +56,3 @@ class TestBuilds(object):
 
         version = tuple([int(vv) for vv in version.split('.')])
         assert version[:2] == sys.version_info[:2]
-
-    def test_pydicom(self):
-        """Test that pydicom is absent/present."""
-        if not get_envar('TRAVIS_JOB_NAME'):
-            raise RuntimeError("No TRAVIS_JOB_NAME' envar has been set")
-
-        if 'pydicom' in get_envar('TRAVIS_JOB_NAME'):
-            try:
-                import pydicom
-            except ImportError:
-                pytest.fail(
-                    "TRAVIS_JOB_NAME includes pydicom but isn't importable"
-                )
-        else:
-            with pytest.raises(ImportError):
-                import pydicom

@@ -29,21 +29,21 @@ matrix:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=false
         # libjpeg + pydicom
-        - name: "Python 3.6, Ubuntu"
+        - name: "Python 3.6, Ubuntu + libjpeg"
           os: linux
           dist: bionic
           python: "3.6"
           env:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=true
-        - name: "Python 3.7, Ubuntu"
+        - name: "Python 3.7, Ubuntu + libjpeg"
           os: linux
           dist: bionic
           python: "3.7"
           env:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=true
-        - name: "Python 3.8, Ubuntu"
+        - name: "Python 3.8, Ubuntu + libjpeg"
           os: linux
           dist: bionic
           python: "3.8"
