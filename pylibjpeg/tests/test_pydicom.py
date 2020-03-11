@@ -8,12 +8,15 @@ import pytest
 
 try:
     import pydicom
+    import pydicom.config
+    from pylibjpeg.pydicom import pixel_data_handler as handler
     HAS_PYDICOM = True
 except ImportError:
     HAS_PYDICOM = False
 
-from pylibjpeg.plugins import get_plugins
 from pylibjpeg.data import get_indexed_datasets
+from pylibjpeg.plugins import get_plugins
+from pylibjpeg.utils import add_handler, remove_handler
 
 HAS_PLUGINS = get_plugins() != []
 
@@ -33,6 +36,41 @@ class TestNoPlugins(object):
         )
         with pytest.raises(RuntimeError, match=msg):
             ds.pixel_array
+
+    def test_get_pixeldata_no_syntax(self):
+        """Test exception raised if syntax not supported."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        ds.file_meta.TransferSyntaxUID = '1.2.3.4'
+        msg = (
+            r"Unable to convert the pixel data as the transfer syntax is not "
+            r"supported by the pylibjpeg pixel data handler"
+        )
+        with pytest.raises(RuntimeError, match=msg):
+            handler.get_pixeldata(ds)
+
+    def test_get_pixeldata_no_lj_syntax(self):
+        """Test exception raised if syntax not supported."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        msg = (
+            r"The libjpeg plugin is required to decode pixel data with a "
+            r"transfer syntax of '1.2.840.10008.1.2.4.50'"
+        )
+        with pytest.raises(RuntimeError, match=msg):
+            handler.get_pixeldata(ds)
+
+    def test_get_pixeldata_no_lj_syntax(self):
+        """Test exception raised if syntax not supported."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        ds.file_meta.TransferSyntaxUID = '1.2.840.10008.1.2.4.90'
+        msg = (
+            r"The openjpeg plugin is required to decode pixel data with a "
+            r"transfer syntax of '1.2.840.10008.1.2.4.90'"
+        )
+        with pytest.raises(RuntimeError, match=msg):
+            handler.get_pixeldata(ds)
 
 
 @pytest.mark.skipif(not HAS_PYDICOM or not HAS_PLUGINS, reason="No plugins")
@@ -59,3 +97,35 @@ class TestPlugins(object):
         assert  64 == arr[75, 50]
         assert 192 == arr[85, 50]
         assert 255 == arr[95, 50]
+
+    def test_add_remove_handler(self):
+        """Test removing the pixel data handler."""
+        assert handler in pydicom.config.pixel_data_handlers
+        remove_handler()
+        assert handler not in pydicom.config.pixel_data_handlers
+        add_handler()
+        assert handler in pydicom.config.pixel_data_handlers
+
+    def test_should_change_PI(self):
+        """Pointless test."""
+        result = handler.should_change_PhotometricInterpretation_to_RGB(None)
+        assert result is False
+
+    def test_missing_required(self):
+        """Test missing required element raises."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        del ds.SamplesPerPixel
+        msg = (
+            r"Unable to convert the pixel data as the following required "
+            r"elements are missing from the dataset: SamplesPerPixel"
+        )
+        with pytest.raises(AttributeError, match=msg):
+            ds.pixel_array
+
+    def test_ybr_full_422(self):
+        """Test YBR_FULL_422 data decoded."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['SC_rgb_dcmtk_+eb+cy+np.dcm']['ds']
+        assert 'YBR_FULL_422' == ds.PhotometricInterpretation
+        arr = ds.pixel_array

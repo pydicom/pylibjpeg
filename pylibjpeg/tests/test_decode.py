@@ -92,12 +92,20 @@ class TestPlugins(object):
         assert isinstance(data, bytes)
         arr = decode(data)
 
-    def test_failure(self):
+    def test_decode_failure(self):
         """Test failure to decode."""
-        pass
+        with pytest.raises(ValueError, match=r"Unable to decode"):
+            decode(b'\x00\x00')
 
     def test_specify_decoder(self):
         """Test specifying the decoder."""
         fpath = os.path.join(JPEG_DIRECTORY, '10918', 'p1', 'A1.JPG')
         assert isinstance(fpath, str)
         arr = decode(fpath, decoder='libjpeg')
+
+    def test_specify_unknown_decoder(self):
+        """Test specifying an unknown decoder."""
+        fpath = os.path.join(JPEG_DIRECTORY, '10918', 'p1', 'A1.JPG')
+        assert isinstance(fpath, str)
+        with pytest.raises(ValueError, match=r"The 'openjpeg' decoder"):
+            decode(fpath, decoder='openjpeg')

@@ -101,6 +101,14 @@ class TestPlugins(object):
         """Test get_decoder()."""
         decoder = get_decoder('1.2.840.10008.1.2.4.50')
 
+    def test_get_decoder_missing(self):
+        """Test get_decoder() with no matching decoder."""
+        msg = (
+            r"No decoder is available for the Transfer Syntax UID - '1.2.3.4'"
+        )
+        with pytest.raises(NotImplementedError, match=msg):
+            get_decoder('1.2.3.4')
+
     def test_get_uid_decoders(self):
         """Test get_uid_decoders()."""
         reference = [
