@@ -64,6 +64,16 @@ except ImportError:
 
 
 HANDLER_NAME = 'pylibjpeg'
+DEPENDENCIES = {
+    'numpy': ('http://www.numpy.org/', 'NumPy'),
+    'libjpeg': (
+        'http://github.com/pydicom/pylibjpeg-libjpeg/', 'libjpeg plugin'
+    ),
+    'openjpeg': (
+        'http://github.com/pydicom/pylibjpeg-openjpeg/', 'openjpeg plugin'
+    ),
+}
+
 _DECODERS = get_uid_decoders()
 _LIBJPEG_SYNTAXES = [
     '1.2.840.10008.1.2.4.50',
