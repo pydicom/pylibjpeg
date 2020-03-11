@@ -7,6 +7,7 @@ import sys
 from ._version import __version__
 from ._config import PLUGINS
 from .plugins import load_plugins
+from .utils import decode
 
 
 # Setup default logging
@@ -27,7 +28,7 @@ def debug_logger():
 
 
 # TODO: remove this later
-debug_logger()
+#debug_logger()
 
 
 try:

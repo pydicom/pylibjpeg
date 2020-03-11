@@ -36,37 +36,36 @@ values given in the table below.
 
 """
 
+import logging
+
 import numpy as np
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
 
-from pylibjpeg.plugins import get_decoders
+from pylibjpeg.plugins import get_uid_decoders
+
+LOGGER = logging.getLogger(__name__)
 
 try:
     import pylibjpeg.plugins.libjpeg
     HAVE_LIBJPEG = True
+    LOGGER.debug("libjpeg available to the pixel data handler")
 except ImportError:
     HAVE_LIBJPEG = False
+    LOGGER.debug("libjpeg unavailable to the pixel data handler")
 
 try:
     import pylibjpeg.plugins.openjpeg
     HAVE_OPENJPEG = True
+    LOGGER.debug("openjpeg available to the pixel data handler")
 except ImportError:
     HAVE_OPENJPEG = False
+    LOGGER.debug("openjpeg unavailable to the pixel data handler")
+
 
 HANDLER_NAME = 'pylibjpeg'
-DEPENDENCIES = {
-    'numpy': ('http://www.numpy.org/', 'NumPy'),
-    'libjpeg': (
-        'http://github.com/pydicom/pylibjpeg-libjpeg/', 'libjpeg plugin'
-    ),
-    'openjpeg': (
-        'http://github.com/pydicom/pylibjpeg-openjpeg/', 'openjpeg plugin'
-    ),
-}
-
-_DECODERS = get_decoders()
-SUPPORTED_TRANSFER_SYNTAXES = [
+_DECODERS = get_uid_decoders()
+_LIBJPEG_SYNTAXES = [
     '1.2.840.10008.1.2.4.50',
     '1.2.840.10008.1.2.4.51',
     '1.2.840.10008.1.2.4.57',
@@ -74,6 +73,11 @@ SUPPORTED_TRANSFER_SYNTAXES = [
     '1.2.840.10008.1.2.4.80',
     '1.2.840.10008.1.2.4.81'
 ]
+_OPENJPEG_SYNTAXES = [
+    '1.2.840.10008.1.2.4.90',
+    '1.2.840.10008.1.2.4.91'
+]
+SUPPORTED_TRANSFER_SYNTAXES = _LIBJPEG_SYNTAXES + _OPENJPEG_SYNTAXES
 
 
 def is_available():
@@ -148,6 +152,18 @@ def get_pixeldata(ds):
             "is not supported by the pylibjpeg pixel data handler."
         )
 
+    if tsyntax in _LIBJPEG_SYNTAXES and not HAVE_LIBJPEG:
+        raise RuntimeError(
+            "The libjpeg plugin is required to decode pixel data with a "
+            "transfer syntax of '{}'".format(tsyntax)
+        )
+
+    if tsyntax in _OPENJPEG_SYNTAXES and not HAVE_OPENJPEG:
+        raise RuntimeError(
+            "The openjpeg plugin is required to decode pixel data with a "
+            "transfer syntax of '{}'".format(tsyntax)
+        )
+
     # Check required elements
     required_elements = [
         'BitsAllocated', 'Rows', 'Columns', 'PixelRepresentation',
@@ -178,6 +194,7 @@ def get_pixeldata(ds):
     arr = np.empty(expected_len, np.uint8)
 
     decoder = _DECODERS[tsyntax]
+    LOGGER.debug("Decoding {} Pixel Data using {}".format(tsyntax, decoder))
 
     # Generators for the encoded JPG image frame(s) and insertion offsets
     generate_frames = generate_pixel_data_frame(ds.PixelData, nr_frames)

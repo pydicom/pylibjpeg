@@ -7,21 +7,21 @@ language: python
 matrix:
     include:
         # No plugins + pydicom
-        - name: "Python 3.6, Ubuntu"
+        - name: "Python 3.6, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.6"
           env:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=false
-        - name: "Python 3.7, Ubuntu"
+        - name: "Python 3.7, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.7"
           env:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=false
-        - name: "Python 3.8, Ubuntu"
+        - name: "Python 3.8, Ubuntu + pydicom"
           os: linux
           dist: bionic
           python: "3.8"
@@ -29,26 +29,48 @@ matrix:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=false
         # libjpeg + pydicom
-        - name: "Python 3.6, Ubuntu + libjpeg"
+        - name: "Python 3.6, Ubuntu + libjpeg + pydicom"
           os: linux
           dist: bionic
           python: "3.6"
           env:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=true
-        - name: "Python 3.7, Ubuntu + libjpeg"
+        - name: "Python 3.7, Ubuntu + libjpeg + pydicom"
           os: linux
           dist: bionic
           python: "3.7"
           env:
             - INSTALL_PYDICOM=true
             - INSTALL_LIBJPEG=true
-        - name: "Python 3.8, Ubuntu + libjpeg"
+        - name: "Python 3.8, Ubuntu + libjpeg + pydicom"
           os: linux
           dist: bionic
           python: "3.8"
           env:
             - INSTALL_PYDICOM=true
+            - INSTALL_LIBJPEG=true
+        # libjpeg standalone
+        - name: "Python 3.6, Ubuntu + libjpeg"
+          os: linux
+          dist: bionic
+          python: "3.6"
+          env:
+            - INSTALL_PYDICOM=false
+            - INSTALL_LIBJPEG=true
+        - name: "Python 3.7, Ubuntu + libjpeg"
+          os: linux
+          dist: bionic
+          python: "3.7"
+          env:
+            - INSTALL_PYDICOM=false
+            - INSTALL_LIBJPEG=true
+        - name: "Python 3.8, Ubuntu + libjpeg"
+          os: linux
+          dist: bionic
+          python: "3.8"
+          env:
+            - INSTALL_PYDICOM=false
             - INSTALL_LIBJPEG=true
 
 

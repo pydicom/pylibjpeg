@@ -8,7 +8,7 @@ import pytest
 
 from pylibjpeg.plugins import (
     get_plugin_coders, get_plugins, get_transfer_syntaxes, get_decoder,
-    get_encoder, get_decoders
+    get_encoder, get_uid_decoders
 )
 
 # TODO: Switch this over to openjpeg
@@ -55,9 +55,9 @@ class TestNoPlugins(object):
         with pytest.raises(NotImplementedError, match=msg):
             get_encoder('1.2.3')
 
-    def test_get_decoders(self):
-        """Test get_decoders()."""
-        assert {} == get_decoders()
+    def test_get_uid_decoders(self):
+        """Test get_uid_decoders()."""
+        assert {} == get_uid_decoders()
 
 
 @pytest.mark.skipif(not HAS_PLUGINS or not HAS_LIBJPEG, reason="No libjpeg")
@@ -101,8 +101,8 @@ class TestPlugins(object):
         """Test get_decoder()."""
         decoder = get_decoder('1.2.840.10008.1.2.4.50')
 
-    def test_get_decoders(self):
-        """Test get_decoders()."""
+    def test_get_uid_decoders(self):
+        """Test get_uid_decoders()."""
         reference = [
             '1.2.840.10008.1.2.4.50',
             '1.2.840.10008.1.2.4.51',
@@ -111,6 +111,6 @@ class TestPlugins(object):
             '1.2.840.10008.1.2.4.80',
             '1.2.840.10008.1.2.4.81',
         ]
-        decoders = get_decoders()
+        decoders = get_uid_decoders()
         for uid in reference:
             assert uid in decoders

@@ -104,6 +104,14 @@ def get_decoder(uid):
 
 
 def get_decoders():
+    decoders = {}
+    for name in get_plugins():
+        decoders[name] = getattr(globals()[name], 'decode')
+
+    return decoders
+
+
+def get_uid_decoders():
     uids = get_transfer_syntaxes(decodable=True)
     decoders = {}
     dec, _ = get_plugin_coders()
