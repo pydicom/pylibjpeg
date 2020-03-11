@@ -1,3 +1,0 @@
-[submodule "pylibjpeg/src/libjpeg"]
-	path = pylibjpeg/src/libjpeg
-	url = https://github.com/thorfdbg/libjpeg.git

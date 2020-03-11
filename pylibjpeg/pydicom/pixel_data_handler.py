@@ -1,15 +1,5 @@
-"""Use the `pylibjpeg <https://github.com/scaramallion/pylibjpeg/>`_ package
+"""Use the `pylibjpeg <https://github.com/pydicom/pylibjpeg/>`_ package
 to convert supported pixel data to a :class:`numpy.ndarray`.
-
-**Supported transfer syntaxes**
-
-* 1.2.840.10008.1.2.4.50 : JPEG Baseline (Process 1)
-* 1.2.840.10008.1.2.4.51 : JPEG Extended (Process 2 and 4)
-* 1.2.840.10008.1.2.4.57 : JPEG Lossless, Non-Hierarchical (Process 14)
-* 1.2.840.10008.1.2.4.70 : JPEG Lossless, Non-Hierarchical, First-Order
-  Prediction (Process 14 [Selection Value 1])
-* 1.2.840.10008.1.2.4.80 : JPEG-LS Lossless Image Compression
-* 1.2.840.10008.1.2.4.81 : JPEG-LS Lossy (Near-Lossless) Image Compression
 
 **Supported data**
 
@@ -49,37 +39,46 @@ values given in the table below.
 import numpy as np
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
-from pydicom.uid import (
-    JPEGBaseline,
-    JPEGExtended,
-    JPEGLosslessP14,
-    JPEGLossless,
-    JPEGLSLossless,
-    JPEGLSLossy,
-)
 
-from pylibjpeg.libjpeg import decode
+from pylibjpeg.plugins import get_decoders
 
+try:
+    import pylibjpeg.plugins.libjpeg
+    HAVE_LIBJPEG = True
+except ImportError:
+    HAVE_LIBJPEG = False
+
+try:
+    import pylibjpeg.plugins.openjpeg
+    HAVE_OPENJPEG = True
+except ImportError:
+    HAVE_OPENJPEG = False
 
 HANDLER_NAME = 'pylibjpeg'
-
 DEPENDENCIES = {
     'numpy': ('http://www.numpy.org/', 'NumPy'),
+    'libjpeg': (
+        'http://github.com/pydicom/pylibjpeg-libjpeg/', 'libjpeg plugin'
+    ),
+    'openjpeg': (
+        'http://github.com/pydicom/pylibjpeg-openjpeg/', 'openjpeg plugin'
+    ),
 }
 
+_DECODERS = get_decoders()
 SUPPORTED_TRANSFER_SYNTAXES = [
-    JPEGBaseline,
-    JPEGExtended,
-    JPEGLosslessP14,
-    JPEGLossless,
-    JPEGLSLossless,
-    JPEGLSLossy,
+    '1.2.840.10008.1.2.4.50',
+    '1.2.840.10008.1.2.4.51',
+    '1.2.840.10008.1.2.4.57',
+    '1.2.840.10008.1.2.4.70',
+    '1.2.840.10008.1.2.4.80',
+    '1.2.840.10008.1.2.4.81'
 ]
 
 
 def is_available():
     """Return ``True`` if the handler has its dependencies met."""
-    return True
+    return HAVE_LIBJPEG or HAVE_OPENJPEG
 
 
 def supports_transfer_syntax(tsyntax):
@@ -87,8 +86,8 @@ def supports_transfer_syntax(tsyntax):
 
     Parameters
     ----------
-    tsyntax : uid.UID
-        The Transfer Syntax UID of the *Pixel Data* that is to be used with
+    tsyntax : pydicom.uid.UID
+        The *Transfer Syntax UID* of the *Pixel Data* that is to be used with
         the handler.
     """
     return tsyntax in SUPPORTED_TRANSFER_SYNTAXES
@@ -117,7 +116,7 @@ def get_pixeldata(ds):
 
     Parameters
     ----------
-    ds : Dataset
+    ds : pydicom.dataset.Dataset
         The :class:`Dataset` containing an Image Pixel, Floating Point Image
         Pixel or Double Floating Point Image Pixel module and the
         *Pixel Data*, *Float Pixel Data* or *Double Float Pixel Data* to be
@@ -128,7 +127,7 @@ def get_pixeldata(ds):
 
     Returns
     -------
-    np.ndarray
+    numpy.ndarray
         The contents of (7FE0,0010) *Pixel Data* as a 1D array.
 
     Raises
@@ -165,7 +164,8 @@ def get_pixeldata(ds):
     #   Note: this does NOT include the trailing null byte for odd length data
     expected_len = get_expected_length(ds)
     if ds.PhotometricInterpretation == 'YBR_FULL_422':
-        # libjpeg has already resampled the pixel data, see PS3.3 C.7.6.3.1.2
+        # Plugin should have already resampled the pixel data
+        #   see PS3.3 C.7.6.3.1.2
         expected_len = expected_len // 2 * 3
 
     p_interp = ds.PhotometricInterpretation
@@ -177,12 +177,14 @@ def get_pixeldata(ds):
     # The decoded data will be placed here
     arr = np.empty(expected_len, np.uint8)
 
+    decoder = _DECODERS[tsyntax]
+
     # Generators for the encoded JPG image frame(s) and insertion offsets
     generate_frames = generate_pixel_data_frame(ds.PixelData, nr_frames)
     generate_offsets = range(0, expected_len, frame_len)
     for frame, offset in zip(generate_frames, generate_offsets):
         # Encoded JPG data to be sent to the decoder
         frame = np.frombuffer(frame, np.uint8)
-        arr[offset:offset + frame_len] = decode(frame, p_interp, reshape=False)
+        arr[offset:offset + frame_len] = decoder(frame, p_interp)
 
     return arr.view(pixel_dtype(ds))
