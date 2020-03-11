@@ -1,12 +1,12 @@
 """Set package shortcuts."""
 
-import importlib
 import logging
 import sys
 
-from ._config import PLUGINS
+
 from ._version import __version__
-from .plugins import PluginManager
+from ._config import PLUGINS
+from .plugins import load_plugins
 
 
 # Setup default logging
@@ -39,11 +39,13 @@ try:
 except ImportError:
     pass
 
+load_plugins(PLUGINS)
+
+from .utils import add_handler
+
 try:
     import pydicom
+    add_handler()
     LOGGER.debug('pydicom module loaded')
 except ImportError:
     pass
-
-
-_plugin_manager = PluginManager(PLUGINS)

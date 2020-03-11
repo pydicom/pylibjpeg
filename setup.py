@@ -24,13 +24,9 @@ setup(
     url = "https://github.com/pydicom/pylibjpeg",
     license = "MIT",
     keywords = (
-        "dicom pydicom python medicalimaging radiotherapy oncology imaging "
-        "jpg jpeg pylibjpeg"
+        "dcm dicom pydicom python medicalimaging radiology radiotherapy "
+        "oncology imaging jpg jpeg jpg-ls jpeg-ls libjpeg pylibjpeg "
     ),
-    project_urls = {
-        # Might give it it's own docs eventually
-        'Documentation' : 'https://pydicom.github.io/pydicom/'
-    },
     classifiers = [
         "License :: OSI Approved :: MIT License",
         "Intended Audience :: Developers",
@@ -48,6 +44,7 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     packages = find_packages(),
+    install_requires = ['numpy'],
     include_package_data = True,
     zip_safe = False,
     python_requires = ">=3.6",
