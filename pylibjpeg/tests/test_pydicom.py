@@ -10,8 +10,10 @@ try:
     import pydicom
     import pydicom.config
     from pylibjpeg.pydicom import pixel_data_handler as handler
+    from pylibjpeg.pydicom.utils import generate_frames, reshape_frame
     HAS_PYDICOM = True
-except ImportError:
+except ImportError as exc:
+    print(exc)
     HAS_PYDICOM = False
 
 from pylibjpeg.data import get_indexed_datasets
@@ -129,3 +131,58 @@ class TestPlugins(object):
         ds = index['SC_rgb_dcmtk_+eb+cy+np.dcm']['ds']
         assert 'YBR_FULL_422' == ds.PhotometricInterpretation
         arr = ds.pixel_array
+
+
+@pytest.mark.skipif(not HAS_PYDICOM or not HAS_PLUGINS, reason="No plugins")
+class TestUtils(object):
+    """Test the pydicom.utils functions."""
+    def test_generate_frames_single_1s(self):
+        """Test with single frame, 1 sample/px."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        assert 1 == getattr(ds, 'NumberOfFrames', 1)
+        assert 1 == ds.SamplesPerPixel
+        frames = generate_frames(ds)
+        arr = next(frames)
+        with pytest.raises(StopIteration):
+            next(frames)
+
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+        assert 64 == arr[76, 22]
+
+    def test_generate_frames_1s(self):
+        """Test with multiple frames, 1 sample/px."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.80')
+        ds = index['emri_small_jpeg_ls_lossless.dcm']['ds']
+        assert ds.NumberOfFrames > 1
+        assert 1 == ds.SamplesPerPixel
+        frames = generate_frames(ds)
+        arr = next(frames)
+
+        assert arr.flags.writeable
+        assert 'uint16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+        assert 163 == arr[12, 23]
+
+    def test_generate_frames_3s_0p(self):
+        """Test with multiple frames, 3 sample/px, 0 planar conf."""
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
+        ds = index['color3d_jpeg_baseline.dcm']['ds']
+        assert ds.NumberOfFrames > 1
+        assert 3 == ds.SamplesPerPixel
+        assert 0 == ds.PlanarConfiguration
+        frames = generate_frames(ds)
+        arr = next(frames)
+
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, 3) == arr.shape
+        assert [48,  128,  128] == arr[159, 290, :].tolist()
+
+    @pytest.mark.skip()
+    def test_generate_frames_3s_1p(self):
+        """Test 3 sample/px, 1 planar conf."""
+        # No data
+        pass

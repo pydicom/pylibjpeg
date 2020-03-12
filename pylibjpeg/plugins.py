@@ -10,6 +10,9 @@ from pylibjpeg._config import PLUGINS
 LOGGER = logging.getLogger(__name__)
 
 
+# TODO: this module is a mess, refactor
+
+
 def load_plugins(plugins):
     """Load the `plugins` and add them to the namespace."""
     for plugin in plugins:
@@ -43,7 +46,7 @@ def get_plugin_coders():
     return decoders, encoders
 
 
-def get_plugins(as_objects=False):
+def get_plugins():
     """Return the available plugins.
 
     Returns

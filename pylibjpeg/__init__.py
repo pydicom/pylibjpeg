@@ -27,17 +27,10 @@ def debug_logger():
     logger.addHandler(handler)
 
 
-try:
-    import data as _data
-    globals()['data'] = _data
-    # Add to cache - needed for pytest
-    sys.modules['pylibjpeg.data'] = _data
-    _logger.debug('pylibjpeg-data module loaded')
-except ImportError:
-    pass
-
 load_plugins(PLUGINS)
 
+
+# Must be after loading the plugins
 from .utils import add_handler
 
 try:
