@@ -25,7 +25,7 @@ def add_handler():
         pydicom.config.pixel_data_handlers.append(handler)
 
 
-def decode(data, kwargs=None, decoder=None):
+def decode(data, decoder=None, kwargs=None):
     """Return the decoded JPEG image as a :class:`numpy.ndarray`.
 
     Parameters

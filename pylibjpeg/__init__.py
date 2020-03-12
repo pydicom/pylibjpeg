@@ -37,5 +37,6 @@ try:
     import pydicom
     add_handler()
     _logger.debug('pydicom module loaded')
+    from pylibjpeg.pydicom.utils import generate_frames
 except ImportError:
     pass
