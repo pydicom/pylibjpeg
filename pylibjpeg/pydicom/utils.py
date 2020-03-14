@@ -1,4 +1,4 @@
-"""Utilities for DICOM pixel data"""
+"""Utilities for pydicom and DICOM pixel data"""
 
 from pylibjpeg.plugins import *
 

@@ -45,7 +45,8 @@ you first have to install the corresponding package:
 | 1.2.840.10008.1.2.4.90 | JPEG 2000 Image Compression (Lossless Only) | Not yet supported |
 | 1.2.840.10008.1.2.4.91 | JPEG 2000 Image Compression | Not yet supported |
 
-If you're not sure what the Transfer Syntax UID is, it can be determined with:
+If you're not sure what the dataset's *Transfer Syntax UID* is, it can be
+determined with:
 ```python
 >>> from pydicom import dcmread
 >>> ds = dcmread('path/to/dicom_file')
@@ -71,7 +72,9 @@ ds = dcmread(get_testdata_file('JPEG-LL.dcm'))
 arr = ds.pixel_array
 ```
 
-For datasets with multiple frames, each frame can be processed separately to save on memory usage:
+For datasets with multiple frames you can reduce your memory usage by
+processing each frame separately using the ``generate_frames()`` generator
+function:
 ```python
 from pydicom import dcmread
 from pydicom.data import get_testdata_file
