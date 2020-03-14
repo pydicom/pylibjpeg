@@ -1,5 +1,7 @@
 [![codecov](https://codecov.io/gh/pydicom/pylibjpeg/branch/master/graph/badge.svg)](https://codecov.io/gh/pydicom/pylibjpeg)
 [![Build Status](https://travis-ci.org/pydicom/pylibjpeg.svg?branch=master)](https://travis-ci.org/pydicom/pylibjpeg)
+[![PyPI version](https://badge.fury.io/py/pylibjpeg.svg)](https://badge.fury.io/py/pylibjpeg)
+[![Python versions](https://img.shields.io/pypi/pyversions/pylibjpeg.svg)](https://img.shields.io/pypi/pyversions/pylibjpeg.svg)
 
 ## pylibjpeg
 
