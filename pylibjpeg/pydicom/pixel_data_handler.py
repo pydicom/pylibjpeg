@@ -42,9 +42,11 @@ import numpy as np
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
 
-from pylibjpeg.plugins import get_uid_decoders
+from pylibjpeg.pydicom.utils import get_uid_decoder_dict
+
 
 LOGGER = logging.getLogger(__name__)
+
 
 try:
     import pylibjpeg.plugins.libjpeg
@@ -74,7 +76,8 @@ DEPENDENCIES = {
     ),
 }
 
-_DECODERS = get_uid_decoders()
+
+_DECODERS = get_uid_decoder_dict()
 _LIBJPEG_SYNTAXES = [
     '1.2.840.10008.1.2.4.50',
     '1.2.840.10008.1.2.4.51',

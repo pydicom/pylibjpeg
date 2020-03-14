@@ -1,9 +1,62 @@
 """Utilities for DICOM pixel data"""
 
-from pydicom.encaps import generate_pixel_data_frame
-from pydicom.pixel_data_handlers.util import pixel_dtype
+from pylibjpeg.plugins import *
 
-from pylibjpeg.plugins import get_uid_decoders
+
+def decoder_from_uid(uid):
+    """Return a JPEG decoder for `uid`.
+
+    Parameters
+    ----------
+    uid : str or pydicom.uid.UID
+        The *Transfer Syntax UID* that the pixel data has been encoded with.
+
+    Returns
+    -------
+    callable
+        A callable function that can be used to decode the JPEG format
+        corresponding to `uid`.
+    """
+    decoders = get_dicom_decoders()
+    for name in decoders:
+        try:
+            return decoders[name][uid]
+        except KeyError:
+            pass
+
+    msg = (
+        "No decoder is available for the Transfer Syntax UID - '{}'"
+        .format(uid)
+    )
+    raise NotImplementedError(msg)
+
+
+def encoder_from_uid(uid):
+    """Return a JPEG encoder for `uid`.
+
+    Parameters
+    ----------
+    uid : str or pydicom.uid.UID
+        The *Transfer Syntax UID* that the pixel data will be encoded with.
+
+    Returns
+    -------
+    callable
+        A callable function that can be used to encode to the JPEG format
+        corresponding to `uid`.
+    """
+    encoders = get_dicom_encoders()
+    for name in encoders:
+        try:
+            return encoders[name][uid]
+        except KeyError:
+            pass
+
+    msg = (
+        "No encoder is available for the Transfer Syntax UID - '{}'"
+        .format(uid)
+    )
+    raise NotImplementedError(msg)
 
 
 def generate_frames(ds):
@@ -19,7 +72,10 @@ def generate_frames(ds):
     numpy.ndarray
         A single frame of the decompressed pixel data.
     """
-    decoders = get_uid_decoders()
+    from pydicom.encaps import generate_pixel_data_frame
+    from pydicom.pixel_data_handlers.util import pixel_dtype
+
+    decoders = get_uid_decoder_dict()
     decode = decoders[ds.file_meta.TransferSyntaxUID]
 
     p_interp = ds.PhotometricInterpretation
@@ -27,6 +83,74 @@ def generate_frames(ds):
     for frame in generate_pixel_data_frame(ds.PixelData, nr_frames):
         arr = decode(frame, p_interp).view(pixel_dtype(ds))
         yield reshape_frame(ds, arr)
+
+
+def get_decodable_uids():
+    """Return a list of decodable *Transfer Syntax UIDs*."""
+    uids = []
+    for name, uid_coder in get_dicom_decoders().items():
+        uids += uid_coder.keys()
+
+    return list(set(uids))
+
+
+def get_dicom_decoders():
+    """Return available plugins with DICOM decoders.
+
+    Returns
+    -------
+    dict
+        A ``dict`` containing the available DICOM decoders as
+        ``{plugin name : {UID : callable}}``.
+    """
+    decoders = {
+        k: getattr(globals()[k], 'DICOM_DECODERS', {}) for k in get_plugins()
+    }
+
+    return decoders
+
+
+def get_dicom_encoders():
+    """Return available plugins with DICOM encoders.
+
+    Returns
+    -------
+    dict
+        A ``dict`` containing the available DICOM encoders as
+        ``{plugin name : {UID : callable}}``.
+    """
+    encoders = {
+        k: getattr(globals()[k], 'DICOM_ENCODERS', {}) for k in get_plugins()
+    }
+
+    return encoders
+
+
+def get_encodable_uids():
+    """Return a list of encodable *Transfer Syntax UIDs*."""
+    uids = []
+    for name, uid_coder in get_dicom_encoders().items():
+        uids += uid_coder.keys()
+
+    return list(set(uids))
+
+
+def get_uid_decoder_dict():
+    """Return a :class:`dict` of {UID: decoder}."""
+    decoder_dict = {}
+    for _, uid_decoder_dict in get_dicom_decoders().items():
+        decoder_dict.update(uid_decoder_dict)
+
+    return decoder_dict
+
+
+def get_uid_encoder_dict():
+    """Return a :class:`dict` of {UID: encoder}."""
+    encoder_dict = {}
+    for _, uid_encoder_dict in get_dicom_encoders().items():
+        encoder_dict.update(uid_encoder_dict)
+
+    return encoder_dict
 
 
 def reshape_frame(ds, arr):
