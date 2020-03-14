@@ -1,10 +1,26 @@
 """Tests for the TravisCI testing environments"""
 
+import logging
 import os
 import platform
 import sys
 
 import pytest
+
+from pylibjpeg import debug_logger
+
+
+def test_debug_logger(caplog):
+    """Test the debug logger works."""
+    debug_logger()
+    logger = logging.getLogger(__name__)
+    with caplog.at_level(logging.DEBUG):
+        logger.debug("This is a test")
+
+    assert 'This is a test' in caplog.text
+
+    # Reset
+    logging.getLogger('pylibjpeg').handlers = []
 
 
 def get_envar(envar):

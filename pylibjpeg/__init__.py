@@ -7,12 +7,13 @@ import sys
 from ._version import __version__
 from ._config import PLUGINS
 from .plugins import load_plugins
+from .utils import decode
 
 
 # Setup default logging
-LOGGER = logging.getLogger('pynetdicom')
-LOGGER.addHandler(logging.NullHandler())
-LOGGER.debug("pylibjpeg v{}".format(__version__))
+_logger = logging.getLogger('pynetdicom')
+_logger.addHandler(logging.NullHandler())
+_logger.debug("pylibjpeg v{}".format(__version__))
 
 
 def debug_logger():
@@ -26,26 +27,16 @@ def debug_logger():
     logger.addHandler(handler)
 
 
-# TODO: remove this later
-debug_logger()
-
-
-try:
-    import data as _data
-    globals()['data'] = _data
-    # Add to cache - needed for pytest
-    sys.modules['pylibjpeg.data'] = _data
-    LOGGER.debug('pylibjpeg-data module loaded')
-except ImportError:
-    pass
-
 load_plugins(PLUGINS)
 
+
+# Must be after loading the plugins
 from .utils import add_handler
 
 try:
     import pydicom
     add_handler()
-    LOGGER.debug('pydicom module loaded')
+    _logger.debug('pydicom module loaded')
+    from pylibjpeg.pydicom.utils import generate_frames
 except ImportError:
     pass
