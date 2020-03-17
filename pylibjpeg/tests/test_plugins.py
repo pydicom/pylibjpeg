@@ -6,7 +6,9 @@ import sys
 
 import pytest
 
-from pylibjpeg.plugins import get_plugins, get_decoders, get_encoders
+from pylibjpeg.plugins import (
+    get_plugins, get_decoders, get_encoders, discover_plugins, load_plugins
+)
 from pylibjpeg.pydicom.utils import (
     decoder_from_uid, encoder_from_uid, get_decodable_uids,
     get_dicom_decoders, get_dicom_encoders, get_encodable_uids,

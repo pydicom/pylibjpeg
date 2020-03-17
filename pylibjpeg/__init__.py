@@ -5,7 +5,6 @@ import sys
 
 
 from ._version import __version__
-from ._config import PLUGINS
 from .plugins import load_plugins
 from .utils import decode
 
@@ -27,7 +26,7 @@ def debug_logger():
     logger.addHandler(handler)
 
 
-load_plugins(PLUGINS)
+load_plugins()
 
 
 # Must be after loading the plugins

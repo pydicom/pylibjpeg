@@ -33,8 +33,7 @@ class TestNoPlugins(object):
         msg = (
             r"The following handlers are available to decode the pixel data "
             r"however they are missing required dependencies: GDCM \(req. "
-            r"GDCM\), Pillow \(req. Pillow\), pylibjpeg \(req. libjpeg "
-            r"plugin, openjpeg plugin\)"
+            r"GDCM\), Pillow \(req. Pillow\)"
         )
         with pytest.raises(RuntimeError, match=msg):
             ds.pixel_array
@@ -45,8 +44,8 @@ class TestNoPlugins(object):
         ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
         ds.file_meta.TransferSyntaxUID = '1.2.3.4'
         msg = (
-            r"Unable to convert the pixel data as the transfer syntax is not "
-            r"supported by the pylibjpeg pixel data handler"
+            r"Unable to convert the pixel data as there are no pylibjpeg "
+            r"plugins available to decode pixel data encoded using '1.2.3.4'"
         )
         with pytest.raises(RuntimeError, match=msg):
             handler.get_pixeldata(ds)
@@ -56,22 +55,10 @@ class TestNoPlugins(object):
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
         ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
         msg = (
-            r"The libjpeg plugin is required to decode pixel data with a "
-            r"transfer syntax of '1.2.840.10008.1.2.4.50'"
+            r"Unable to convert the pixel data as there are no pylibjpeg "
+            r"plugins available to decode pixel data encoded using 'JPEG"
         )
-        with pytest.raises(RuntimeError, match=msg):
-            handler.get_pixeldata(ds)
-
-    def test_get_pixeldata_no_lj_syntax(self):
-        """Test exception raised if syntax not supported."""
-        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
-        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
-        ds.file_meta.TransferSyntaxUID = '1.2.840.10008.1.2.4.90'
-        msg = (
-            r"The openjpeg plugin is required to decode pixel data with a "
-            r"transfer syntax of '1.2.840.10008.1.2.4.90'"
-        )
-        with pytest.raises(RuntimeError, match=msg):
+        with pytest.raises(NotImplementedError, match=msg):
             handler.get_pixeldata(ds)
 
 

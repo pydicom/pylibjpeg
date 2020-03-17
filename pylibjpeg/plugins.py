@@ -2,12 +2,27 @@
 
 from importlib import import_module
 import logging
+from pkg_resources import iter_entry_points
 import sys
-
-from pylibjpeg._config import PLUGINS
 
 
 LOGGER = logging.getLogger(__name__)
+
+
+def discover_plugins():
+    """Return a :class:`dict` containing all registered plugins.
+
+    .. versionadded:: 1.1
+
+    Returns
+    -------
+    dict
+        The available plugins as ``{plugin name: plugin module}``.
+    """
+    plugins = {
+        val.name: val.load() for val in iter_entry_points('pylibjpeg.plugins')
+    }
+    return plugins
 
 
 def get_decoders():
@@ -42,19 +57,24 @@ def get_plugins():
     list of str
         A list containing the names of the available plugins.
     """
-    return [nn for nn in PLUGINS if nn in globals()]
+    return list(discover_plugins().keys())
 
 
-def load_plugins(plugins):
-    """Load the `plugins` and add them to the namespace."""
-    for plugin in plugins:
+def load_plugins():
+    """Load the available plugins and add them to the namespace.
+
+    .. versionchanged:: 1.1
+
+        No longer takes any parameters.
+    """
+    plugins = discover_plugins()
+    for name, module in plugins.items():
         try:
-            LOGGER.debug("Importing {}".format(plugin))
-            module = import_module(plugin)
+            LOGGER.debug("Importing {}".format(name))
         except ImportError as exc:
-            LOGGER.debug("Failed to import {}".format(plugin))
+            LOGGER.debug("Failed to import {}".format(name))
             continue
 
         # Add successful imported modules to the namespace
-        globals()[plugin] = module
-        sys.modules['pylibjpeg.plugins.{}'.format(plugin)] = module
+        globals()[name] = module
+        sys.modules['pylibjpeg.plugins.{}'.format(name)] = module
