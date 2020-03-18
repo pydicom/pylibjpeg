@@ -9,7 +9,7 @@ from .utils import decode, add_handler
 
 
 # Setup default logging
-_logger = logging.getLogger('pynetdicom')
+_logger = logging.getLogger('pylibjpeg')
 _logger.addHandler(logging.NullHandler())
 _logger.debug("pylibjpeg v{}".format(__version__))
 
@@ -23,12 +23,6 @@ def debug_logger():
     formatter = logging.Formatter('%(levelname).1s: %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
-
-
-#load_plugins()
-
-
-# Must be after loading the plugins
 
 
 try:
