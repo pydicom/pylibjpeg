@@ -1,10 +1,9 @@
 
 import logging
 import os
+from pkg_resources import iter_entry_points
 
 import numpy as np
-
-from .plugins import get_decoders
 
 
 LOGGER = logging.getLogger(__name__)
@@ -34,12 +33,11 @@ def decode(data, decoder=None, kwargs=None):
         The data to decode. May be a path to a file (as ``str`` or
         path-like), a file-like, or a ``bytes`` containing the encoded binary
         data.
+    decoder : callable, optional
+        The plugin to use when decoding the data. If not used then all
+        available decoders will be tried.
     kwargs : dict
         A ``dict`` containing keyword parameters to pass to the decoder.
-    decoder : callable, optional
-        The plugin to use when decoding the data. Should be ``'libjpeg'``
-        or ``'openjpeg'``. If not used then all available decoders will be
-        tried.
 
     Returns
     -------
@@ -67,7 +65,6 @@ def decode(data, decoder=None, kwargs=None):
 
     kwargs = kwargs or {}
 
-    # Test plugin is available
     if decoder is not None:
         try:
             return decoders[decoder](data, **kwargs)
@@ -85,6 +82,17 @@ def decode(data, decoder=None, kwargs=None):
 
     # If we made it here then we were unable to decode the data
     raise ValueError("Unable to decode the data")
+
+
+def get_decoders(decoder_type='JPEG'):
+    """Return a :class:`dict` of JPEG decoders as {package: callable}."""
+    if decoder_type == 'JPEG':
+        return {
+            val.name: val.load()
+            for val in iter_entry_points('pylibjpeg.jpeg_decoders')
+        }
+
+    raise ValueError("Unknown decoder_type '{}'".format(decoder_type))
 
 
 def remove_handler():

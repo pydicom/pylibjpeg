@@ -9,15 +9,16 @@ import sys
 import pytest
 
 from pylibjpeg import decode
-from pylibjpeg.plugins import get_plugins
 from pylibjpeg.data import JPEG_DIRECTORY
+from pylibjpeg.utils import get_decoders
 
-HAS_PLUGINS = get_plugins() != []
+
+HAS_DECODERS = bool(get_decoders())
 
 
-@pytest.mark.skipif(HAS_PLUGINS, reason="Plugins available")
-class TestNoPlugins(object):
-    """Test interactions with no plugins."""
+@pytest.mark.skipif(HAS_DECODERS, reason="Decoders available")
+class TestNoDecoders(object):
+    """Test interactions with no decoders."""
     def test_decode_str(self):
         """Test passing a str to decode."""
         fpath = os.path.join(JPEG_DIRECTORY, '10918', 'p1', 'A1.JPG')
@@ -52,10 +53,15 @@ class TestNoPlugins(object):
         with pytest.raises(RuntimeError, match=msg):
             decode(data)
 
+    def test_unknown_decoder_type(self):
+        """Test unknown decoder type."""
+        with pytest.raises(ValueError, match=r"Unknown decoder_type 'TEST'"):
+            get_decoders(decoder_type='TEST')
 
-@pytest.mark.skipif(not HAS_PLUGINS, reason="Plugins unavailable")
-class TestPlugins(object):
-    """Test decoding with plugins."""
+
+@pytest.mark.skipif(not HAS_DECODERS, reason="Decoders unavailable")
+class TestDecoders(object):
+    """Test decoding."""
     def test_decode_str(self):
         """Test passing a str to decode."""
         fpath = os.path.join(JPEG_DIRECTORY, '10918', 'p1', 'A1.JPG')

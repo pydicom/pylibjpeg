@@ -39,63 +39,28 @@ values given in the table below.
 import logging
 
 import numpy as np
+
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
 
-from pylibjpeg.pydicom.utils import get_uid_decoder_dict
+from .utils import get_pixel_data_decoders
 
 
 LOGGER = logging.getLogger(__name__)
 
 
-try:
-    import pylibjpeg.plugins.libjpeg
-    HAVE_LIBJPEG = True
-    LOGGER.debug("libjpeg available to the pixel data handler")
-except ImportError:
-    HAVE_LIBJPEG = False
-    LOGGER.debug("libjpeg unavailable to the pixel data handler")
-
-try:
-    import pylibjpeg.plugins.openjpeg
-    HAVE_OPENJPEG = True
-    LOGGER.debug("openjpeg available to the pixel data handler")
-except ImportError:
-    HAVE_OPENJPEG = False
-    LOGGER.debug("openjpeg unavailable to the pixel data handler")
-
-
 HANDLER_NAME = 'pylibjpeg'
 DEPENDENCIES = {
     'numpy': ('http://www.numpy.org/', 'NumPy'),
-    'libjpeg': (
-        'http://github.com/pydicom/pylibjpeg-libjpeg/', 'libjpeg plugin'
-    ),
-    'openjpeg': (
-        'http://github.com/pydicom/pylibjpeg-openjpeg/', 'openjpeg plugin'
-    ),
 }
 
-
-_DECODERS = get_uid_decoder_dict()
-_LIBJPEG_SYNTAXES = [
-    '1.2.840.10008.1.2.4.50',
-    '1.2.840.10008.1.2.4.51',
-    '1.2.840.10008.1.2.4.57',
-    '1.2.840.10008.1.2.4.70',
-    '1.2.840.10008.1.2.4.80',
-    '1.2.840.10008.1.2.4.81'
-]
-_OPENJPEG_SYNTAXES = [
-    '1.2.840.10008.1.2.4.90',
-    '1.2.840.10008.1.2.4.91'
-]
-SUPPORTED_TRANSFER_SYNTAXES = _LIBJPEG_SYNTAXES + _OPENJPEG_SYNTAXES
+_DECODERS = get_pixel_data_decoders()
+SUPPORTED_TRANSFER_SYNTAXES = list(_DECODERS.keys())
 
 
 def is_available():
     """Return ``True`` if the handler has its dependencies met."""
-    return HAVE_LIBJPEG or HAVE_OPENJPEG
+    return True
 
 
 def supports_transfer_syntax(tsyntax):
@@ -134,13 +99,8 @@ def get_pixeldata(ds):
     Parameters
     ----------
     ds : pydicom.dataset.Dataset
-        The :class:`Dataset` containing an Image Pixel, Floating Point Image
-        Pixel or Double Floating Point Image Pixel module and the
-        *Pixel Data*, *Float Pixel Data* or *Double Float Pixel Data* to be
-        converted. If (0028,0004) *Photometric Interpretation* is
-        `'YBR_FULL_422'` then the pixel data will be
-        resampled to 3 channel data as per Part 3, :dcm:`Annex C.7.6.3.1.2
-        <part03/sect_C.7.6.3.html#sect_C.7.6.3.1.2>` of the DICOM Standard.
+        The :class:`Dataset` containing an Image Pixel module and the
+        *Pixel Data* to be converted.
 
     Returns
     -------
@@ -161,20 +121,9 @@ def get_pixeldata(ds):
     # The check of transfer syntax must be first
     if tsyntax not in SUPPORTED_TRANSFER_SYNTAXES:
         raise NotImplementedError(
-            "Unable to convert the pixel data as the transfer syntax "
-            "is not supported by the pylibjpeg pixel data handler."
-        )
-
-    if tsyntax in _LIBJPEG_SYNTAXES and not HAVE_LIBJPEG:
-        raise RuntimeError(
-            "The libjpeg plugin is required to decode pixel data with a "
-            "transfer syntax of '{}'".format(tsyntax)
-        )
-
-    if tsyntax in _OPENJPEG_SYNTAXES and not HAVE_OPENJPEG:
-        raise RuntimeError(
-            "The openjpeg plugin is required to decode pixel data with a "
-            "transfer syntax of '{}'".format(tsyntax)
+            "Unable to convert the pixel data as there are no pylibjpeg "
+            "plugins available to decode pixel data encoded using '{}'"
+            .format(tsyntax.name)
         )
 
     # Check required elements
