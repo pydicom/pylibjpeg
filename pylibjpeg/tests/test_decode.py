@@ -53,6 +53,11 @@ class TestNoDecoders(object):
         with pytest.raises(RuntimeError, match=msg):
             decode(data)
 
+    def test_unknown_decoder_type(self):
+        """Test unknown decoder type."""
+        with pytest.raises(ValueError, match=r"Unknown decoder_type 'TEST'"):
+            get_decoders(decoder_type='TEST')
+
 
 @pytest.mark.skipif(not HAS_DECODERS, reason="Decoders unavailable")
 class TestDecoders(object):

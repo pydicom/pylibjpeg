@@ -92,7 +92,7 @@ def get_decoders(decoder_type='JPEG'):
             for val in iter_entry_points('pylibjpeg.jpeg_decoders')
         }
 
-    raise ValueError("Unknown 'decoder_type'")
+    raise ValueError("Unknown decoder_type '{}'".format(decoder_type))
 
 
 def remove_handler():
