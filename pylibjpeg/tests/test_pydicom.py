@@ -10,17 +10,18 @@ try:
     import pydicom
     import pydicom.config
     from pylibjpeg.pydicom import pixel_data_handler as handler
-    from pylibjpeg.pydicom.utils import generate_frames, reshape_frame
     HAS_PYDICOM = True
 except ImportError as exc:
     print(exc)
     HAS_PYDICOM = False
 
 from pylibjpeg.data import get_indexed_datasets
-from pylibjpeg.plugins import get_plugins
+from pylibjpeg.pydicom.utils import (
+    generate_frames, reshape_frame, get_pixel_data_decoders
+)
 from pylibjpeg.utils import add_handler, remove_handler
 
-HAS_PLUGINS = get_plugins() != []
+HAS_PLUGINS = bool(get_pixel_data_decoders())
 
 
 @pytest.mark.skipif(not HAS_PYDICOM or HAS_PLUGINS, reason="Plugins available")

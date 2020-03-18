@@ -47,7 +47,7 @@ except ImportError:
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
 
-from pylibjpeg.pydicom.utils import get_uid_decoder_dict
+from .utils import get_pixel_data_decoders
 
 
 LOGGER = logging.getLogger(__name__)
@@ -58,7 +58,7 @@ DEPENDENCIES = {
     'numpy': ('http://www.numpy.org/', 'NumPy'),
 }
 
-_DECODERS = get_uid_decoder_dict()
+_DECODERS = get_pixel_data_decoders()
 SUPPORTED_TRANSFER_SYNTAXES = list(_DECODERS.keys())
 
 

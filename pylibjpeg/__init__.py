@@ -5,8 +5,7 @@ import sys
 
 
 from ._version import __version__
-from .plugins import load_plugins
-from .utils import decode
+from .utils import decode, add_handler
 
 
 # Setup default logging
@@ -26,11 +25,11 @@ def debug_logger():
     logger.addHandler(handler)
 
 
-load_plugins()
+#load_plugins()
 
 
 # Must be after loading the plugins
-from .utils import add_handler
+
 
 try:
     import pydicom
