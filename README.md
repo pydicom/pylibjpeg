@@ -61,7 +61,7 @@ determined with:
 
 ### Usage
 #### With pydicom
-Assuming you already have *pydicom* installed:
+Assuming you already have *pydicom* v1.4+ installed:
 
 ```python
 from pydicom import dcmread
