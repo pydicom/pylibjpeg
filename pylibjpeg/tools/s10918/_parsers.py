@@ -52,7 +52,7 @@ The following marker segments are supported:
 
 from struct import unpack
 
-from tools.utils import split_byte
+from pylibjpeg.tools.utils import split_byte
 
 
 def APP(fp):

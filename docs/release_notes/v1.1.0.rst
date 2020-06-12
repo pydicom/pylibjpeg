@@ -7,3 +7,5 @@
 * Removed the ``plugins`` and ``_config`` modules
 * Added ``utils.get_decoders()`` function
 * Added ``pydicom.utils.get_pixel_data_decoders()`` function
+* Changed arguments passed to pixel data decoding functions to
+  ``func(bytes, Dataset)``

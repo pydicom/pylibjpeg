@@ -30,11 +30,12 @@ plugins come in. To support a given JPEG format or DICOM Transfer Syntax
 you first have to install the corresponding package:
 
 #### JPEG Format
-| Format | Decode? | Encode? | Plugin | Based on |
-|---|------|---|---|---|
-| JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] |
+| Format | Decode? | Encode? | Plugin | Based on | Included? |
+|---|------|---|---|---|---|
+| JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] | No |
+| JPEG 2000 | Yes | No | [pylibjpeg-openjpeg][3] | [openjpeg][4] | Yes |
 
-#### Transfer Syntax
+#### DICOM Transfer Syntax
 
 | UID | Description | Plugin |
 |---|---|----|
@@ -44,8 +45,9 @@ you first have to install the corresponding package:
 | 1.2.840.10008.1.2.4.70 | JPEG Lossless, Non-Hierarchical, First-Order Prediction</br>(Process 14, Selection Value 1) | [pylibjpeg-libjpeg][1]|
 | 1.2.840.10008.1.2.4.80 | JPEG-LS Lossless | [pylibjpeg-libjpeg][1]|
 | 1.2.840.10008.1.2.4.81 | JPEG-LS Lossy (Near-Lossless) Image Compression | [pylibjpeg-libjpeg][1]|
-| 1.2.840.10008.1.2.4.90 | JPEG 2000 Image Compression (Lossless Only) | Not yet supported |
-| 1.2.840.10008.1.2.4.91 | JPEG 2000 Image Compression | Not yet supported |
+| 1.2.840.10008.1.2.4.90 | JPEG 2000 Image Compression (Lossless Only) | [pylibjpeg-openjpeg][4] |
+| 1.2.840.10008.1.2.4.91 | JPEG 2000 Image Compression | [pylibjpeg-openjpeg][4] |
+| 1.2.840.10008.1.2.5    | RLE Lossless | Not yet supported |
 
 If you're not sure what the dataset's *Transfer Syntax UID* is, it can be
 determined with:
@@ -57,21 +59,28 @@ determined with:
 
 [1]: https://github.com/pydicom/pylibjpeg-libjpeg
 [2]: https://github.com/thorfdbg/libjpeg
+[3]: https://github.com/pydicom/pylibjpeg-openjpeg
+[4]: https://github.com/uclouvain/openjpeg
 
 
 ### Usage
 #### With pydicom
-Assuming you already have *pydicom* v1.4+ installed:
+Assuming you already have *pydicom* v1.4+ and suitable plugins installed:
 
 ```python
 from pydicom import dcmread
 from pydicom.data import get_testdata_file
 
-# With the pylibjpeg-libjpeg plugin installed
+# Importing the package adds the pixel data handler to pydicom
 import pylibjpeg
 
+# With the pylibjpeg-libjpeg plugin
 ds = dcmread(get_testdata_file('JPEG-LL.dcm'))
-arr = ds.pixel_array
+jpg_arr = ds.pixel_array
+
+# With the pylibjpeg-openjpeg plugin
+ds = dcmread(get_testdata_file('JPEG2000.dcm'))
+j2k_arr = ds.pixel_array
 ```
 
 For datasets with multiple frames you can reduce your memory usage by
@@ -93,7 +102,7 @@ You can also just use *pylibjpeg* to decode JPEG images to a [numpy ndarray](htt
 ```python
 from pylibjpeg import decode
 
-# Can decode using the path to a JPG file as str or pathlike
+# Can decode using the path to a JPG file as str or path-like
 arr = decode('filename.jpg')
 
 # Or a file-like...
