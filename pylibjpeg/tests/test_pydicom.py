@@ -21,7 +21,12 @@ from pylibjpeg.pydicom.utils import (
 )
 from pylibjpeg.utils import add_handler, remove_handler
 
-HAS_PLUGINS = bool(get_pixel_data_decoders())
+
+decoders = get_pixel_data_decoders()
+HAS_PLUGINS = bool(decoders)
+HAS_JPEG_PLUGIN = '1.2.840.10008.1.2.4.50' in decoders
+HAS_JPEG_LS_PLUGIN = '1.2.840.10008.1.2.4.80' in decoders
+HAS_JPEG_2K_PLUGIN = '1.2.840.10008.1.2.4.90' in decoders
 
 
 @pytest.mark.skipif(not HAS_PYDICOM or HAS_PLUGINS, reason="Plugins available")
@@ -119,6 +124,93 @@ class TestPlugins(object):
         ds = index['SC_rgb_dcmtk_+eb+cy+np.dcm']['ds']
         assert 'YBR_FULL_422' == ds.PhotometricInterpretation
         arr = ds.pixel_array
+
+
+@pytest.mark.skipif(not HAS_PYDICOM or not HAS_JPEG_PLUGIN, reason="No plugin")
+class TestJPEGPlugin(object):
+    """Test interaction with plugins that support JPEG."""
+    uid = '1.2.840.10008.1.2.4.50'
+
+    def test_pixel_array(self):
+        index = get_indexed_datasets(self.uid)
+        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        # Reference values from GDCM handler
+        assert  76 == arr[ 5, 50]
+        assert 167 == arr[15, 50]
+        assert 149 == arr[25, 50]
+        assert 203 == arr[35, 50]
+        assert  29 == arr[45, 50]
+        assert 142 == arr[55, 50]
+        assert   1 == arr[65, 50]
+        assert  64 == arr[75, 50]
+        assert 192 == arr[85, 50]
+        assert 255 == arr[95, 50]
+
+
+@pytest.mark.skipif(not HAS_PYDICOM or not HAS_JPEG_LS_PLUGIN, reason="No plugin")
+class TestJPEGLSPlugin(object):
+    """Test interaction with plugins that support JPEG-LS."""
+    uid = '1.2.840.10008.1.2.4.80'
+
+    def test_pixel_array(self):
+        index = get_indexed_datasets(self.uid)
+        ds = index['MR_small_jpeg_ls_lossless.dcm']['ds']
+        assert self.uid == ds.file_meta.TransferSyntaxUID
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'int16' == arr.dtype
+        assert (ds.Rows, ds.Columns) == arr.shape
+
+        # Reference values from GDCM handler
+        assert [1194,  879,  127,  661, 1943, 1885, 1857, 1746, 1699] == (
+            arr[55:65, 38].tolist()
+        )
+
+
+@pytest.mark.skipif(not HAS_PYDICOM or not HAS_JPEG_2K_PLUGIN, reason="No plugin")
+class TestJPEG2KPlugin(object):
+    """Test interaction with plugins that support JPEG 2000."""
+    uid = '1.2.840.10008.1.2.4.90'
+
+    def test_pixel_array(self):
+        index = get_indexed_datasets(self.uid)
+        ds = index['US1_J2KR.dcm']['ds']
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'uint8' == arr.dtype
+        assert (ds.Rows, ds.Columns, ds.SamplesPerPixel) == arr.shape
+
+        # Values checked against GDCM
+        assert [
+            [180,  26,   0],
+            [172,  15,   0],
+            [162,   9,   0],
+            [152,   4,   0],
+            [145,   0,   0],
+            [132,   0,   0],
+            [119,   0,   0],
+            [106,   0,   0],
+            [ 87,   0,   0],
+            [ 37,   0,   0],
+            [  0,   0,   0],
+            [ 50,   0,   0],
+            [100,   0,   0],
+            [109,   0,   0],
+            [122,   0,   0],
+            [135,   0,   0],
+            [145,   0,   0],
+            [155,   5,   0],
+            [165,  11,   0],
+            [175,  17,   0]] == arr[175:195, 28, :].tolist()
 
 
 @pytest.mark.skipif(not HAS_PYDICOM or not HAS_PLUGINS, reason="No plugins")

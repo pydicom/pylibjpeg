@@ -142,6 +142,7 @@ def get_pixeldata(ds):
     #   Note: this does NOT include the trailing null byte for odd length data
     expected_len = get_expected_length(ds)
     if ds.PhotometricInterpretation == 'YBR_FULL_422':
+        # JPEG Transfer Syntaxes
         # Plugin should have already resampled the pixel data
         #   see PS3.3 C.7.6.3.1.2
         expected_len = expected_len // 2 * 3
@@ -158,12 +159,13 @@ def get_pixeldata(ds):
     decoder = _DECODERS[tsyntax]
     LOGGER.debug("Decoding {} Pixel Data using {}".format(tsyntax, decoder))
 
-    # Generators for the encoded JPG image frame(s) and insertion offsets
+    # Generators for the encoded JPEG image frame(s) and insertion offsets
     generate_frames = generate_pixel_data_frame(ds.PixelData, nr_frames)
     generate_offsets = range(0, expected_len, frame_len)
     for frame, offset in zip(generate_frames, generate_offsets):
-        # Encoded JPG data to be sent to the decoder
-        frame = np.frombuffer(frame, np.uint8)
-        arr[offset:offset + frame_len] = decoder(frame, p_interp)
+        # Encoded JPEG data to be sent to the decoder
+        arr[offset:offset + frame_len] = decoder(
+            frame, ds.group_dataset(0x0028)
+        )
 
     return arr.view(pixel_dtype(ds))

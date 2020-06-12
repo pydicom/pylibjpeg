@@ -2,6 +2,7 @@
 import logging
 import os
 from pkg_resources import iter_entry_points
+from struct import unpack
 
 import numpy as np
 
@@ -56,12 +57,12 @@ def decode(data, decoder=None, kwargs=None):
 
     if isinstance(data, (str, os.PathLike)):
         with open(str(data), 'rb') as f:
-            data = np.frombuffer(f.read(), 'uint8')
+            data = f.read()
     elif isinstance(data, bytes):
-        data = np.frombuffer(data, 'uint8')
+        pass
     else:
         # Try file-like
-        data = np.frombuffer(data.read(), 'uint8')
+        data = data.read()
 
     kwargs = kwargs or {}
 
@@ -86,13 +87,22 @@ def decode(data, decoder=None, kwargs=None):
 
 def get_decoders(decoder_type='JPEG'):
     """Return a :class:`dict` of JPEG decoders as {package: callable}."""
-    if decoder_type == 'JPEG':
+    entry_points = {
+        "JPEG" : "pylibjpeg.jpeg_decoders",
+        "JPEG XT" : "pylibjpeg.jpeg_xt_decoders",
+        "JPEG-LS" : "pylibjpeg.jpeg_ls_decoders",
+        "JPEG 2000" : "pylibjpeg.jpeg_2000_decoders",
+        "JPEG XR" : "pylibjpeg.jpeg_xr_decoders",
+        "JPEG XS" : "pylibjpeg.jpeg_xs_decoders",
+        "JPEG XL" : "pylibjpeg.jpeg_xl_decoders",
+    }
+    try:
         return {
             val.name: val.load()
-            for val in iter_entry_points('pylibjpeg.jpeg_decoders')
+            for val in iter_entry_points(entry_points[decoder_type])
         }
-
-    raise ValueError("Unknown decoder_type '{}'".format(decoder_type))
+    except KeyError:
+        raise ValueError("Unknown decoder_type '{}'".format(decoder_type))
 
 
 def remove_handler():

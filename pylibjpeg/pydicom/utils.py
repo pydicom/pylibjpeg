@@ -25,7 +25,7 @@ def generate_frames(ds):
     p_interp = ds.PhotometricInterpretation
     nr_frames = getattr(ds, 'NumberOfFrames', 1)
     for frame in generate_pixel_data_frame(ds.PixelData, nr_frames):
-        arr = decode(frame, p_interp).view(pixel_dtype(ds))
+        arr = decode(frame, ds.group_dataset(0x0028)).view(pixel_dtype(ds))
         yield reshape_frame(ds, arr)
 
 

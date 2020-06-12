@@ -44,7 +44,7 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     packages = find_packages(),
-    install_requires = ['numpy'],
+    install_requires = ['numpy', 'pylibjpeg-openjpeg'],
     include_package_data = True,
     zip_safe = False,
     python_requires = ">=3.6",
