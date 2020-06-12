@@ -30,10 +30,10 @@ plugins come in. To support a given JPEG format or DICOM Transfer Syntax
 you first have to install the corresponding package:
 
 #### JPEG Format
-| Format | Decode? | Encode? | Plugin | Based on | Included? |
+| Format | Decode? | Encode? | Plugin | Based on |
 |---|------|---|---|---|---|
-| JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] | No |
-| JPEG 2000 | Yes | No | [pylibjpeg-openjpeg][3] | [openjpeg][4] | Yes |
+| JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] |
+| JPEG 2000 | Yes | No | [pylibjpeg-openjpeg][3] | [openjpeg][4] |
 
 #### DICOM Transfer Syntax
 
