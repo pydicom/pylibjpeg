@@ -30,6 +30,10 @@ jobs:
         python -m pip install git+https://github.com/pydicom/pylibjpeg-data
         python -m pip install pytest coverage pytest-cov
 
+    - name: Run pytest
+      run: |
+        pytest --cov pylibjpeg
+
     - name: Install -libjpeg and -openjpeg plugins and rerun pytest
       run: |
         pip install pydicom
