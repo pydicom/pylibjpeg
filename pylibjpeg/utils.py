@@ -85,8 +85,29 @@ def decode(data, decoder=None, kwargs=None):
     raise ValueError("Unable to decode the data")
 
 
-def get_decoders(decoder_type='JPEG'):
-    """Return a :class:`dict` of JPEG decoders as {package: callable}."""
+def get_decoders(decoder_type=None):
+    """Return a :class:`dict` of JPEG decoders as {package: callable}.
+
+    Parameters
+    ----------
+    decoder_type : str, optional
+        The class of decoders to return, one of:
+
+        * ``"JPEG"`` - ISO/IEC 10918 JPEG decoders
+        * ``"JPEG XT"`` - ISO/IEC 18477 JPEG decoders
+        * ``"JPEG-LS"`` - ISO/IEC 14495 JPEG decoders
+        * ``"JPEG 2000"`` - ISO/IEC 15444 JPEG decoders
+        * ``"JPEG XS"`` - ISO/IEC 21122 JPEG decoders
+        * ``"JPEG XL"`` - ISO/IEC 18181 JPEG decoders
+
+        If no `decoder_type` is used then all available decoders will be
+        returned.
+
+    Returns
+    -------
+    dict
+        A dict of ``{'package_name': <decoder function>}``.
+    """
     entry_points = {
         "JPEG" : "pylibjpeg.jpeg_decoders",
         "JPEG XT" : "pylibjpeg.jpeg_xt_decoders",
@@ -96,6 +117,14 @@ def get_decoders(decoder_type='JPEG'):
         "JPEG XS" : "pylibjpeg.jpeg_xs_decoders",
         "JPEG XL" : "pylibjpeg.jpeg_xl_decoders",
     }
+    if decoder_type is None:
+        decoders = {}
+        for entry_point in entry_points.values():
+            decoders.update({
+                val.name: val.load() for val in iter_entry_points(entry_point)
+            })
+        return decoders
+
     try:
         return {
             val.name: val.load()
