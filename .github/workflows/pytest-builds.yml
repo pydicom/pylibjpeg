@@ -29,7 +29,7 @@ jobs:
         python -m pip install .
         python -m pip uninstall -y pylibjpeg-openjpeg
         python -m pip install git+https://github.com/pydicom/pylibjpeg-data
-        python -m pip install pytest coverage pytest-cov
+        python -m pip install pytest coverage pytest-cov pydicom
 
     - name: Run pytest with no plugins
       run: |
@@ -37,7 +37,7 @@ jobs:
 
     - name: Rerun pytest with -lj plugin
       run: |
-        pip install pydicom
+
         pip install git+https://github.com/pydicom/pylibjpeg-libjpeg
         pip install git+https://github.com/pydicom/pylibjpeg-openjpeg
         pytest --cov=pylibjpeg --cov-append
