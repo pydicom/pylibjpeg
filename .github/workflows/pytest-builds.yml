@@ -32,19 +32,16 @@ jobs:
 
     - name: Run pytest
       run: |
-        pytest --cov pylibjpeg
+        pytest --cov=pylibjpeg --cov-append
 
     - name: Install -libjpeg and -openjpeg plugins and rerun pytest
       run: |
         pip install pydicom
         pip install git+https://github.com/pydicom/pylibjpeg-libjpeg
         pip install git+https://github.com/pydicom/pylibjpeg-openjpeg
-        pytest --cov pylibjpeg
+        pytest --cov=pylibjpeg --cov-append
 
-    - name: Send coverage results
-      if: ${{ success() }}
-      run: |
-        bash <(curl --connect-timeout 10 --retry 10 --retry-max-time \
-        0 https://codecov.io/bash) || (sleep 30 && bash <(curl \
-        --connect-timeout 10 --retry 10 --retry-max-time \
-        0 https://codecov.io/bash))
+    - uses: codecov/codecov-action@v1
+      name: Upload coverage results
+      with:
+        file: .coverage
