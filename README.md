@@ -25,13 +25,12 @@ python -m pip install pylibjpeg
 
 ### Plugins
 
-By itself *pylibjpeg* is unable to decode any JPEG images, which is where the
-plugins come in. To support a given JPEG format or DICOM Transfer Syntax
+One or more plugins are required before *pylibjpeg* is able to decode JPEG images. To decode a given JPEG format or DICOM Transfer Syntax
 you first have to install the corresponding package:
 
 #### JPEG Format
 | Format | Decode? | Encode? | Plugin | Based on |
-|---|------|---|---|---|---|
+|---|------|---|---|---|
 | JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] |
 | JPEG 2000 | Yes | No | [pylibjpeg-openjpeg][3] | [openjpeg][4] |
 

@@ -28,6 +28,10 @@ HAS_JPEG_PLUGIN = '1.2.840.10008.1.2.4.50' in decoders
 HAS_JPEG_LS_PLUGIN = '1.2.840.10008.1.2.4.80' in decoders
 HAS_JPEG_2K_PLUGIN = '1.2.840.10008.1.2.4.90' in decoders
 
+RUN_JPEG = HAS_JPEG_PLUGIN and HAS_PYDICOM
+RUN_JPEGLS = HAS_JPEG_LS_PLUGIN and HAS_PYDICOM
+RUN_JPEG2K = HAS_JPEG_2K_PLUGIN and HAS_PYDICOM
+
 
 @pytest.mark.skipif(not HAS_PYDICOM or HAS_PLUGINS, reason="Plugins available")
 class TestNoPlugins(object):
@@ -68,9 +72,9 @@ class TestNoPlugins(object):
             handler.get_pixeldata(ds)
 
 
-@pytest.mark.skipif(not HAS_PYDICOM or not HAS_PLUGINS, reason="No plugins")
 class TestPlugins(object):
     """Test interaction with plugins."""
+    @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
     def test_pixel_array(self):
         # Should basically just not mess up the usual pydicom behaviour
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
@@ -106,6 +110,7 @@ class TestPlugins(object):
         result = handler.should_change_PhotometricInterpretation_to_RGB(None)
         assert result is False
 
+    @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
     def test_missing_required(self):
         """Test missing required element raises."""
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
@@ -118,6 +123,7 @@ class TestPlugins(object):
         with pytest.raises(AttributeError, match=msg):
             ds.pixel_array
 
+    @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
     def test_ybr_full_422(self):
         """Test YBR_FULL_422 data decoded."""
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
@@ -126,7 +132,7 @@ class TestPlugins(object):
         arr = ds.pixel_array
 
 
-@pytest.mark.skipif(not HAS_PYDICOM or not HAS_JPEG_PLUGIN, reason="No plugin")
+@pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
 class TestJPEGPlugin(object):
     """Test interaction with plugins that support JPEG."""
     uid = '1.2.840.10008.1.2.4.50'
@@ -154,7 +160,7 @@ class TestJPEGPlugin(object):
         assert 255 == arr[95, 50]
 
 
-@pytest.mark.skipif(not HAS_PYDICOM or not HAS_JPEG_LS_PLUGIN, reason="No plugin")
+@pytest.mark.skipif(not RUN_JPEGLS, reason="No JPEG-LS plugin")
 class TestJPEGLSPlugin(object):
     """Test interaction with plugins that support JPEG-LS."""
     uid = '1.2.840.10008.1.2.4.80'
@@ -175,7 +181,7 @@ class TestJPEGLSPlugin(object):
         )
 
 
-@pytest.mark.skipif(not HAS_PYDICOM or not HAS_JPEG_2K_PLUGIN, reason="No plugin")
+@pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 plugin")
 class TestJPEG2KPlugin(object):
     """Test interaction with plugins that support JPEG 2000."""
     uid = '1.2.840.10008.1.2.4.90'
@@ -213,29 +219,33 @@ class TestJPEG2KPlugin(object):
             [175,  17,   0]] == arr[175:195, 28, :].tolist()
 
 
-@pytest.mark.skipif(not HAS_PYDICOM or not HAS_PLUGINS, reason="No plugins")
 class TestUtils(object):
     """Test the pydicom.utils functions."""
+    @pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 plugin")
     def test_generate_frames_single_1s(self):
         """Test with single frame, 1 sample/px."""
-        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
-        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.90')
+        ds = index['693_J2KR.dcm']['ds']
         assert 1 == getattr(ds, 'NumberOfFrames', 1)
         assert 1 == ds.SamplesPerPixel
-        frames = generate_frames(ds)
-        arr = next(frames)
+        frame_gen = generate_frames(ds)
+        arr = next(frame_gen)
         with pytest.raises(StopIteration):
-            next(frames)
+            next(frame_gen)
 
         assert arr.flags.writeable
-        assert 'uint8' == arr.dtype
+        assert 'int16' == arr.dtype
         assert (ds.Rows, ds.Columns) == arr.shape
-        assert 64 == arr[76, 22]
+        assert (
+            [1022, 1051, 1165, 1442, 1835, 2096, 2074, 1868, 1685, 1603] ==
+            arr[290, 135:145].tolist()
+        )
 
+    @pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 plugin")
     def test_generate_frames_1s(self):
         """Test with multiple frames, 1 sample/px."""
-        index = get_indexed_datasets('1.2.840.10008.1.2.4.80')
-        ds = index['emri_small_jpeg_ls_lossless.dcm']['ds']
+        index = get_indexed_datasets('1.2.840.10008.1.2.4.90')
+        ds = index['emri_small_jpeg_2k_lossless.dcm']['ds']
         assert ds.NumberOfFrames > 1
         assert 1 == ds.SamplesPerPixel
         frames = generate_frames(ds)
@@ -246,6 +256,7 @@ class TestUtils(object):
         assert (ds.Rows, ds.Columns) == arr.shape
         assert 163 == arr[12, 23]
 
+    @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
     def test_generate_frames_3s_0p(self):
         """Test with multiple frames, 3 sample/px, 0 planar conf."""
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
@@ -260,9 +271,3 @@ class TestUtils(object):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
         assert [48,  128,  128] == arr[159, 290, :].tolist()
-
-    @pytest.mark.skip()
-    def test_generate_frames_3s_1p(self):
-        """Test 3 sample/px, 1 planar conf."""
-        # No data
-        pass

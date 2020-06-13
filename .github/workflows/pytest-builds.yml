@@ -27,6 +27,7 @@ jobs:
       run: |
         python -m pip install -U pip
         python -m pip install .
+        python -m pip uninstall -y pylibjpeg-openjpeg
         python -m pip install git+https://github.com/pydicom/pylibjpeg-data
         python -m pip install pytest coverage pytest-cov
 
@@ -41,7 +42,10 @@ jobs:
         pip install git+https://github.com/pydicom/pylibjpeg-openjpeg
         pytest --cov=pylibjpeg --cov-append
 
-    - uses: codecov/codecov-action@v1
-      name: Upload coverage results
-      with:
-        file: .coverage
+    - name: Send coverage results
+      if: ${{ success() }}
+      run: |
+        bash <(curl --connect-timeout 10 --retry 10 --retry-max-time \
+        0 https://codecov.io/bash) || (sleep 30 && bash <(curl \
+        --connect-timeout 10 --retry 10 --retry-max-time \
+        0 https://codecov.io/bash))
