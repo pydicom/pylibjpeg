@@ -27,8 +27,14 @@ def debug_logger():
 
 try:
     import pydicom
-    add_handler()
     _logger.debug('pydicom module loaded')
     from pylibjpeg.pydicom.utils import generate_frames
+
+    # We only add a handler if pydicom doesn't already have one
+    try:
+        import pydicom.pixel_data_handlers.pylibjpeg_handler
+    except ImportError:
+        add_handler()
+
 except ImportError:
     pass

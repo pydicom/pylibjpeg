@@ -72,6 +72,7 @@ class TestNoPlugins(object):
             handler.get_pixeldata(ds)
 
 
+@pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 class TestPlugins(object):
     """Test interaction with plugins."""
     @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
