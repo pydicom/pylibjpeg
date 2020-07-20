@@ -42,8 +42,9 @@ import numpy as np
 
 from pydicom.encaps import generate_pixel_data_frame
 from pydicom.pixel_data_handlers.util import pixel_dtype, get_expected_length
+from pydicom.uid import JPEG2000, JPEG2000Lossless
 
-from .utils import get_pixel_data_decoders
+from .utils import get_pixel_data_decoders, get_j2k_parameters
 
 
 LOGGER = logging.getLogger(__name__)
@@ -53,6 +54,8 @@ HANDLER_NAME = 'pylibjpeg'
 DEPENDENCIES = {
     'numpy': ('http://www.numpy.org/', 'NumPy'),
 }
+
+APPLY_J2K_CORRECTIONS = True
 
 _DECODERS = get_pixel_data_decoders()
 SUPPORTED_TRANSFER_SYNTAXES = list(_DECODERS.keys())
@@ -162,10 +165,28 @@ def get_pixeldata(ds):
     # Generators for the encoded JPEG image frame(s) and insertion offsets
     generate_frames = generate_pixel_data_frame(ds.PixelData, nr_frames)
     generate_offsets = range(0, expected_len, frame_len)
+    pixel_module = ds.group_dataset(0x0028)
     for frame, offset in zip(generate_frames, generate_offsets):
         # Encoded JPEG data to be sent to the decoder
-        arr[offset:offset + frame_len] = decoder(
-            frame, ds.group_dataset(0x0028)
-        )
+        arr[offset:offset + frame_len] = decoder(frame, pixel_module)
+
+    if tsyntax in [JPEG2000, JPEG2000Lossless] and APPLY_J2K_CORRECTIONS:
+        j2k_parameters = get_j2k_parameters(frame)
+        if j2k_parameters:
+            shift = ds.BitsAllocated - j2k_parameters['precision']
+            if (
+                shift
+                and not j2k_parameters['is_signed']
+                and bool(ds.PixelRepresentation)
+            ):
+                # Correct for a mismatch between J2K and Pixel Representation
+                #  by converting unsigned data to signed (2's complement)
+                pixel_module.PixelRepresentation = 0
+                # This probably isn't very efficient
+                arr = arr.view(pixel_dtype(pixel_module))
+                np.left_shift(arr, shift, out=arr)
+                arr = arr.astype(pixel_dtype(ds))
+
+                return np.right_shift(arr, shift)
 
     return arr.view(pixel_dtype(ds))
