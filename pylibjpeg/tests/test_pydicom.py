@@ -17,7 +17,7 @@ except ImportError as exc:
 
 from pylibjpeg.data import get_indexed_datasets
 from pylibjpeg.pydicom.utils import (
-    generate_frames, reshape_frame, get_pixel_data_decoders
+    generate_frames, reshape_frame, get_pixel_data_decoders, get_j2k_parameters
 )
 from pylibjpeg.utils import add_handler, remove_handler
 
@@ -219,6 +219,24 @@ class TestJPEG2KPlugin(object):
             [165,  11,   0],
             [175,  17,   0]] == arr[175:195, 28, :].tolist()
 
+    def test_pixel_representation_mismatch(self):
+        """Test mismatch between Pixel Representation and the J2K data."""
+        index = get_indexed_datasets(self.uid)
+        ds = index['J2K_pixelrep_mismatch.dcm']['ds']
+
+        arr = ds.pixel_array
+        assert arr.flags.writeable
+        assert 'int16' == arr.dtype
+        assert (512, 512) == arr.shape
+
+        assert -2000 == arr[0, 0]
+        assert [621, 412, 138, -193, -520, -767, -907, -966, -988, -995] == (
+            arr[47:57, 279].tolist()
+        )
+        assert [-377, -121, 141, 383, 633, 910, 1198, 1455, 1638, 1732] == (
+            arr[328:338, 106].tolist()
+        )
+
 
 class TestUtils(object):
     """Test the pydicom.utils functions."""
@@ -272,3 +290,36 @@ class TestUtils(object):
         assert 'uint8' == arr.dtype
         assert (ds.Rows, ds.Columns, 3) == arr.shape
         assert [48,  128,  128] == arr[159, 290, :].tolist()
+
+
+class TestGetJ2KParameters:
+    """Tests for get_j2k_parameters."""
+    def test_parameters(self):
+        """Test getting the parameters for a JPEG2K codestream."""
+        base = b'\xff\x4f\xff\x51' + b'\x00' * 38
+        # Signed
+        for ii in range(135, 143):
+            params = get_j2k_parameters(base + bytes([ii]))
+            assert ii - 127 == params['precision']
+            assert params['is_signed']
+
+        # Unsigned
+        for ii in range(7, 17):
+            params = get_j2k_parameters(base + bytes([ii]))
+            assert ii + 1 == params['precision']
+            assert not params['is_signed']
+
+    def test_not_j2k(self):
+        """Test result when no JPEG2K SOF marker present"""
+        base = b'\xff\x4e\xff\x51' + b'\x00' * 38
+        assert {} == get_j2k_parameters(base + b'\x8F')
+
+    def test_no_siz(self):
+        """Test result when no SIZ box present"""
+        base = b'\xff\x4f\xff\x52' + b'\x00' * 38
+        assert {} == get_j2k_parameters(base + b'\x8F')
+
+    def test_short_bytestream(self):
+        """Test result when no SIZ box present"""
+        assert {} == get_j2k_parameters(b'')
+        assert {} == get_j2k_parameters(b'\xff\x4f\xff\x51' + b'\x00' * 20)

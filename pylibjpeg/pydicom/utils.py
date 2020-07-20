@@ -149,3 +149,43 @@ def reshape_frame(ds, arr):
             arr = arr.transpose(1, 2, 0)
 
     return arr
+
+
+def get_j2k_parameters(codestream):
+    """Return some of the JPEG 2000 component sample's parameters in `stream`.
+
+    Parameters
+    ----------
+    codestream : bytes
+        The JPEG 2000 (ISO/IEC 15444-1) codestream data to be parsed.
+
+    Returns
+    -------
+    dict
+        A dict containing the JPEG 2000 parameters for the first component
+        sample, will be empty if `codestream` doesn't contain JPEG 2000 data or
+        if unable to parse the data.
+    """
+    try:
+        # First 2 bytes must be the SOC marker - if not then wrong format
+        if codestream[0:2] != b'\xff\x4f':
+            return {}
+
+        # SIZ is required to be the second marker - Figure A-3 in 15444-1
+        if codestream[2:4] != b'\xff\x51':
+            return {}
+
+        # See 15444-1 A.5.1 for format of the SIZ box and contents
+        ssiz = ord(codestream[42:43])
+        parameters = {}
+        if ssiz & 0x80:
+            parameters['precision'] = (ssiz & 0x7F) + 1
+            parameters['is_signed'] = True
+        else:
+            parameters['precision'] = ssiz + 1
+            parameters['is_signed'] = False
+
+        return parameters
+
+    except (IndexError, TypeError):
+        return {}
