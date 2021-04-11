@@ -14,9 +14,7 @@ except ImportError as exc:
     HAS_PYDICOM = False
 
 from pylibjpeg.data import get_indexed_datasets
-from pylibjpeg.pydicom.utils import (
-    get_j2k_parameters, generate_frames, reshape_frame
-)
+from pylibjpeg.pydicom.utils import get_j2k_parameters, generate_frames
 from pylibjpeg.utils import get_pixel_data_decoders
 
 
@@ -229,7 +227,8 @@ class TestJPEG2KPlugin:
         )
 
 
-class TestUtils:
+# Deprecated
+class TestPydicomUtils:
     """Test the pydicom.utils functions."""
     @pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 plugin")
     def test_generate_frames_single_1s(self):
@@ -283,6 +282,7 @@ class TestUtils:
         assert [48,  128,  128] == arr[159, 290, :].tolist()
 
 
+# Deprecated
 class TestGetJ2KParameters:
     """Tests for get_j2k_parameters."""
     def test_parameters(self):
