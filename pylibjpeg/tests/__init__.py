@@ -5,7 +5,7 @@ import sys
 _logger = logging.getLogger(__name__)
 
 try:
-    import data as _data
+    import ljdata as _data
     globals()['data'] = _data
     # Add to cache - needed for pytest
     sys.modules['pylibjpeg.data'] = _data

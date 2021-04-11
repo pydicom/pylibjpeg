@@ -1,10 +1,21 @@
-"""Utilities for pydicom and DICOM pixel data"""
+"""Utilities for pydicom and DICOM pixel data
 
-from pkg_resources import iter_entry_points
+.. deprecated:: 1.2
+
+    Use pydicom's pylibjpeg pixel data handler instead.
+"""
+
+from pylibjpeg.utils import get_pixel_data_decoders
 
 
 def generate_frames(ds):
     """Yield decompressed pixel data frames as :class:`numpy.ndarray`.
+
+    .. deprecated:: 1.2
+
+        Use
+        :func:`~pydicom.pixel_data_handlers.pylibjpeg_handler.generate_frames`
+        instead
 
     Parameters
     ----------
@@ -16,6 +27,13 @@ def generate_frames(ds):
     numpy.ndarray
         A single frame of the decompressed pixel data.
     """
+    try:
+        import pydicom
+    except ImportError:
+        raise RuntimeError(
+            "'generate_frames' requires the pydicom package"
+        )
+
     from pydicom.encaps import generate_pixel_data_frame
     from pydicom.pixel_data_handlers.util import pixel_dtype
 
@@ -29,16 +47,12 @@ def generate_frames(ds):
         yield reshape_frame(ds, arr)
 
 
-def get_pixel_data_decoders():
-    """Return a :class:`dict` of {UID: callable}."""
-    return {
-        val.name: val.load()
-        for val in iter_entry_points('pylibjpeg.pixel_data_decoders')
-    }
-
-
 def reshape_frame(ds, arr):
     """Return a reshaped :class:`numpy.ndarray` `arr`.
+
+    .. deprecated:: 1.2
+
+        Use pydicom instead.
 
     +------------------------------------------+-----------+----------+
     | Element                                  | Supported |          |
@@ -153,6 +167,11 @@ def reshape_frame(ds, arr):
 
 def get_j2k_parameters(codestream):
     """Return some of the JPEG 2000 component sample's parameters in `stream`.
+
+    .. deprecated:: 1.2
+
+        Use :func:`~pydicom.pixel_data_handlers.utils.get_j2k_parameters`
+        instead
 
     Parameters
     ----------
