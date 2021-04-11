@@ -39,9 +39,8 @@ class TestNoPlugins:
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
         ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
         msg = (
-            r"The following handlers are available to decode the pixel data "
-            r"however they are missing required dependencies: GDCM \(req. "
-            r"GDCM\), Pillow \(req. Pillow\)"
+            r"Unable to convert the Pixel Data as the 'pylibjpeg-libjpeg' "
+            r"plugin is not installed"
         )
         with pytest.raises(RuntimeError, match=msg):
             ds.pixel_array
