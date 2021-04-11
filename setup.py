@@ -1,9 +1,11 @@
 import os
+from pathlib import Path
 from setuptools import setup, find_packages
 import sys
 
 
-VERSION_FILE = os.path.join('pylibjpeg', '_version.py')
+PACKAGE_DIR = Path(__file__).parent / 'pylibjpeg'
+VERSION_FILE = PACKAGE_DIR / '_version.py'
 with open(VERSION_FILE) as fp:
     exec(fp.read())
 
@@ -39,6 +41,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Operating System :: OS Independent",
         "Topic :: Scientific/Engineering :: Medical Science Apps.",
         "Topic :: Software Development :: Libraries",

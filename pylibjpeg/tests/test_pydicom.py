@@ -9,17 +9,15 @@ import pytest
 try:
     import pydicom
     import pydicom.config
-    from pylibjpeg.pydicom import pixel_data_handler as handler
     HAS_PYDICOM = True
 except ImportError as exc:
-    print(exc)
     HAS_PYDICOM = False
 
 from pylibjpeg.data import get_indexed_datasets
 from pylibjpeg.pydicom.utils import (
-    generate_frames, reshape_frame, get_pixel_data_decoders, get_j2k_parameters
+    get_j2k_parameters, generate_frames, reshape_frame
 )
-from pylibjpeg.utils import add_handler, remove_handler
+from pylibjpeg.utils import get_pixel_data_decoders
 
 
 decoders = get_pixel_data_decoders()
@@ -32,9 +30,11 @@ RUN_JPEG = HAS_JPEG_PLUGIN and HAS_PYDICOM
 RUN_JPEGLS = HAS_JPEG_LS_PLUGIN and HAS_PYDICOM
 RUN_JPEG2K = HAS_JPEG_2K_PLUGIN and HAS_PYDICOM
 
+PY_VERSION = sys.version[:2]
+
 
 @pytest.mark.skipif(not HAS_PYDICOM or HAS_PLUGINS, reason="Plugins available")
-class TestNoPlugins(object):
+class TestNoPlugins:
     """Test interactions with no plugins."""
     def test_pixel_array(self):
         # Should basically just not mess up the usual pydicom behaviour
@@ -73,7 +73,7 @@ class TestNoPlugins(object):
 
 
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
-class TestPlugins(object):
+class TestPlugins:
     """Test interaction with plugins."""
     @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
     def test_pixel_array(self):
@@ -98,29 +98,14 @@ class TestPlugins(object):
         assert 192 == arr[85, 50]
         assert 255 == arr[95, 50]
 
-    def test_add_remove_handler(self):
-        """Test removing the pixel data handler."""
-        assert handler in pydicom.config.pixel_data_handlers
-        remove_handler()
-        assert handler not in pydicom.config.pixel_data_handlers
-        add_handler()
-        assert handler in pydicom.config.pixel_data_handlers
-
-    def test_should_change_PI(self):
-        """Pointless test."""
-        result = handler.should_change_PhotometricInterpretation_to_RGB(None)
-        assert result is False
-
     @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
     def test_missing_required(self):
         """Test missing required element raises."""
         index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
         ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
         del ds.SamplesPerPixel
-        msg = (
-            r"Unable to convert the pixel data as the following required "
-            r"elements are missing from the dataset: SamplesPerPixel"
-        )
+
+        msg = r"'FileDataset' object has no attribute 'SamplesPerPixel'"
         with pytest.raises(AttributeError, match=msg):
             ds.pixel_array
 
@@ -134,7 +119,7 @@ class TestPlugins(object):
 
 
 @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG plugin")
-class TestJPEGPlugin(object):
+class TestJPEGPlugin:
     """Test interaction with plugins that support JPEG."""
     uid = '1.2.840.10008.1.2.4.50'
 
@@ -162,7 +147,7 @@ class TestJPEGPlugin(object):
 
 
 @pytest.mark.skipif(not RUN_JPEGLS, reason="No JPEG-LS plugin")
-class TestJPEGLSPlugin(object):
+class TestJPEGLSPlugin:
     """Test interaction with plugins that support JPEG-LS."""
     uid = '1.2.840.10008.1.2.4.80'
 
@@ -183,7 +168,7 @@ class TestJPEGLSPlugin(object):
 
 
 @pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 plugin")
-class TestJPEG2KPlugin(object):
+class TestJPEG2KPlugin:
     """Test interaction with plugins that support JPEG 2000."""
     uid = '1.2.840.10008.1.2.4.90'
 
@@ -219,12 +204,18 @@ class TestJPEG2KPlugin(object):
             [165,  11,   0],
             [175,  17,   0]] == arr[175:195, 28, :].tolist()
 
+    # FIXME
     def test_pixel_representation_mismatch(self):
         """Test mismatch between Pixel Representation and the J2K data."""
         index = get_indexed_datasets(self.uid)
         ds = index['J2K_pixelrep_mismatch.dcm']['ds']
 
-        arr = ds.pixel_array
+        msg = (
+            r"value '1' \(signed\) in the dataset does not match the format "
+            r"of the values found in the JPEG 2000 data 'unsigned'"
+        )
+        with pytest.warns(UserWarning, match=msg):
+            arr = ds.pixel_array
         assert arr.flags.writeable
         assert 'int16' == arr.dtype
         assert (512, 512) == arr.shape
@@ -238,7 +229,7 @@ class TestJPEG2KPlugin(object):
         )
 
 
-class TestUtils(object):
+class TestUtils:
     """Test the pydicom.utils functions."""
     @pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 plugin")
     def test_generate_frames_single_1s(self):

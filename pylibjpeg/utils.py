@@ -10,21 +10,6 @@ import numpy as np
 LOGGER = logging.getLogger(__name__)
 
 
-def add_handler():
-    """Add the pixel data handler to *pydicom*.
-
-    Raises
-    ------
-    ImportError
-        If *pydicom* is not available.
-    """
-    from .pydicom import pixel_data_handler as handler
-    import pydicom.config
-
-    if handler not in pydicom.config.pixel_data_handlers:
-        pydicom.config.pixel_data_handlers.append(handler)
-
-
 def decode(data, decoder=None, kwargs=None):
     """Return the decoded JPEG image as a :class:`numpy.ndarray`.
 
@@ -134,16 +119,9 @@ def get_decoders(decoder_type=None):
         raise ValueError("Unknown decoder_type '{}'".format(decoder_type))
 
 
-def remove_handler():
-    """Remove the pixel data handler from *pydicom*.
-
-    Raises
-    ------
-    ImportError
-        If *pydicom* is not available.
-    """
-    from .pydicom import pixel_data_handler as handler
-    import pydicom.config
-
-    if handler in pydicom.config.pixel_data_handlers:
-        pydicom.config.pixel_data_handlers.remove(handler)
+def get_pixel_data_decoders():
+    """Return a :class:`dict` of {UID: callable}."""
+    return {
+        val.name: val.load()
+        for val in iter_entry_points('pylibjpeg.pixel_data_decoders')
+    }

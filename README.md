@@ -64,14 +64,11 @@ determined with:
 
 ### Usage
 #### With pydicom
-Assuming you already have *pydicom* v1.4+ and suitable plugins installed:
+Assuming you already have *pydicom* v2.1+ and suitable plugins installed:
 
 ```python
 from pydicom import dcmread
 from pydicom.data import get_testdata_file
-
-# Importing the package adds the pixel data handler to pydicom
-import pylibjpeg
 
 # With the pylibjpeg-libjpeg plugin
 ds = dcmread(get_testdata_file('JPEG-LL.dcm'))
@@ -88,8 +85,7 @@ function:
 ```python
 from pydicom import dcmread
 from pydicom.data import get_testdata_file
-
-from pylibjpeg import generate_frames
+from pydicom.pixel_data_handlers.pylibjpeg_handler import generate_frames
 
 ds = dcmread(get_testdata_file('color3d_jpeg_baseline.dcm'))
 frames = generate_frames(ds)
