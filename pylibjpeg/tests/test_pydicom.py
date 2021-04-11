@@ -46,29 +46,6 @@ class TestNoPlugins:
         with pytest.raises(RuntimeError, match=msg):
             ds.pixel_array
 
-    def test_get_pixeldata_no_syntax(self):
-        """Test exception raised if syntax not supported."""
-        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
-        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
-        ds.file_meta.TransferSyntaxUID = '1.2.3.4'
-        msg = (
-            r"Unable to convert the pixel data as there are no pylibjpeg "
-            r"plugins available to decode pixel data encoded using '1.2.3.4'"
-        )
-        with pytest.raises(RuntimeError, match=msg):
-            handler.get_pixeldata(ds)
-
-    def test_get_pixeldata_no_lj_syntax(self):
-        """Test exception raised if syntax not supported."""
-        index = get_indexed_datasets('1.2.840.10008.1.2.4.50')
-        ds = index['JPEGBaseline_1s_1f_u_08_08.dcm']['ds']
-        msg = (
-            r"Unable to convert the pixel data as there are no pylibjpeg "
-            r"plugins available to decode pixel data encoded using 'JPEG"
-        )
-        with pytest.raises(NotImplementedError, match=msg):
-            handler.get_pixeldata(ds)
-
 
 @pytest.mark.skipif(not HAS_PYDICOM, reason="No pydicom")
 class TestPlugins:
