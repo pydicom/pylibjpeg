@@ -1,0 +1,11 @@
+.. _v1.2.0:
+
+1.2.0
+=====
+
+* Added support for Python 3.9
+* Removed standalone pydicom pixel data handler
+* ``The pylibjpeg.pydicom`` module is deprecated and will be removed in v2.0,
+  use pydicom instead.
+* ``get_pixel_data_decoders`` moved from ``pylibjpeg.pydicom.utils`` to
+  ```pylibjpeg.utils``
