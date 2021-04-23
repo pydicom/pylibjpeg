@@ -28,11 +28,12 @@ python -m pip install pylibjpeg
 One or more plugins are required before *pylibjpeg* is able to decode JPEG images. To decode a given JPEG format or DICOM Transfer Syntax
 you first have to install the corresponding package:
 
-#### JPEG Format
+#### Supported Formats
 | Format | Decode? | Encode? | Plugin | Based on |
 |---|------|---|---|---|
 | JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] |
 | JPEG 2000 | Yes | No | [pylibjpeg-openjpeg][3] | [openjpeg][4] |
+| RLE (PackBits) | Yes | No | [pylibjpeg-rle][5] | - |
 
 #### DICOM Transfer Syntax
 
@@ -46,7 +47,7 @@ you first have to install the corresponding package:
 | 1.2.840.10008.1.2.4.81 | JPEG-LS Lossy (Near-Lossless) Image Compression | [pylibjpeg-libjpeg][1]|
 | 1.2.840.10008.1.2.4.90 | JPEG 2000 Image Compression (Lossless Only) | [pylibjpeg-openjpeg][4] |
 | 1.2.840.10008.1.2.4.91 | JPEG 2000 Image Compression | [pylibjpeg-openjpeg][4] |
-| 1.2.840.10008.1.2.5    | RLE Lossless | Not yet supported |
+| 1.2.840.10008.1.2.5    | RLE Lossless | [pylibjpeg-rle][5] |
 
 If you're not sure what the dataset's *Transfer Syntax UID* is, it can be
 determined with:
@@ -60,6 +61,7 @@ determined with:
 [2]: https://github.com/thorfdbg/libjpeg
 [3]: https://github.com/pydicom/pylibjpeg-openjpeg
 [4]: https://github.com/uclouvain/openjpeg
+[5]: https://github.com/pydicom/pylibjpeg-rle
 
 
 ### Usage
@@ -77,6 +79,13 @@ jpg_arr = ds.pixel_array
 # With the pylibjpeg-openjpeg plugin
 ds = dcmread(get_testdata_file('JPEG2000.dcm'))
 j2k_arr = ds.pixel_array
+
+# With the pylibjpeg-rle plugin and pydicom v2.2+
+ds = dcmread(get_testdata_file('OBXXXX1A_rle.dcm'))
+# pydicom defaults to the numpy handler for RLE so need
+# to explicitly specify the use of pylibjpeg
+ds.decompress("pylibjpeg")
+rle_arr = ds.pixel_array
 ```
 
 For datasets with multiple frames you can reduce your memory usage by
