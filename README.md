@@ -5,7 +5,7 @@
 
 ## pylibjpeg
 
-A Python 3.6+ framework for decoding JPEG images, with a focus on providing JPEG support for [pydicom](https://github.com/pydicom/pydicom).
+A Python 3.6+ framework for decoding JPEG images and RLE datasets, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
 
 
 ### Installation
@@ -25,7 +25,7 @@ python -m pip install pylibjpeg
 
 ### Plugins
 
-One or more plugins are required before *pylibjpeg* is able to decode JPEG images. To decode a given JPEG format or DICOM Transfer Syntax
+One or more plugins are required before *pylibjpeg* is able to decode JPEG images or RLE datasets. To decode a given format or DICOM Transfer Syntax
 you first have to install the corresponding package:
 
 #### Supported Formats
