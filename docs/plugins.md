@@ -29,7 +29,8 @@ The pixel data decoding function will be passed two required parameters:
 * *src*: a single encoded image frame as [bytes](https://docs.python.org/3/library/stdtypes.html#bytes)
 * *ds*: a *pydicom* [Dataset](https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataset.Dataset.html) object containing the (0028,eeee) elements corresponding to the pixel data
 
-The function should return the decoded pixel data as a one-dimensional numpy [ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) of little-endian ordered `'uint8'`:
+The function should return the decoded pixel data as a one-dimensional numpy [ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) of little-endian ordered `'uint8'`, with the data ordered from left-to-right, top-to-bottom (i.e. the first byte corresponds to the upper left pixel and the last byte corresponds to the lower-right pixel) and a planar configuration that matches
+the requirements of the transfer syntax:
 
 ```python
 def my_pixel_data_decoder(
@@ -39,8 +40,7 @@ def my_pixel_data_decoder(
 
     .. versionchanged:: 1.3
 
-        Added `kwargs`, added requirement to return little-endian ordered
-        data by default.
+        Added requirement to return little-endian ordered data by default.
 
     Parameters
     ----------
@@ -135,10 +135,12 @@ setup(
 
 The pixel data encoding function will be passed two required parameters:
 
-* *src*: a single unencoded image frame as `bytes`
+* *src*: a single unencoded image frame as `bytes`, with the data ordered from
+  left-to-right, top-to-bottom (i.e. the first byte corresponds to the upper
+  left pixel and the last byte corresponds to the lower-right pixel) and a planar configuration of 0 if more than 1 sample per pixel is used
 * *ds*: a *pydicom* `Dataset` object containing the (0028,eeee) elements corresponding to the image frame
 
-And one optional parameter:
+And at least one optional parameter:
 
 * *byteorder*: a `str` indicating the byte ordering used by the image frame, required when the number of bits per pixel is greater than 8.
 
