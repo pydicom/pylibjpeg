@@ -24,25 +24,38 @@ setup(
 
 #### Decoder function signature
 
-The pixel data decoding function will be passed two arguments; a single encoded
-image frame as [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) and a *pydicom* [Dataset](https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataset.Dataset.html) object containing the (0028,eeee) elements corresponding to the pixel data. The function should return the decoded pixel data as a one-dimensional numpy [ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) of `'uint8'`:
+The pixel data decoding function will be passed two required parameters:
+
+* *src*: a single encoded image frame as [bytes](https://docs.python.org/3/library/stdtypes.html#bytes)
+* *ds*: a *pydicom* [Dataset](https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataset.Dataset.html) object containing the (0028,eeee) elements corresponding to the pixel data
+
+The function should return the decoded pixel data as a one-dimensional numpy [ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) of little-endian ordered `'uint8'`:
 
 ```python
-def my_pixel_data_decoder(data, ds):
-    """Return the encoded `data` as an unshaped numpy ndarray of uint8.
+def my_pixel_data_decoder(
+    src: bytes, ds: pydicom.dataset.Dataset, **kwargs
+) -> numpy.ndarray:
+    """Return the encoded `src` as an unshaped numpy ndarray of uint8.
+
+    .. versionchanged:: 1.3
+
+        Added `kwargs`, added requirement to return little-endian ordered
+        data by default.
 
     Parameters
     ----------
-    data : bytes
+    src : bytes
         A single frame of the encoded *Pixel Data*.
     ds : pydicom.dataset.Dataset
         A dataset containing the group ``0x0028`` elements corresponding to
         the *Pixel Data*.
+    kwargs
+        Optional keyword parameters for the decoder.
 
     Returns
     -------
     numpy.ndarray
-        A 1-dimensional ndarray of 'uint8' containing the decoded pixel data.
+        A 1-dimensional ndarray of 'uint8' containing the little-endian ordered decoded pixel data.
     """
     # Decoding happens here
 ```
@@ -78,19 +91,18 @@ Possible entry points for JPEG decoding are:
 
 #### Decoder function signature
 
-The JPEG decoding function will be passed the encoded JPEG *data* as
-[bytes](https://docs.python.org/3/library/stdtypes.html#bytes) and a
+The JPEG decoding function will be passed the encoded JPEG *data* as [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) and a
 [dict](https://docs.python.org/3/library/stdtypes.html#dict) containing keyword arguments passed to the function. The function should return the decoded image data as a numpy [ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) with a dtype and shape matching the image format and dimensions:
 
 ```python
-def my_jpeg_decoder(data, **kwarg):
-    """Return the encoded JPEG `data` as an numpy ndarray.
+def my_jpeg_decoder(src, **kwargs):
+    """Return the encoded JPEG `src` as an numpy ndarray.
 
     Parameters
     ----------
-    data : bytes
+    src : bytes
         The encoded JPEG data.
-    kwarg
+    kwargs
         Keyword arguments passed to the decoder.
 
     Returns
@@ -99,4 +111,66 @@ def my_jpeg_decoder(data, **kwarg):
         An ndarray containing the decoded pixel data.
     """
     # Decoding happens here
+```
+
+### DICOM Pixel Data encoders
+#### Encoder plugin registration
+
+Plugins that encode DICOM *Pixel Data* should register their encoding functions using the corresponding *Transfer Syntax UID* as the entry point name. For example, if the `my_plugin` plugin supported encoding *RLE Lossless* (1.2.840.10008.1.2.5) with the encoding function `encode_rle_lossless()` then it should include the following in its `setup.py`:
+
+```python
+from setuptools import setup
+
+setup(
+    ...,
+    entry_points={
+        "pylibjpeg.pixel_data_encoders": [
+            "1.2.840.10008.1.2.5 = my_plugin:encode_rle_lossless",
+        ],
+    }
+)
+```
+
+#### Encoder function signature
+
+The pixel data encoding function will be passed two required parameters:
+
+* *src*: a single unencoded image frame as `bytes`
+* *ds*: a *pydicom* `Dataset` object containing the (0028,eeee) elements corresponding to the image frame
+
+And one optional parameter:
+
+* *byteorder*: a `str` indicating the byte ordering used by the image frame, required when the number of bits per pixel is greater than 8.
+
+The function should return the encoded pixel data as `bytes`.
+
+```python
+def my_pixel_data_encoder(
+    src: bytes,
+    ds: pydicom.dataset.Dataset,
+    byteorder: Optional[str] = None,
+    **kwargs
+) -> bytes:
+    """Return `src` as encoded bytes.
+
+    Parameters
+    ----------
+    src : bytes
+        A single frame of the encoded *Pixel Data*.
+    ds : pydicom.dataset.Dataset
+        A dataset containing the group ``0x0028`` elements corresponding to
+        the *Pixel Data*.
+    byteorder : str, optional
+        Required when the number of bits per pixel is greater than 8, this
+        should be ``'<'`` if `src` uses little-endian byte ordering, ``'>'``
+        otherwise.
+    **kwargs
+        Optional keyword parameters for the encoder.
+
+    Returns
+    -------
+    bytes
+        The encoded image data.
+    """
+    # Encoding happens here
 ```

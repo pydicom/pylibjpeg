@@ -29,16 +29,16 @@ One or more plugins are required before *pylibjpeg* is able to decode JPEG image
 you first have to install the corresponding package:
 
 #### Supported Formats
-| Format | Decode? | Encode? | Plugin | Based on |
-|---|------|---|---|---|
-| JPEG, JPEG-LS and JPEG XT | Yes | No | [pylibjpeg-libjpeg][1] | [libjpeg][2] |
-| JPEG 2000 | Yes | No | [pylibjpeg-openjpeg][3] | [openjpeg][4] |
-| RLE (PackBits) | Yes | No | [pylibjpeg-rle][5] | - |
+| Format                    | Decode? | Encode? | Plugin                  | Based on      |
+|---                        |------   |---      |---                      |---            |
+| JPEG, JPEG-LS and JPEG XT | Yes     | No      | [pylibjpeg-libjpeg][1]  | [libjpeg][2]  |
+| JPEG 2000                 | Yes     | No      | [pylibjpeg-openjpeg][3] | [openjpeg][4] |
+| RLE (PackBits)            | Yes     | Yes     | [pylibjpeg-rle][5]      | -             |
 
 #### DICOM Transfer Syntax
 
 | UID | Description | Plugin |
-|---|---|----|
+|---  |---          |----    |
 | 1.2.840.10008.1.2.4.50 | JPEG Baseline (Process 1) | [pylibjpeg-libjpeg][1] |
 | 1.2.840.10008.1.2.4.51 | JPEG Extended (Process 2 and 4) | [pylibjpeg-libjpeg][1]|
 | 1.2.840.10008.1.2.4.57 | JPEG Lossless, Non-Hierarchical (Process 14) | [pylibjpeg-libjpeg][1]|
