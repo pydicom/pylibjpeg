@@ -1,0 +1,9 @@
+.. _v1.3.0:
+
+1.3.0
+=====
+
+* Added interface for encoding pixel data
+* Added :func:`~pylibjpeg.utils.get_encoders` and :func:`~pylibjpeg.utils.get_pixel_data_encoders`
+* Updated the requirements for plugins to be more explicit about the format of the
+  data sent to and received from decoding functions

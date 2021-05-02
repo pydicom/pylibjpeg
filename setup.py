@@ -15,8 +15,8 @@ with open('README.md', 'r') as fp:
 setup(
     name = 'pylibjpeg',
     description = (
-        "A Python framework for decoding JPEG files, with a focus on "
-        "supporting pydicom"
+        "A Python framework for decoding JPEG and decoding/encoding DICOM "
+        "RLE data, with a focus on supporting pydicom"
     ),
     long_description = long_description,
     long_description_content_type = 'text/markdown',
@@ -27,7 +27,8 @@ setup(
     license = "MIT",
     keywords = (
         "dcm dicom pydicom python medicalimaging radiology radiotherapy "
-        "oncology imaging jpg jpeg jpg-ls jpeg-ls libjpeg pylibjpeg "
+        "oncology imaging jpg jpeg jpg-ls jpeg-ls jpeg2k jpeg2000 rle "
+        "libjpeg pylibjpeg "
     ),
     classifiers = [
         "License :: OSI Approved :: MIT License",
@@ -47,7 +48,7 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     packages = find_packages(),
-    install_requires = ['numpy', 'pylibjpeg-openjpeg'],
+    install_requires = ['numpy', 'pylibjpeg-openjpeg', 'pylibjpeg-rle'],
     include_package_data = True,
     zip_safe = False,
     python_requires = ">=3.6",
