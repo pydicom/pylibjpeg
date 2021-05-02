@@ -130,11 +130,10 @@ from pydicom.data import get_testdata_file
 from pydicom.uid import RLELossless
 
 ds = dcmread(get_testdata_file("CT_small.dcm"))
-arr = ds.pixel_array
 
-# Encode `arr` using RLE Lossless and update the dataset
-# Updates the Pixel Data and Transfer Syntax UID
-ds.compress(arr, uid=RLELossless)
+# Encode in-place using RLE Lossless and update the dataset
+# Updates the Pixel Data, Transfer Syntax UID and Planar Configuration
+ds.compress(uid)
 
 # Save compressed
 ds.save_as("CT_small_rle.dcm")
