@@ -137,37 +137,44 @@ The pixel data encoding function will be passed two required parameters:
 
 * *src*: a single unencoded image frame as `bytes`, with the data ordered from
   left-to-right, top-to-bottom (i.e. the first byte corresponds to the upper
-  left pixel and the last byte corresponds to the lower-right pixel) and a planar configuration of 0 if more than 1 sample per pixel is used
-* *ds*: a *pydicom* `Dataset` object containing the (0028,eeee) elements corresponding to the image frame
+  left pixel and the last byte corresponds to the lower-right pixel) and a
+  planar configuration of 0 if more than 1 sample per pixel is used
+* *kwargs*: a dict with at least the following keys
 
-And at least one optional parameter:
-
-* *byteorder*: a `str` indicating the byte ordering used by the image frame, required when the number of bits per pixel is greater than 8.
+    * `'transfer_syntax_uid': pydicom.uid.UID` - the intended
+      *Transfer Syntax UID* of the encoded data.
+    * `'byteorder': str` - the byte ordering used by *src*, `'<'`
+      for little-endian (the default), `'>'` for big-endian.
+    * `'rows': int` - the number of rows of pixels in the *src*.
+    * `'columns': int` -  the number of columns of pixels in the
+      *src*.
+    * `'samples_per_pixel': int` - the number of samples used per
+      pixel, e.g. `1` for grayscale images or `3` for RGB.
+    * `'number_of_frames': int` - the number of image frames
+      contained in *src*.
+    * `'bits_allocated': int` - the number of bits used to contain
+      each pixel in *src*, should be 8, 16, 32 or 64.
+    * `'bits_stored': int` - the number of bits actually used by
+      each pixel in *src*, e.g. 12-bit pixel data (range 0 to 4095) will be
+      contained by 16-bits (range 0 to 65535).
+    * `'pixel_representation': int` - the type of data in *src*,
+      `0` for unsigned integers, `1` for 2's complement (signed)
+      integers.
+    * `'photometric_interpretation: str` - the intended colorspace
+      of the encoded data, such as `'YBR'`.
 
 The function should return the encoded pixel data as `bytes`.
 
 ```python
-def my_pixel_data_encoder(
-    src: bytes,
-    ds: pydicom.dataset.Dataset,
-    byteorder: Optional[str] = None,
-    **kwargs
-) -> bytes:
+def my_pixel_data_encoder(src: bytes, **kwargs) -> bytes:
     """Return `src` as encoded bytes.
 
     Parameters
     ----------
     src : bytes
         A single frame of the encoded *Pixel Data*.
-    ds : pydicom.dataset.Dataset
-        A dataset containing the group ``0x0028`` elements corresponding to
-        the *Pixel Data*.
-    byteorder : str, optional
-        Required when the number of bits per pixel is greater than 8, this
-        should be ``'<'`` if `src` uses little-endian byte ordering, ``'>'``
-        otherwise.
     **kwargs
-        Optional keyword parameters for the encoder.
+        Required and optional parameters for the encoder.
 
     Returns
     -------
