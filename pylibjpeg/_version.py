@@ -1,4 +1,4 @@
-"""Version information for pynetdicom based on PEP396 and 440."""
+"""Version information for pylibjpeg based on PEP396 and 440."""
 
 import re
 
