@@ -48,7 +48,11 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     packages = find_packages(),
-    install_requires = ['numpy', 'pylibjpeg-openjpeg', 'pylibjpeg-rle'],
+    extra_requires = {
+        'rle': ['pylibjpeg-rle'],
+        'openjpeg': ['pylibjpeg-openjpeg']
+    },
+    install_requires = ['numpy'],
     include_package_data = True,
     zip_safe = False,
     python_requires = ">=3.6",
