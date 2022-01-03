@@ -48,7 +48,7 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     packages = find_packages(),
-    extra_requires = {
+    extras_require = {
         'rle': ['pylibjpeg-rle'],
         'openjpeg': ['pylibjpeg-openjpeg']
     },
