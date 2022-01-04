@@ -15,6 +15,14 @@ A Python 3.6+ framework for decoding JPEG images and decoding/encoding RLE datas
 pip install pylibjpeg
 ```
 
+##### Installing extra requirements
+
+The package can be installed with extra requirements `openjpeg` or `rle` to enable support for JPEG-2000 and Run-Length Encoding (RLE), respectively:
+
+```
+pip install pylibjpeg[openjpeg,rle]
+```
+
 #### Installing the development version
 
 Make sure [Git](https://git-scm.com/) is installed, then

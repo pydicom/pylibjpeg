@@ -1,0 +1,6 @@
+.. _v1.4.0:
+
+1.4.0
+=====
+
+* Made pylibjpeg-openjpeg and pylibjpeg-rle dependencies optional (using `extras_require`)

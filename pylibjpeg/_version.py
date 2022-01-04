@@ -1,9 +1,9 @@
-"""Version information for pynetdicom based on PEP396 and 440."""
+"""Version information for pylibjpeg based on PEP396 and 440."""
 
 import re
 
 
-__version__ = '1.3.0'
+__version__ = '1.4.0'
 
 
 VERSION_PATTERN = r"""
