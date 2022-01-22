@@ -1,4 +1,4 @@
-name: build
+name: unit-tests
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
 jobs:
   ubuntu:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8, 3.9]
+        python-version: ['3.7', '3.8', '3.9', '3.10']
 
     steps:
     - uses: actions/checkout@v2
@@ -25,11 +25,9 @@ jobs:
     - name: Install package and dependencies
       run: |
         python -m pip install -U pip
-        python -m pip install wheel
-        python -m pip install .
-        python -m pip uninstall -y pylibjpeg-openjpeg
+        python -m pip install -U wheel pytest coverage pytest-cov
         python -m pip install git+https://github.com/pydicom/pylibjpeg-data
-        python -m pip install pytest coverage pytest-cov
+        python -m pip install .
 
     - name: Run pytest with no plugins
       run: |
@@ -42,9 +40,7 @@ jobs:
 
     - name: Rerun pytest with -lj plugin
       run: |
-
         pip install git+https://github.com/pydicom/pylibjpeg-libjpeg
-        pip install git+https://github.com/pydicom/pylibjpeg-openjpeg
         pytest --cov=pylibjpeg --cov-append
 
     - name: Rerun pytest with -oj plugin
@@ -53,15 +49,17 @@ jobs:
         pip install git+https://github.com/pydicom/pylibjpeg-openjpeg
         pytest --cov=pylibjpeg --cov-append
 
-    - name: Rerun pytest with -oj and -lj plugins
+    - name: Rerun pytest with -rle plugin
       run: |
-        pip install git+https://github.com/pydicom/pylibjpeg-libjpeg
+        pip uninstall -y pylibjpeg-libjpeg pylibjpeg-openjpeg
+        pip install git+https://github.com/pydicom/pylibjpeg-rle
+        pytest --cov=pylibjpeg --cov-append
+
+    - name: Rerun pytest with all plugins
+      run: |
+        pip install .[all]
         pytest --cov=pylibjpeg --cov-append
 
     - name: Send coverage results
-      if: ${{ success() }}
-      run: |
-        bash <(curl --connect-timeout 10 --retry 10 --retry-max-time \
-        0 https://codecov.io/bash) || (sleep 30 && bash <(curl \
-        --connect-timeout 10 --retry 10 --retry-max-time \
-        0 https://codecov.io/bash))
+      if: ${{ success() && matrix.coverage == 'coverage' }}
+      uses: codecov/codecov-action@v1

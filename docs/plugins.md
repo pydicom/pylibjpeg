@@ -24,19 +24,43 @@ setup(
 
 #### Decoder function signature
 
-The pixel data decoding function will be passed two required parameters:
+The pixel data decoding function will be passed one required parameter:
 
 * *src*: a single encoded image frame as [bytes](https://docs.python.org/3/library/stdtypes.html#bytes)
+
+And at least one of:
 * *ds*: a *pydicom* [Dataset](https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataset.Dataset.html) object containing the (0028,eeee) elements corresponding to the pixel data
+* *kwargs*: a dict with at least the following keys:
+    * `"transfer_syntax_uid": pydicom.uid.UID` - the *Transfer Syntax UID* of
+      the encoded data.
+    * `'rows': int` - the number of rows of pixels in the *src*.
+    * `'columns': int` -  the number of columns of pixels in the
+      *src*.
+    * `'samples_per_pixel': int` - the number of samples used per
+      pixel, e.g. `1` for grayscale images or `3` for RGB.
+    * `'bits_allocated': int` - the number of bits used to contain
+      each pixel in *src*, should be 8, 16, 32 or 64.
+    * `'bits_stored': int` - the number of bits actually used by
+      each pixel in *src*.
+    * `'bits_stored': int` - the number of bits actually used by
+      each pixel in *src*, e.g. 12-bit pixel data (range 0 to 4095) will be
+      contained by 16-bits (range 0 to 65535).
+    * `'pixel_representation': int` - the type of data in *src*,
+      `0` for unsigned integers, `1` for 2's complement (signed)
+      integers.
+    * `'photometric_interpretation': str` - the color space
+      of the encoded data, such as `'YBR_FULL'`.
+
+Other decoder-specific optional keyword parameters may also be present.
 
 The function should return the decoded pixel data as a one-dimensional numpy [ndarray](https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html) of little-endian ordered `'uint8'`, with the data ordered from left-to-right, top-to-bottom (i.e. the first byte corresponds to the upper left pixel and the last byte corresponds to the lower-right pixel) and a planar configuration that matches
 the requirements of the transfer syntax:
 
 ```python
 def my_pixel_data_decoder(
-    src: bytes, ds: pydicom.dataset.Dataset, **kwargs
+    src: bytes, ds: Optional[pydicom.dataset.Dataset] = None, **kwargs: Any
 ) -> numpy.ndarray:
-    """Return the encoded `src` as an unshaped numpy ndarray of uint8.
+    """Return the encoded *src* as an unshaped numpy ndarray of uint8.
 
     .. versionchanged:: 1.3
 
@@ -46,11 +70,27 @@ def my_pixel_data_decoder(
     ----------
     src : bytes
         A single frame of the encoded *Pixel Data*.
-    ds : pydicom.dataset.Dataset
+    ds : pydicom.dataset.Dataset, optional
         A dataset containing the group ``0x0028`` elements corresponding to
-        the *Pixel Data*.
-    kwargs
-        Optional keyword parameters for the decoder.
+        the *Pixel Data*. If not used then *kwargs* must be supplied.
+    kwargs : Dict[str, Any]
+        A dict containing relevant image pixel module elements:
+
+        * "rows": int - the number of rows of pixels in *src*, maximum 65535.
+        * "columns": int - the number of columns of pixels in *src*, maximum
+          65535.
+        * "number_of_frames": int - the number of frames in *src*.
+        * "samples_per_pixel": int - the number of samples per pixel in *src*,
+          should be 1 or 3.
+        * "bits_allocated": int - the number of bits used to contain each
+          pixel, should be a multiple of 8.
+        * "bits_stored": int - the number of bits actually used per pixel.
+        * "pixel_representation": int - the type of data being decoded, 0 for
+          unsigned, 1 for 2's complement (signed)
+        * "photometric_interpretation": the color space of the *encoded* pixel
+          data, such as "YBR_FULL".
+
+        And optional keyword parameters for the decoder.
 
     Returns
     -------

@@ -5,7 +5,7 @@
 
 ## pylibjpeg
 
-A Python 3.6+ framework for decoding JPEG images and decoding/encoding RLE datasets, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
+A Python 3.7+ framework for decoding JPEG images and decoding/encoding RLE datasets, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
 
 
 ### Installation
@@ -17,10 +17,16 @@ pip install pylibjpeg
 
 ##### Installing extra requirements
 
-The package can be installed with extra requirements `openjpeg` or `rle` to enable support for JPEG-2000 and Run-Length Encoding (RLE), respectively:
+The package can be installed with extra requirements to enable support for JPEG (with `libjpeg`), JPEG 2000 (with `openjpeg`) and Run-Length Encoding (RLE) (with `rle`), respectively:
 
 ```
-pip install pylibjpeg[openjpeg,rle]
+pip install pylibjpeg[libjpeg,openjpeg,rle]
+```
+
+Or alternatively with just `all`:
+
+```
+pip install pylibjpeg[all]
 ```
 
 #### Installing the development version
