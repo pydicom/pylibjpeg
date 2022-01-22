@@ -1,4 +1,3 @@
-
 import logging
 import os
 from pkg_resources import iter_entry_points
@@ -41,7 +40,7 @@ def decode(data, decoder=None, kwargs=None):
         raise RuntimeError("No decoders are available")
 
     if isinstance(data, (str, os.PathLike)):
-        with open(str(data), 'rb') as f:
+        with open(str(data), "rb") as f:
             data = f.read()
     elif isinstance(data, bytes):
         pass
@@ -92,20 +91,20 @@ def get_decoders(decoder_type=None):
         A dict of ``{'package_name': <decoder function>}``.
     """
     entry_points = {
-        "JPEG" : "pylibjpeg.jpeg_decoders",
-        "JPEG XT" : "pylibjpeg.jpeg_xt_decoders",
-        "JPEG-LS" : "pylibjpeg.jpeg_ls_decoders",
-        "JPEG 2000" : "pylibjpeg.jpeg_2000_decoders",
-        "JPEG XR" : "pylibjpeg.jpeg_xr_decoders",
-        "JPEG XS" : "pylibjpeg.jpeg_xs_decoders",
-        "JPEG XL" : "pylibjpeg.jpeg_xl_decoders",
+        "JPEG": "pylibjpeg.jpeg_decoders",
+        "JPEG XT": "pylibjpeg.jpeg_xt_decoders",
+        "JPEG-LS": "pylibjpeg.jpeg_ls_decoders",
+        "JPEG 2000": "pylibjpeg.jpeg_2000_decoders",
+        "JPEG XR": "pylibjpeg.jpeg_xr_decoders",
+        "JPEG XS": "pylibjpeg.jpeg_xs_decoders",
+        "JPEG XL": "pylibjpeg.jpeg_xl_decoders",
     }
     if decoder_type is None:
         decoders = {}
         for entry_point in entry_points.values():
-            decoders.update({
-                val.name: val.load() for val in iter_entry_points(entry_point)
-            })
+            decoders.update(
+                {val.name: val.load() for val in iter_entry_points(entry_point)}
+            )
         return decoders
 
     try:
@@ -121,7 +120,7 @@ def get_pixel_data_decoders():
     """Return a :class:`dict` of ``{UID: callable}``."""
     return {
         val.name: val.load()
-        for val in iter_entry_points('pylibjpeg.pixel_data_decoders')
+        for val in iter_entry_points("pylibjpeg.pixel_data_decoders")
     }
 
 
@@ -200,20 +199,20 @@ def get_encoders(encoder_type=None):
         A dict of ``{'package_name': <encoder function>}``.
     """
     entry_points = {
-        "JPEG" : "pylibjpeg.jpeg_encoders",
-        "JPEG XT" : "pylibjpeg.jpeg_xt_encoders",
-        "JPEG-LS" : "pylibjpeg.jpeg_ls_encoders",
-        "JPEG 2000" : "pylibjpeg.jpeg_2000_encoders",
-        "JPEG XR" : "pylibjpeg.jpeg_xr_encoders",
-        "JPEG XS" : "pylibjpeg.jpeg_xs_encoders",
-        "JPEG XL" : "pylibjpeg.jpeg_xl_encoders",
+        "JPEG": "pylibjpeg.jpeg_encoders",
+        "JPEG XT": "pylibjpeg.jpeg_xt_encoders",
+        "JPEG-LS": "pylibjpeg.jpeg_ls_encoders",
+        "JPEG 2000": "pylibjpeg.jpeg_2000_encoders",
+        "JPEG XR": "pylibjpeg.jpeg_xr_encoders",
+        "JPEG XS": "pylibjpeg.jpeg_xs_encoders",
+        "JPEG XL": "pylibjpeg.jpeg_xl_encoders",
     }
     if encoder_type is None:
         encoders = {}
         for entry_point in entry_points.values():
-            encoders.update({
-                val.name: val.load() for val in iter_entry_points(entry_point)
-            })
+            encoders.update(
+                {val.name: val.load() for val in iter_entry_points(entry_point)}
+            )
         return encoders
 
     try:
@@ -232,5 +231,5 @@ def get_pixel_data_encoders():
     """
     return {
         val.name: val.load()
-        for val in iter_entry_points('pylibjpeg.pixel_data_encoders')
+        for val in iter_entry_points("pylibjpeg.pixel_data_encoders")
     }

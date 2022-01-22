@@ -77,9 +77,9 @@ def APP(fp):
         * ``Lp`` : application data segment length
         * ``Ap`` : application data
     """
-    length = unpack('>H', fp.read(2))[0]
+    length = unpack(">H", fp.read(2))[0]
 
-    return {'Lp' : length, 'Ap' : fp.read(length - 2)}
+    return {"Lp": length, "Ap": fp.read(length - 2)}
 
 
 def COM(fp):
@@ -104,10 +104,10 @@ def COM(fp):
         * ``Lc`` : comment data segment length
         * ``Cm`` : comment bytes
     """
-    length = unpack('>H', fp.read(2))[0]
-    comment = unpack('{}s'.format(length - 2), fp.read(length - 2))[0]
+    length = unpack(">H", fp.read(2))[0]
+    comment = unpack("{}s".format(length - 2), fp.read(length - 2))[0]
 
-    return {'Lc' : length, 'Cm' : comment}
+    return {"Lc": length, "Cm": comment}
 
 
 def DAC(fp):
@@ -134,19 +134,19 @@ def DAC(fp):
         * ``Tb`` : arithmetic coding conditioning table destination identifier
         * ``Cs`` : conditioning table value
     """
-    length = unpack('>H', fp.read(2))[0]
+    length = unpack(">H", fp.read(2))[0]
     bytes_to_read = length - 2
 
     tc, tb, cs = [], [], []
     while bytes_to_read > 0:
         _tc, _tb = split_byte(fp.read(1))
-        cs.append(unpack('>B', fp.read(1))[0])
+        cs.append(unpack(">B", fp.read(1))[0])
         tc.append(_tc)
         tb.append(_tb)
 
         bytes_to_read -= 2
 
-    return {'La' : length, 'Tc' : tc, 'Tb' : tb, 'Cs' : cs}
+    return {"La": length, "Tc": tc, "Tb": tb, "Cs": cs}
 
 
 def DHT(fp):
@@ -177,7 +177,7 @@ def DHT(fp):
         * ``Vij`` : value associated with each Huffman code of length *i*,
           equivalent to *HUFFVAL*
     """
-    length = unpack('>H', fp.read(2))[0]
+    length = unpack(">H", fp.read(2))[0]
     bytes_to_read = length - 2
 
     tc, th, li = [], [], []
@@ -190,7 +190,7 @@ def DHT(fp):
         bytes_to_read -= 1
 
         # li (BITS) is the number of codes for each code length, from 1 to 16
-        _li = unpack('>16B', fp.read(16))
+        _li = unpack(">16B", fp.read(16))
         bytes_to_read -= 16
 
         # vij is a list of the 8-bit symbols values (HUFFVAL), each of which
@@ -199,13 +199,13 @@ def DHT(fp):
         for ii in range(16):
             nr = _li[ii]
             if nr:
-                _vij[ii + 1] = unpack('>{}B'.format(nr), fp.read(nr))
+                _vij[ii + 1] = unpack(">{}B".format(nr), fp.read(nr))
                 bytes_to_read -= nr
 
         li.append(_li)
         vij[(_tc, _th)] = _vij
 
-    return {'Lh' : length, 'Tc' : tc, 'Th' : th, 'Li' : li, 'Vij' : vij}
+    return {"Lh": length, "Tc": tc, "Th": th, "Li": li, "Vij": vij}
 
 
 def DNL(fp):
@@ -230,10 +230,10 @@ def DNL(fp):
         * ``Ld`` : DNL segment length
         * ``NL`` : number of lines in the frame
     """
-    length = unpack('>H', fp.read(2))[0]
-    nr_lines = unpack('>H', fp.read(2))[0]
+    length = unpack(">H", fp.read(2))[0]
+    nr_lines = unpack(">H", fp.read(2))[0]
 
-    return {'Ld' : length, 'NL' : nr_lines}
+    return {"Ld": length, "NL": nr_lines}
 
 
 def DQT(fp):
@@ -261,7 +261,7 @@ def DQT(fp):
         * ``Qk`` : quantization table element
     """
     # length is 2 + sum(t=1, N) of (65 + 64 * Pq(t))
-    length = unpack('>H', fp.read(2))[0]
+    length = unpack(">H", fp.read(2))[0]
     bytes_to_read = length - 2
 
     pq, tq, qk = [], [], []
@@ -280,15 +280,15 @@ def DQT(fp):
         Q_k = []
         for ii in range(64):
             if precision == 0:
-                Q_k.append(unpack('>B', fp.read(1))[0])
+                Q_k.append(unpack(">B", fp.read(1))[0])
                 bytes_to_read -= 1
             elif precision == 1:
-                Q_k.append(unpack('>H', fp.read(2))[0])
+                Q_k.append(unpack(">H", fp.read(2))[0])
                 bytes_to_read -= 2
 
         qk.append(Q_k)
 
-    return {'Lq' : length, 'Pq' : pq, 'Tq' : tq, 'Qk' : qk}
+    return {"Lq": length, "Pq": pq, "Tq": tq, "Qk": qk}
 
 
 def DRI(fp):
@@ -313,10 +313,7 @@ def DRI(fp):
         * ``Lr`` : DRI segment length
         * ``Ri`` : restart interval (number of MCU in the restart interval)
     """
-    return {
-        'Lr' : unpack('>H', fp.read(2))[0],
-        'Ri' : unpack('>H', fp.read(2))[0]
-    }
+    return {"Lr": unpack(">H", fp.read(2))[0], "Ri": unpack(">H", fp.read(2))[0]}
 
 
 def EXP(fp):
@@ -342,10 +339,10 @@ def EXP(fp):
         * ``Eh`` : expand horizontally
         * ``Ev`` : expand vertically
     """
-    length = unpack('>H', fp.read(2))[0]
-    eh, ev = split_byte(unpack('>B', fp.read(1))[0])
+    length = unpack(">H", fp.read(2))[0]
+    eh, ev = split_byte(unpack(">B", fp.read(1))[0])
 
-    return {'Le' : length, 'Eh' : eh, 'Ev' : ev}
+    return {"Le": length, "Eh": eh, "Ev": ev}
 
 
 def SOF(fp):
@@ -377,37 +374,35 @@ def SOF(fp):
         * ``Vi`` : vertical sampling factor
         * ``Tqi`` : quantization table destination selector
     """
-    (length,
-     precision,
-     nr_lines,
-     samples_per_line,
-     nr_components) = unpack('>HBHHB', fp.read(8))
+    (length, precision, nr_lines, samples_per_line, nr_components) = unpack(
+        ">HBHHB", fp.read(8)
+    )
 
     component_id = {}
-    #horizontal_sampling_factor = []
-    #vertical_sampling_factor = []
-    #quantisation_selector = []
+    # horizontal_sampling_factor = []
+    # vertical_sampling_factor = []
+    # quantisation_selector = []
     for ii in range(nr_components):
-        _ci = unpack('>B', fp.read(1))[0]
+        _ci = unpack(">B", fp.read(1))[0]
         _hor, _vert = split_byte(fp.read(1))
-        #horizontal_sampling_factor.append(_hor)
-        #vertical_sampling_factor.append(_vert)
-        _tqi = unpack('>B', fp.read(1))[0]
-        #quantisation_selector.append(_tqi)
+        # horizontal_sampling_factor.append(_hor)
+        # vertical_sampling_factor.append(_vert)
+        _tqi = unpack(">B", fp.read(1))[0]
+        # quantisation_selector.append(_tqi)
 
         component_id[_ci] = {
-            'Hi' : _hor,
-            'Vi' : _vert,
-            'Tqi' : _tqi,
+            "Hi": _hor,
+            "Vi": _vert,
+            "Tqi": _tqi,
         }
 
     return {
-        'Lf' : length,
-        'P' : precision,
-        'Y' : nr_lines,
-        'X' : samples_per_line,
-        'Nf' : nr_components,
-        'Ci' : component_id,
+        "Lf": length,
+        "P": precision,
+        "Y": nr_lines,
+        "X": samples_per_line,
+        "Nf": nr_components,
+        "Ci": component_id,
     }
 
 
@@ -446,30 +441,29 @@ def SOS(fp):
           Shall be set to 0 for sequential DCT. In lossless mode specifies
           the point transform Pt.
     """
-    (length, nr_components) = unpack('>HB', fp.read(3))
+    (length, nr_components) = unpack(">HB", fp.read(3))
 
     csj, tdj, taj, tmj = [], [], [], []
     for ii in range(nr_components):
-        _cs = unpack('>B', fp.read(1))[0]
+        _cs = unpack(">B", fp.read(1))[0]
         csj.append(_cs)
         _td, _ta = split_byte(fp.read(1))
         tdj.append(_td)
         taj.append(_ta)
 
-
-    (ss, se) = unpack('>BB', fp.read(2))
+    (ss, se) = unpack(">BB", fp.read(2))
     ah, al = split_byte(fp.read(1))
 
     return {
-        'Ls' : length,
-        'Ns' : nr_components,
-        'Csj' : csj,
-        'Tdj' : tdj,
-        'Taj' : taj,
-        'Ss' : ss,
-        'Se' : se,
-        'Ah' : ah,
-        'Al' : al,
+        "Ls": length,
+        "Ns": nr_components,
+        "Csj": csj,
+        "Tdj": tdj,
+        "Taj": taj,
+        "Ss": ss,
+        "Se": se,
+        "Ah": ah,
+        "Al": al,
     }
 
 
@@ -487,5 +481,5 @@ def skip(fp):
         A file-like positioned at the start of the length byte for the current
         marker segment.
     """
-    length = unpack('>H', fp.read(2))[0]
+    length = unpack(">H", fp.read(2))[0]
     fp.seek(length - 2, 1)

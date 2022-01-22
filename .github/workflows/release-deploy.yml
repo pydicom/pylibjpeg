@@ -1,4 +1,4 @@
-name: Build package and deploy to PyPI
+name: release-deploy
 
 on:
   release:
