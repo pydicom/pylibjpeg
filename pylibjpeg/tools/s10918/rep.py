@@ -1,5 +1,3 @@
-
-
 from ._printers import PRINTERS
 
 
@@ -52,6 +50,7 @@ class JPEG(object):
     29: Lossless, arithmetic, 2 to 16-bit
 
     """
+
     def __init__(self, meta):
         """Initialise a new JPEG.
 
@@ -65,9 +64,9 @@ class JPEG(object):
     @property
     def columns(self):
         """Return the number of columns in the image as an int."""
-        keys = self.get_keys('SOF')
+        keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]['X']
+            return self.info[keys[0]][2]["X"]
 
         raise ValueError(
             "Unable to get the number of columns in the image as no SOFn "
@@ -91,13 +90,13 @@ class JPEG(object):
 
         if self.is_process1:
             decoder = decode_baseline
-        #elif self.is_process2:
+        # elif self.is_process2:
         #    decoder = decode_extended_8
-        #elif self.is_process4:
+        # elif self.is_process4:
         #    decoder = decode_extended_12
-        #elif self.is_process14:
+        # elif self.is_process14:
         #    decoder = decode_lossless
-        #elif self.is_process14_sv1:
+        # elif self.is_process14_sv1:
         #    decoder = decode_lossless
 
         try:
@@ -129,7 +128,7 @@ class JPEG(object):
         Hierarchical baseline processes are:
             16, 17, 20, 21, 24, 25.
         """
-        return 'SOF0' in self.markers
+        return "SOF0" in self.markers
 
     @property
     def is_extended(self):
@@ -148,7 +147,7 @@ class JPEG(object):
         Hierarchical extended processes are:
             16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27
         """
-        extended_markers = ('SOF1', 'SOF9', 'SOF5', 'SOF13')
+        extended_markers = ("SOF1", "SOF9", "SOF5", "SOF13")
         if [mm for mm in extended_markers if mm in self.markers]:
             return True
 
@@ -164,7 +163,7 @@ class JPEG(object):
         * Decoders shall process scans with 1, 2, 3 and 4 components
         * Interleaved and non-interleaved scans
         """
-        return 'DHP' in self.markers
+        return "DHP" in self.markers
 
     @property
     def is_lossless(self):
@@ -183,7 +182,7 @@ class JPEG(object):
         Hierarchical lossless processes are:
             28, 29
         """
-        lossless_markers = ('SOF3', 'SOF11') #, 'SOF7', 'SOF15')
+        lossless_markers = ("SOF3", "SOF11")  # , 'SOF7', 'SOF15')
         if [mm for mm in lossless_markers if mm in self.markers]:
             return True
 
@@ -230,7 +229,7 @@ class JPEG(object):
     @property
     def is_process14(self):
         """Return True if the JPEG is Process 14, False otherwise."""
-        if 'SOF3' not in self.markers:
+        if "SOF3" not in self.markers:
             return False
 
         if not self.is_hierarchical and self.is_lossless:
@@ -249,7 +248,7 @@ class JPEG(object):
             True if JPEG is process 14, first-order prediction, selection
             value 1, False otherwise.
         """
-        if 'SOF3' not in self.markers:
+        if "SOF3" not in self.markers:
             return False
 
         if self.is_hierarchical or not self.is_lossless:
@@ -281,9 +280,9 @@ class JPEG(object):
     @property
     def precision(self):
         """Return the precision of the sample as an int."""
-        keys = self.get_keys('SOF')
+        keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]['P']
+            return self.info[keys[0]][2]["P"]
 
         raise ValueError(
             "Unable to get the sample precision of the image as no SOFn "
@@ -348,9 +347,9 @@ class JPEG(object):
     @property
     def rows(self):
         """Return the number of rows in the image as an int."""
-        keys = self.get_keys('SOF')
+        keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]['Y']
+            return self.info[keys[0]][2]["Y"]
 
         raise ValueError(
             "Unable to get the number of rows in the image as no SOFn "
@@ -360,9 +359,9 @@ class JPEG(object):
     @property
     def samples(self):
         """Return the number of components in the JPEG as an int."""
-        keys = self.get_keys('SOF')
+        keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]['Nf']
+            return self.info[keys[0]][2]["Nf"]
 
         raise ValueError(
             "Unable to get the number of components in the image as no SOFn "
@@ -387,12 +386,10 @@ class JPEG(object):
             If the JPEG is not lossless.
         """
         if not self.is_lossless:
-            raise ValueError(
-                "Selection value is only available for lossless JPEG"
-            )
+            raise ValueError("Selection value is only available for lossless JPEG")
 
-        sos_markers = [mm for mm in self._keys if 'SOS' in mm]
-        return self.info[sos_markers[0]][2]['Ss']
+        sos_markers = [mm for mm in self._keys if "SOS" in mm]
+        return self.info[sos_markers[0]][2]["Ss"]
 
     def __str__(self):
         """"""
@@ -402,7 +399,7 @@ class JPEG(object):
             printer = PRINTERS[marker[:3]]
             ss.append(printer(marker, offset, info))
 
-        return '\n'.join(ss)
+        return "\n".join(ss)
 
     @property
     def uid(self):

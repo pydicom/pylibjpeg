@@ -30,9 +30,7 @@ def generate_frames(ds):
     try:
         import pydicom
     except ImportError:
-        raise RuntimeError(
-            "'generate_frames' requires the pydicom package"
-        )
+        raise RuntimeError("'generate_frames' requires the pydicom package")
 
     from pydicom.encaps import generate_pixel_data_frame
     from pydicom.pixel_data_handlers.util import pixel_dtype
@@ -41,7 +39,7 @@ def generate_frames(ds):
     decode = decoders[ds.file_meta.TransferSyntaxUID]
 
     p_interp = ds.PhotometricInterpretation
-    nr_frames = getattr(ds, 'NumberOfFrames', 1)
+    nr_frames = getattr(ds, "NumberOfFrames", 1)
     for frame in generate_pixel_data_frame(ds.PixelData, nr_frames):
         arr = decode(frame, ds.group_dataset(0x0028)).view(pixel_dtype(ds))
         yield reshape_frame(ds, arr)
@@ -121,16 +119,16 @@ def reshape_frame(ds, arr):
     """
     # Transfer Syntax UIDs that are always Planar Configuration 0
     conf_zero = [
-        '1.2.840.10008.1.2.4.50',
-        '1.2.840.10008.1.2.4.57',
-        '1.2.840.10008.1.2.4.70',
-        '1.2.840.10008.1.2.4.90',
-        '1.2.840.10008.1.2.4.91'
+        "1.2.840.10008.1.2.4.50",
+        "1.2.840.10008.1.2.4.57",
+        "1.2.840.10008.1.2.4.70",
+        "1.2.840.10008.1.2.4.90",
+        "1.2.840.10008.1.2.4.91",
     ]
     # Transfer Syntax UIDs that are always Planar Configuration 1
     conf_one = [
-        '1.2.840.10008.1.2.4.80',
-        '1.2.840.10008.1.2.4.81',
+        "1.2.840.10008.1.2.4.80",
+        "1.2.840.10008.1.2.4.81",
     ]
 
     # Valid values for Planar Configuration are dependent on transfer syntax
@@ -147,8 +145,9 @@ def reshape_frame(ds, arr):
         if planar_configuration not in [0, 1]:
             raise ValueError(
                 "Unable to reshape the pixel array as a value of {} for "
-                "(0028,0006) 'Planar Configuration' is invalid."
-                .format(planar_configuration)
+                "(0028,0006) 'Planar Configuration' is invalid.".format(
+                    planar_configuration
+                )
             )
 
     if nr_samples == 1:
@@ -187,22 +186,22 @@ def get_j2k_parameters(codestream):
     """
     try:
         # First 2 bytes must be the SOC marker - if not then wrong format
-        if codestream[0:2] != b'\xff\x4f':
+        if codestream[0:2] != b"\xff\x4f":
             return {}
 
         # SIZ is required to be the second marker - Figure A-3 in 15444-1
-        if codestream[2:4] != b'\xff\x51':
+        if codestream[2:4] != b"\xff\x51":
             return {}
 
         # See 15444-1 A.5.1 for format of the SIZ box and contents
         ssiz = ord(codestream[42:43])
         parameters = {}
         if ssiz & 0x80:
-            parameters['precision'] = (ssiz & 0x7F) + 1
-            parameters['is_signed'] = True
+            parameters["precision"] = (ssiz & 0x7F) + 1
+            parameters["is_signed"] = True
         else:
-            parameters['precision'] = ssiz + 1
-            parameters['is_signed'] = False
+            parameters["precision"] = ssiz + 1
+            parameters["is_signed"] = False
 
         return parameters
 
