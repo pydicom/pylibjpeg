@@ -1,7 +1,7 @@
 """Utility functions."""
 
 
-def get_bit(byte, index):
+def get_bit(byte: bytes, index: int) -> int:
     """Return the value of the bit at `index` of `byte`.
 
     Parameters
@@ -17,14 +17,14 @@ def get_bit(byte, index):
     int
         The value of the bit (0 or 1).
     """
-    byte = ord(byte[:1])
+    value = ord(byte[:1])
     if not (-1 < index < 8):
         raise ValueError("'index' must be between 0 and 7, inclusive")
 
-    return (byte >> (7 - index)) & 1
+    return (value >> (7 - index)) & 1
 
 
-def split_byte(byte):
+def split_byte(byte: bytes) -> tuple[int, int]:
     """Return the 8-bit `byte` as two 4-bit unsigned integers.
 
     Parameters
@@ -39,5 +39,5 @@ def split_byte(byte):
         The (4 most significant, 4 least significant) bits of `byte` as ``(int,
         int)``.
     """
-    byte = ord(byte[:1])
-    return byte >> 4, 0b00001111 & byte
+    value = ord(byte[:1])
+    return value >> 4, 0b00001111 & value

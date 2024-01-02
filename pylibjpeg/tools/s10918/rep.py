@@ -1,7 +1,9 @@
+from typing import Any, cast
+
 from ._printers import PRINTERS
 
 
-class JPEG(object):
+class JPEG:
     """A representation of an ISO/IEC 10918-1 JPEG file.
 
     **Non-hierarchical**
@@ -51,7 +53,7 @@ class JPEG(object):
 
     """
 
-    def __init__(self, meta):
+    def __init__(self, meta: dict[tuple[str, int], Any]) -> None:
         """Initialise a new JPEG.
 
         Parameters
@@ -62,57 +64,23 @@ class JPEG(object):
         self.info = meta
 
     @property
-    def columns(self):
+    def columns(self) -> int:
         """Return the number of columns in the image as an int."""
         keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]["X"]
+            return cast(int, self.info[keys[0]][2]["X"])
 
         raise ValueError(
             "Unable to get the number of columns in the image as no SOFn "
             "marker was found"
         )
 
-    def _decode(self):
-        """Decode the JPEG image data in place.
-
-        Raises
-        ------
-        NotImplementedError
-            If the JPEG image data is of a type for which decoding is not
-            supported.
-        """
-        if not self.is_decodable:
-            raise NotImplementedError(
-                "Unable to decode the JPEG image data as it's of a type "
-                "for which decoding is not supported"
-            )
-
-        if self.is_process1:
-            decoder = decode_baseline
-        # elif self.is_process2:
-        #    decoder = decode_extended_8
-        # elif self.is_process4:
-        #    decoder = decode_extended_12
-        # elif self.is_process14:
-        #    decoder = decode_lossless
-        # elif self.is_process14_sv1:
-        #    decoder = decode_lossless
-
-        try:
-            self._array = decoder(self)
-            self._array_id = id(self._array)
-        except Exception as exc:
-            self._array = None
-            self._array_id = None
-            raise exc
-
-    def get_keys(self, name):
+    def get_keys(self, name: str) -> list[Any]:
         """Return a list of keys with marker containing `name`."""
         return [mm for mm in self._keys if name in mm[0]]
 
     @property
-    def is_baseline(self):
+    def is_baseline(self) -> bool:
         """Return True if the JPEG is baseline, False otherwise.
 
         Baseline process
@@ -131,7 +99,7 @@ class JPEG(object):
         return "SOF0" in self.markers
 
     @property
-    def is_extended(self):
+    def is_extended(self) -> bool:
         """Return True if the JPEG is extended, False otherwise.
 
         Extended DCT-based processess
@@ -154,7 +122,7 @@ class JPEG(object):
         return False
 
     @property
-    def is_hierarchical(self):
+    def is_hierarchical(self) -> bool:
         """Return True if the JPEG is hierarchical, False otherwise.
 
         Hierarchical processess
@@ -166,7 +134,7 @@ class JPEG(object):
         return "DHP" in self.markers
 
     @property
-    def is_lossless(self):
+    def is_lossless(self) -> bool:
         """Return True if the JPEG is lossless, False otherwise.
 
         Lossless processess
@@ -188,101 +156,26 @@ class JPEG(object):
 
         return False
 
-    # TODO: Remove
     @property
-    def is_process1(self):
-        """Return True if the JPEG is Process 1, False otherwise."""
-        if not self.is_hierarchical and self.is_baseline:
-            return True
-
-        return False
-
-    # TODO: Remove
-    @property
-    def is_process2(self):
-        """Return True if the JPEG is Process 2, False otherwise."""
-        try:
-            precision = self.precision
-        except ValueError:
-            return False
-
-        if not self.is_hierarchical and self.is_extended and precision == 8:
-            return True
-
-        return False
-
-    # TODO: Remove
-    @property
-    def is_process4(self):
-        """Return True if the JPEG is Process 4, False otherwise."""
-        try:
-            precision = self.precision
-        except ValueError:
-            return False
-
-        if not self.is_hierarchical and self.is_extended and precision == 12:
-            return True
-
-        return False
-
-    # TODO: Remove
-    @property
-    def is_process14(self):
-        """Return True if the JPEG is Process 14, False otherwise."""
-        if "SOF3" not in self.markers:
-            return False
-
-        if not self.is_hierarchical and self.is_lossless:
-            return True
-
-        raise False
-
-    # TODO: Remove
-    @property
-    def is_process14_sv1(self):
-        """Return True if the JPEG is Process 14 SV1, False otherwise.
-
-        Returns
-        -------
-        bool
-            True if JPEG is process 14, first-order prediction, selection
-            value 1, False otherwise.
-        """
-        if "SOF3" not in self.markers:
-            return False
-
-        if self.is_hierarchical or not self.is_lossless:
-            return False
-
-        if self.selection_value == 1:
-            return True
-
-        return False
-
-    @property
-    def is_sequential(self):
+    def is_sequential(self) -> bool:
         return not self.is_hierarchical
 
     @property
-    def is_spectral(self):
-        pass
-
-    @property
-    def _keys(self):
+    def _keys(self) -> list[tuple[str, int]]:
         """Return a list of the info keys, ordered by offset."""
         return sorted(self.info.keys(), key=lambda x: x[1])
 
     @property
-    def markers(self):
+    def markers(self) -> list[str]:
         """Return a list of the found JPEG markers, ordered by offset."""
         return [mm[0] for mm in self._keys]
 
     @property
-    def precision(self):
+    def precision(self) -> int:
         """Return the precision of the sample as an int."""
         keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]["P"]
+            return cast(int, self.info[keys[0]][2]["P"])
 
         raise ValueError(
             "Unable to get the sample precision of the image as no SOFn "
@@ -290,66 +183,11 @@ class JPEG(object):
         )
 
     @property
-    def process(self):
-        """Return the process number as :class:`int`."""
-        prec = self.precision
-        process = None
-
-        if self.is_baseline:
-            # Baseline sequential DCT, 8-bit
-            return 1
-
-        if self.is_extended:
-            # Extended sequential DCT
-            if self.is_huffman and prec == 8:
-                process = 2
-            elif self.is_arithmetic and prec == 8:
-                process = 3
-            elif self.is_huffman and prec == 12:
-                process = 4
-            elif self.is_arithmetic and prec == 12:
-                process = 5
-        elif self.is_spectral:
-            # Spectral selection only
-            if self.is_huffman and prec == 8:
-                process = 6
-            elif self.is_arithmetic and prec == 8:
-                process = 7
-            elif self.is_huffman and prec == 12:
-                process = 8
-            elif self.is_arithmetic and prec == 12:
-                process = 9
-        elif self.full_progression:
-            # Full progression
-            if self.is_huffman and prec == 8:
-                process = 10
-            elif self.is_arithmetic and prec == 8:
-                process = 11
-            elif self.is_huffman and prec == 12:
-                process = 12
-            elif self.is_arithmetic and prec == 12:
-                process = 13
-        elif self.is_lossless:
-            # Lossless
-            if self.is_huffman and 2 <= prec <= 16:
-                process = 14
-            elif self.is_arithmetic and 2 <= prec <= 16:
-                process = 15
-
-        if process is None:
-            raise ValueError("Unable to determine the JPEG process")
-
-        if self.is_sequential:
-            return process
-        elif self.is_hierarchical:
-            return process + 14
-
-    @property
-    def rows(self):
+    def rows(self) -> int:
         """Return the number of rows in the image as an int."""
         keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]["Y"]
+            return cast(int, self.info[keys[0]][2]["Y"])
 
         raise ValueError(
             "Unable to get the number of rows in the image as no SOFn "
@@ -357,11 +195,11 @@ class JPEG(object):
         )
 
     @property
-    def samples(self):
+    def samples(self) -> int:
         """Return the number of components in the JPEG as an int."""
         keys = self.get_keys("SOF")
         if keys:
-            return self.info[keys[0]][2]["Nf"]
+            return cast(int, self.info[keys[0]][2]["Nf"])
 
         raise ValueError(
             "Unable to get the number of components in the image as no SOFn "
@@ -369,7 +207,7 @@ class JPEG(object):
         )
 
     @property
-    def selection_value(self):
+    def selection_value(self) -> int:
         """Return the JPEG lossless selection value.
 
         Returns
@@ -389,9 +227,9 @@ class JPEG(object):
             raise ValueError("Selection value is only available for lossless JPEG")
 
         sos_markers = [mm for mm in self._keys if "SOS" in mm]
-        return self.info[sos_markers[0]][2]["Ss"]
+        return cast(int, self.info[sos_markers[0]][2]["Ss"])
 
-    def __str__(self):
+    def __str__(self) -> str:
         """"""
         ss = []
         for marker, offset in self.info:
@@ -400,28 +238,3 @@ class JPEG(object):
             ss.append(printer(marker, offset, info))
 
         return "\n".join(ss)
-
-    @property
-    def uid(self):
-        """Return the DICOM UID corresponding to the JPEG.
-
-        Returns
-        -------
-        uid.UID
-            The DICOM transfer syntax UID corresponding to the JPEG.
-
-        Raises
-        ------
-        ValueError
-            If the JPEG doesn't correspond to a DICOM transfer syntax.
-        """
-        if self.is_process1:
-            return JPEGBaseline
-        elif self.is_process2 or self.is_process4:
-            return JPEGExtended
-        elif self.is_process14_sv1:
-            return JPEGLossless
-        elif self.is_process14:
-            return JPEGLosslessP14
-
-        raise ValueError("JPEG doesn't correspond to a DICOM UID")

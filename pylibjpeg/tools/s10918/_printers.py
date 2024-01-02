@@ -18,6 +18,7 @@ The following segments are supported:
 """
 
 from struct import unpack
+from typing import Any, cast
 
 
 ZIGZAG = [
@@ -98,18 +99,14 @@ _COMMON_COMPONENT_IDS = {
 }
 
 
-def _print_app(marker, offset, info):
+def _print_app(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for an APP segment."""
-    _, _, info = info
+    _, _, sub = info
 
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lp"] + 2)
-        )
-    )
+    header = f"{marker} marker at offset {offset}, length {sub['Lp'] + 2}"
+    ss = [f"\n {header:-^63} "]
 
-    app_data = info["Ap"]
+    app_data = cast(bytes, sub["Ap"])
     if app_data[:5] == b"\x4a\x46\x49\x46\x00":
         # JFIF https://en.wikipendia.org/wiki/JPEG_File_Interchange_Format
         version = (app_data[5], app_data[6])
@@ -138,43 +135,40 @@ def _print_app(marker, offset, info):
             ss.append("JFIF v{}.{}, no thumbnail".format(*version))
 
         if thumbnail:
-            data = " ".join(["{:02x}".format(cc) for cc in thumbnail])
+            data = " ".join(f"{cc:02X}" for cc in thumbnail)
             for ii in range(0, len(data), 60):
-                ss.append("  {}".format(data[ii : ii + 60]))
+                ss.append(f"  {data[ii : ii + 60]}")
 
     elif app_data[:6] == b"\x45\x78\x69\x66\x00\x00":
         ss.append("EXIF:")
-        data = " ".join(["{:02x}".format(cc) for cc in app_data[6:]])
+        data = " ".join(f"{cc:02X}" for cc in app_data[6:])
         for ii in range(0, len(data), 60):
-            ss.append("  {}".format(data[ii : ii + 60]))
+            ss.append(f"  {data[ii : ii + 60]}")
     elif app_data[:6] == b"\x41\x64\x6f\x62\x65\x00":
         # Adobe
         ss.append("Adobe v{}:".format(app_data[6]))
-        data = " ".join(["{:02x}".format(cc) for cc in app_data[6:]])
+        data = " ".join(f"{cc:02X}" for cc in app_data[6:])
         for ii in range(0, len(data), 60):
-            ss.append("  {}".format(data[ii : ii + 60]))
+            ss.append(f"  {data[ii : ii + 60]}")
     else:
         # Unknown
         ss.append("Unknown APP data")
-        data = ["{:02x}".format(cc) for cc in app_data]
-        for ii in range(0, len(data), 20):
-            ss.append("  {}".format(" ".join(data[ii : ii + 20])))
+        ldata = [f"{cc:02X}" for cc in app_data]
+        for ii in range(0, len(ldata), 20):
+            ss.append(f"  {' '.join(ldata[ii : ii + 20])}")
 
     return "\n".join(ss)
 
 
-def _print_com(marker, offset, info):
+def _print_com(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a COM segment."""
-    _m, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lc"] + 2)
-        )
-    )
+    _m, fill, sub = info
 
-    comment = "'" + info["Cm"].decode("utf-8") + "'"
-    ss.append("{}".format(comment[:47]))
+    header = f"{marker} marker at offset {offset}, length {sub['Lc'] + 2}"
+    ss = [f"\n {header:-^63} "]
+
+    comment = f"'{sub['Cm'].decode('utf-8')}'"
+    ss.append(f"{comment[:47]}")
     comment = comment[47:]
 
     while True:
@@ -183,101 +177,90 @@ def _print_com(marker, offset, info):
         line = comment[:63]
         comment = comment[63:]
 
-        ss.append("         {}".format(line))
+        ss.append(f"         {line}")
 
     return "\n".join(ss)
 
 
-def _print_dac(marker, offset, info):
+def _print_dac(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a DAC segment."""
-    m_bytes, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["La"] + 2)
-        )
-    )
-    ss.append("Tc={}, Tb={}, Cs={}".format(info["Tc"], info["Tb"], info["Cs"]))
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}, length {sub['La'] + 2}"
+    ss = [f"\n {header:-^63} "]
+    ss.append(f"Tc={sub['Tc']}, Tb={sub['Tb']}, Cs={sub['Cs']}")
 
     return "\n".join(ss)
 
 
-def _print_dhp(marker, offset, info):
+def _print_dhp(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a DHP segment."""
-    m_bytes, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lf"] + 2)
-        )
-    )
+    m_bytes, fill, sub = info
 
-    ss.append("Sample size (px): {} x {}".format(info["X"], info["Y"]))
-    ss.append("Sample precision (bits): {}".format(info["P"]))
-    ss.append("Number of component images: {}".format(info["Nf"]))
+    header = f"{marker} marker at offset {offset}, length {sub['Lf'] + 2}"
+    ss = [f"\n {header:-^63} "]
 
-    for ci, vv in info["Ci"].items():
+    ss.append(f"Sample size (px): {sub['X']} x {sub['Y']}")
+    ss.append(f"Sample precision (bits): {sub['P']}")
+    ss.append(f"Number of component images: {sub['Nf']}")
+
+    for ci, vv in sub["Ci"].items():
         h, v, tqi = vv["Hi"], vv["Vi"], vv["Tqi"]
         try:
             ci = _COMMON_COMPONENT_IDS[ci]
         except KeyError:
             pass
-        ss.append("  Component ID: {}".format(ci))
-        ss.append("    Horizontal sampling factor: {}".format(h))
-        ss.append("    Vertical sampling factor: {}".format(v))
-        ss.append("    Quantization table destination: {}".format(tqi))
+
+        ss.append(f"  Component ID: {ci}")
+        ss.append(f"    Horizontal sampling factor: {h}")
+        ss.append(f"    Vertical sampling factor: {v}")
+        ss.append(f"    Quantization table destination: {tqi}")
 
     return "\n".join(ss)
 
 
-def _print_dht(marker, offset, info):
+def _print_dht(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a DHT segment."""
-    _m, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lh"] + 2)
-        )
-    )
+    m_bytes, fill, sub = info
 
-    for tc, th, li in zip(info["Tc"], info["Th"], info["Li"]):
-        vij = info["Vij"][(tc, th)]
+    header = f"{marker} marker at offset {offset}, length {sub['Lh'] + 2}"
+    ss = [f"\n {header:-^63} "]
+
+    for tc, th, li in zip(sub["Tc"], sub["Th"], sub["Li"]):
+        vij = sub["Vij"][(tc, th)]
         if tc == 0:
-            ss.append("Lossless/DC Huffman, table ID: {}".format(th))
+            ss.append(f"Lossless/DC Huffman, table ID: {th}")
         elif tc == 1:
-            ss.append("AC Huffman, table ID: {}".format(th))
+            ss.append(f"AC Huffman, table ID: {th}")
         else:
             raise NotImplementedError
 
         ss.append("   1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16")
-        nr_values = " ".join(["{:>02x}".format(val) for val in li])
-        ss.append("  {} : # codes".format(nr_values))
+        nr_values = " ".join(f"{val:>02X}" for val in li)
+        ss.append(f"  {nr_values} : # codes")
 
         for ii, (kk, values) in enumerate(vij.items()):
             if values is not None:
                 for jj in range(0, len(values), 16):
-                    vals = ["{:>02x}".format(vv) for vv in values[jj : jj + 16]]
-                    val = " ".join(vals)
-                    ss.append("  {:<47} : L = {}".format(val, kk))
+                    vals = [f"{vv:>02X}" for vv in values[jj : jj + 16]]
+                    ss.append(f"  {' '.join(vals):<47} : L = {kk}")
 
     return "\n".join(ss)
 
 
-def _print_dqt(marker, offset, info):
+def _print_dqt(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a DQT segment."""
-    _m, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lq"] + 2)
-        )
-    )
-    for pq, tq, qk in zip(info["Pq"], info["Tq"], info["Qk"]):
-        ss.append("Table destination ID: {}".format(tq))
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}, length {sub['Lq'] + 2}"
+    ss = [f"\n {header:-^63} "]
+
+    for pq, tq, qk in zip(sub["Pq"], sub["Tq"], sub["Qk"]):
+        ss.append(f"Table destination ID: {tq}")
         if pq == 0:
-            ss.append("Table precision: {} (8-bit)".format(pq))
+            ss.append(f"Table precision: {pq} (8-bit)")
         else:
-            ss.append("Table precision: {} (16-bit)".format(pq))
+            ss.append(f"Table precision: {pq} (16-bit)")
 
         new_qk = []
         for index in ZIGZAG:
@@ -287,71 +270,64 @@ def _print_dqt(marker, offset, info):
         for ii in range(0, 64, 8):
             if not pq:
                 # 8-bit
-                table_rows = ["{:>2}".format(qq) for qq in new_qk[ii : ii + 8]]
+                table_rows = [f"{qq:>2}" for qq in new_qk[ii : ii + 8]]
             else:
                 # 16-bit
-                table_rows = ["{:>3}".format(qq) for qq in new_qk[ii : ii + 8]]
+                table_rows = [f"{qq:>3}" for qq in new_qk[ii : ii + 8]]
 
-            ss.append("  {}".format("  ".join(table_rows)))
+            ss.append(f"  {'  '.join(table_rows)}")
 
     return "\n".join(ss)
 
 
-def _print_dnl(marker, offset, info):
+def _print_dnl(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a DNL segment."""
-    m_bytes, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Ld"] + 2)
-        )
-    )
-    ss.append("NL={}".format(info["NL"]))
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}, length {sub['Ld'] + 2}"
+    ss = [f"\n {header:-^63} "]
+    ss.append(f"NL={sub['NL']}")
 
     return "\n".join(ss)
 
 
-def _print_dri(marker, offset, info):
+def _print_dri(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a DRI segment."""
-    m_bytes, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lr"] + 2)
-        )
-    )
-    ss.append("Ri={}".format(info["Ri"]))
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}, length {sub['Lr'] + 2}"
+    ss = [f"\n {header:-^63} "]
+    ss.append(f"Ri={sub['Ri']}")
+
     return "\n".join(ss)
 
 
-def _print_eoi(marker, offset, info):
+def _print_eoi(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for an EOI segment."""
-    return "\n{:=^63}".format(" {} marker at offset {} ".format(marker, offset))
-
-
-def _print_exp(marker, offset, info):
-    """String output for an EXP segment."""
-    m_bytes, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Le"] + 2)
-        )
-    )
-    ss.append("Eh={}, Ev={}".format(info["Eh"], info["Ev"]))
+    m_bytes, fill, sub = info
+    header = f"{marker} marker at offset {offset}"
+    ss = [f"\n {header:-^63} "]
 
     return "\n".join(ss)
 
 
-def _print_sof(marker, offset, info):
+def _print_exp(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+    """String output for an EXP segment."""
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}, length {sub['Le'] + 2}"
+    ss = [f"\n {header:-^63} "]
+    ss.append(f"Eh={sub['Eh']}, Ev={sub['Ev']}")
+
+    return "\n".join(ss)
+
+
+def _print_sof(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a SOF segment."""
-    m_bytes, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Lf"] + 2)
-        )
-    )
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}, length {sub['Lf'] + 2}"
+    ss = [f"\n {header:-^63} "]
 
     sof_type = {
         0xFFC0: "Baseline sequential DCT",  # SOF0
@@ -370,66 +346,70 @@ def _print_sof(marker, offset, info):
     }
 
     try:
-        ss.append("{}".format(sof_type[m_bytes]))
+        ss.append(sof_type[m_bytes])
     except KeyError:
-        ss.append("Unknown SOF type: {}".format(hex(m_bytes)))
+        ss.append(f"Unknown SOF type: {hex(m_bytes)}")
 
-    ss.append("Sample size (px): {} x {}".format(info["X"], info["Y"]))
-    ss.append("Sample precision (bits): {}".format(info["P"]))
-    ss.append("Number of component images: {}".format(info["Nf"]))
+    ss.append(f"Sample size (px): {sub['X']} x {sub['Y']}")
+    ss.append(f"Sample precision (bits): {sub['P']}")
+    ss.append(f"Number of component images: {sub['Nf']}")
 
-    for ci, vv in info["Ci"].items():
+    for ci, vv in sub["Ci"].items():
         h, v, tqi = vv["Hi"], vv["Vi"], vv["Tqi"]
         try:
             ci = _COMMON_COMPONENT_IDS[ci]
         except KeyError:
             pass
-        ss.append("  Component ID: {}".format(ci))
-        ss.append("    Horizontal sampling factor: {}".format(h))
-        ss.append("    Vertical sampling factor: {}".format(v))
-        ss.append("    Quantization table destination: {}".format(tqi))
+        ss.append(f"  Component ID: {ci}")
+        ss.append(f"    Horizontal sampling factor: {h}")
+        ss.append(f"    Vertical sampling factor: {v}")
+        ss.append(f"    Quantization table destination: {tqi}")
 
     return "\n".join(ss)
 
 
-def _print_soi(marker, offset, info):
+def _print_soi(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
     """String output for a SOI segment."""
-    return "\n{:=^63}".format(" {} marker at offset {} ".format(marker, offset))
+    m_bytes, fill, sub = info
+
+    header = f"{marker} marker at offset {offset}"
+    ss = [f"\n {header:-^63} "]
+
+    return "\n".join(ss)
 
 
-def _print_sos(marker, offset, info):
+def _print_sos(
+    marker: str,
+    offset: int,
+    info: tuple[int, int, dict[str | tuple[str, int], Any]],
+) -> str:
     """String output for a SOS segment."""
-    _m, fill, info = info
-    ss = []
-    ss.append(
-        "\n{:-^63}".format(
-            " {} marker at offset {}, length {} ".format(marker, offset, info["Ls"] + 2)
-        )
-    )
-    ss.append("Number of image components: {}".format(info["Ns"]))
+    m_bytes, fill, sub = info
 
-    for csk, td, ta in zip(info["Csj"], info["Tdj"], info["Taj"]):
+    header = f"{marker} marker at offset {offset}, length {sub['Ls'] + 2}"
+    ss = [f"\n {header:-^63} "]
+    ss.append(f"Number of image components: {sub['Ns']}")
+
+    for csk, td, ta in zip(sub["Csj"], sub["Tdj"], sub["Taj"]):
         try:
             csk = _COMMON_COMPONENT_IDS[csk]
         except KeyError:
             pass
-        ss.append("  Component: {}, DC table: {}, AC table: {}".format(csk, td, ta))
+        ss.append(f"  Component: {csk}, DC table: {td}, AC table: {ta}")
 
-    ss.append("Spectral selectors start-end: {}-{}".format(info["Ss"], info["Se"]))
-    ss.append(
-        "Successive approximation bit high-low: {}-{}".format(info["Ah"], info["Al"])
-    )
+    ss.append(f"Spectral selectors start-end: {sub['Ss']}-{sub['Se']}")
+    ss.append(f"Successive approximation bit high-low: {sub['Ah']}-{sub['Al']}")
 
     # Write RST and encoded data lengths
     remove = ["Ls", "Ns", "Csj", "Tdj", "Taj", "Ss", "Se", "Ah", "Al"]
-    keys = [kk for kk in info if kk not in remove]
+    keys = [kk for kk in sub if kk not in remove]
     for key in keys:
         if key[0] == "ENC":
-            ss.append("\n{:.^63}".format(" ENC marker at offset {}".format(key[1])))
-            ss.append("\n{} bytes of entropy-coded data".format(len(info[key])))
+            ss.append(f"\n{' ENC marker at offset {key[1]}':.^63}")
+            ss.append(f"\n{len(sub[key])} bytes of entropy-coded data")
         else:
-            (name, offset) = key
-            ss.append("{:<7}{}({})".format(offset, name, "ffd{}".format(name[-1])))
+            (name, offset) = cast(tuple[str, int], key)
+            ss.append(f"{offset:<7}{name}(FFD{name[-1]})")
 
     return "\n".join(ss)
 

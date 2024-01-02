@@ -3,8 +3,6 @@
 from io import BytesIO
 import os
 from pathlib import Path
-import platform
-import sys
 
 import pytest
 
@@ -20,7 +18,7 @@ RUN_JPEG2K = bool(get_decoders("JPEG 2000"))
 
 
 @pytest.mark.skipif(HAS_DECODERS, reason="Decoders available")
-class TestNoDecoders(object):
+class TestNoDecoders:
     """Test interactions with no decoders."""
 
     def test_decode_str(self):
@@ -64,21 +62,21 @@ class TestNoDecoders(object):
 
 
 @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG decoders available")
-class TestJPEGDecoders(object):
+class TestJPEGDecoders:
     """Test decoding."""
 
     def test_decode_str(self):
         """Test passing a str to decode."""
         fpath = os.path.join(JPEG_DIRECTORY, "10918", "p1", "A1.JPG")
         assert isinstance(fpath, str)
-        arr = decode(fpath)
+        decode(fpath)
 
     def test_decode_pathlike(self):
         """Test passing a pathlike to decode."""
         fpath = os.path.join(JPEG_DIRECTORY, "10918", "p1", "A1.JPG")
         p = Path(fpath)
         assert isinstance(p, os.PathLike)
-        arr = decode(p)
+        decode(p)
 
     def test_decode_filelike(self):
         """Test passing a filelike to decode."""
@@ -86,13 +84,13 @@ class TestJPEGDecoders(object):
 
         fpath = os.path.join(JPEG_DIRECTORY, "10918", "p1", "A1.JPG")
         with open(fpath, "rb") as f:
-            arr = decode(f)
+            decode(f)
 
         with open(fpath, "rb") as f:
             bs.write(f.read())
 
         bs.seek(0)
-        arr = decode(bs)
+        decode(bs)
 
     def test_decode_bytes(self):
         """Test passing bytes to decode."""
@@ -101,7 +99,7 @@ class TestJPEGDecoders(object):
             data = f.read()
 
         assert isinstance(data, bytes)
-        arr = decode(data)
+        decode(data)
 
     def test_decode_failure(self):
         """Test failure to decode."""
@@ -112,7 +110,7 @@ class TestJPEGDecoders(object):
         """Test specifying the decoder."""
         fpath = os.path.join(JPEG_DIRECTORY, "10918", "p1", "A1.JPG")
         assert isinstance(fpath, str)
-        arr = decode(fpath, decoder="libjpeg")
+        decode(fpath, decoder="libjpeg")
 
     @pytest.mark.skipif("openjpeg" in get_decoders(), reason="Have openjpeg")
     def test_specify_unknown_decoder(self):
@@ -124,24 +122,24 @@ class TestJPEGDecoders(object):
 
 
 @pytest.mark.skipif(not RUN_JPEGLS, reason="No JPEG-LS decoders available")
-class TestJPEGLSDecoders(object):
+class TestJPEGLSDecoders:
     """Test decoding JPEG-LS files."""
 
-    def setup(self):
+    def setup_method(self):
         self.basedir = os.path.join(JPEG_DIRECTORY, "14495", "JLS")
 
     def test_decode_str(self):
         """Test passing a str to decode."""
         fpath = os.path.join(self.basedir, "T8C0E0.JLS")
         assert isinstance(fpath, str)
-        arr = decode(fpath)
+        decode(fpath)
 
     def test_decode_pathlike(self):
         """Test passing a pathlike to decode."""
         fpath = os.path.join(self.basedir, "T8C0E0.JLS")
         p = Path(fpath)
         assert isinstance(p, os.PathLike)
-        arr = decode(p)
+        decode(p)
 
     def test_decode_filelike(self):
         """Test passing a filelike to decode."""
@@ -149,13 +147,13 @@ class TestJPEGLSDecoders(object):
 
         fpath = os.path.join(self.basedir, "T8C0E0.JLS")
         with open(fpath, "rb") as f:
-            arr = decode(f)
+            decode(f)
 
         with open(fpath, "rb") as f:
             bs.write(f.read())
 
         bs.seek(0)
-        arr = decode(bs)
+        decode(bs)
 
     def test_decode_bytes(self):
         """Test passing bytes to decode."""
@@ -164,12 +162,12 @@ class TestJPEGLSDecoders(object):
             data = f.read()
 
         assert isinstance(data, bytes)
-        arr = decode(data)
+        decode(data)
 
     def test_specify_decoder(self):
         """Test specifying the decoder."""
         fpath = os.path.join(self.basedir, "T8C0E0.JLS")
-        arr = decode(fpath, decoder="libjpeg")
+        decode(fpath, decoder="libjpeg")
 
     @pytest.mark.skipif("openjpeg" in get_decoders(), reason="Have openjpeg")
     def test_specify_unknown_decoder(self):
@@ -180,24 +178,24 @@ class TestJPEGLSDecoders(object):
 
 
 @pytest.mark.skipif(not RUN_JPEG2K, reason="No JPEG 2000 decoders available")
-class TestJPEG2KDecoders(object):
+class TestJPEG2KDecoders:
     """Test decoding JPEG 2000 files."""
 
-    def setup(self):
+    def setup_method(self):
         self.basedir = os.path.join(JPEG_DIRECTORY, "15444", "2KLS")
 
     def test_decode_str(self):
         """Test passing a str to decode."""
         fpath = os.path.join(self.basedir, "693.j2k")
         assert isinstance(fpath, str)
-        arr = decode(fpath)
+        decode(fpath)
 
     def test_decode_pathlike(self):
         """Test passing a pathlike to decode."""
         fpath = os.path.join(self.basedir, "693.j2k")
         p = Path(fpath)
         assert isinstance(p, os.PathLike)
-        arr = decode(p)
+        decode(p)
 
     def test_decode_filelike(self):
         """Test passing a filelike to decode."""
@@ -205,13 +203,13 @@ class TestJPEG2KDecoders(object):
 
         fpath = os.path.join(self.basedir, "693.j2k")
         with open(fpath, "rb") as f:
-            arr = decode(f)
+            decode(f)
 
         with open(fpath, "rb") as f:
             bs.write(f.read())
 
         bs.seek(0)
-        arr = decode(bs)
+        decode(bs)
 
     def test_decode_bytes(self):
         """Test passing bytes to decode."""
@@ -220,12 +218,12 @@ class TestJPEG2KDecoders(object):
             data = f.read()
 
         assert isinstance(data, bytes)
-        arr = decode(data)
+        decode(data)
 
     def test_specify_decoder(self):
         """Test specifying the decoder."""
         fpath = os.path.join(self.basedir, "693.j2k")
-        arr = decode(fpath, decoder="openjpeg")
+        decode(fpath, decoder="openjpeg")
 
     @pytest.mark.skipif("libjpeg" in get_decoders(), reason="Have libjpeg")
     def test_specify_unknown_decoder(self):
