@@ -1,16 +1,16 @@
 """"""
 
-from functools import partial
 import logging
 from struct import unpack
+from typing import BinaryIO, Any, Callable, cast
 
 from ._markers import MARKERS
 
 
-LOGGER = logging.getLogger("jpg")
+LOGGER = logging.getLogger(__name__)
 
 
-def parse(fp):
+def parse(fp: BinaryIO) -> dict[tuple[str, int], Any]:
     """Return a JPEG but don't decode yet."""
     _fill_bytes = 0
     while fp.read(1) == b"\xff":
@@ -23,7 +23,9 @@ def parse(fp):
     if fp.read(2) != b"\xFF\xD8":
         raise ValueError("SOI marker not found")
 
-    info = {("SOI", fp.tell() - 2): (unpack(">H", b"\xFF\xD8")[0], _fill_bytes, {})}
+    info: dict[tuple[str, int], tuple[int, int, Any]] = {
+        ("SOI", fp.tell() - 2): (unpack(">H", b"\xFF\xD8")[0], _fill_bytes, {})
+    }
 
     END_OF_FILE = False
 
@@ -55,12 +57,12 @@ def parse(fp):
 
                 info[key] = (_marker, _fill_bytes, handler(fp))
 
-            elif name is "SOS":
+            elif name == "SOS":
                 # SOS's info dict contains an extra 'encoded_data' keys
                 # which use RSTN@offset and ENC@offset
-                info[key] = [_marker, _fill_bytes, handler(fp)]
+                handler = cast(Callable, handler)
+                info[key] = (_marker, _fill_bytes, handler(fp))
 
-                sos_info = {}
                 encoded_data = bytearray()
                 _enc_start = fp.tell()
 
@@ -127,7 +129,7 @@ def parse(fp):
                     fp.seek(-2 - _sos_fill_bytes, 1)
                     break
 
-            elif name is "EOI":
+            elif name == "EOI":
                 info[key] = (_marker, _fill_bytes, {})
                 break
 

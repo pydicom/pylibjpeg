@@ -51,11 +51,12 @@ The following marker segments are supported:
 """
 
 from struct import unpack
+from typing import BinaryIO, Any, cast
 
 from pylibjpeg.tools.utils import split_byte
 
 
-def APP(fp):
+def APP(fp: BinaryIO) -> dict[str, int | bytes]:
     """Return a dict containing APP data.
 
     See ISO/IEC 10918-1 Section B.2.4.6.
@@ -82,7 +83,7 @@ def APP(fp):
     return {"Lp": length, "Ap": fp.read(length - 2)}
 
 
-def COM(fp):
+def COM(fp: BinaryIO) -> dict[str, int | str]:
     """Return a dict containing COM data.
 
     See ISO/IEC 10918-1 Section B.2.4.5.
@@ -110,7 +111,7 @@ def COM(fp):
     return {"Lc": length, "Cm": comment}
 
 
-def DAC(fp):
+def DAC(fp: BinaryIO) -> dict[str, int | list[int]]:
     """Return a dict containing DAC segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.3.
@@ -149,7 +150,7 @@ def DAC(fp):
     return {"La": length, "Tc": tc, "Tb": tb, "Cs": cs}
 
 
-def DHT(fp):
+def DHT(fp: BinaryIO) -> dict[str, int | list[int] | Any]:
     """Return a dict containing DHT segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.2.
@@ -181,7 +182,7 @@ def DHT(fp):
     bytes_to_read = length - 2
 
     tc, th, li = [], [], []
-    vij = {}
+    vij: dict[tuple[int, int], dict[int, tuple[int]]] = {}
     while bytes_to_read > 0:
         _tc, _th = split_byte(fp.read(1))
         tc.append(_tc)
@@ -199,7 +200,7 @@ def DHT(fp):
         for ii in range(16):
             nr = _li[ii]
             if nr:
-                _vij[ii + 1] = unpack(">{}B".format(nr), fp.read(nr))
+                _vij[ii + 1] = unpack(f">{nr}B", fp.read(nr))
                 bytes_to_read -= nr
 
         li.append(_li)
@@ -208,7 +209,7 @@ def DHT(fp):
     return {"Lh": length, "Tc": tc, "Th": th, "Li": li, "Vij": vij}
 
 
-def DNL(fp):
+def DNL(fp: BinaryIO) -> dict[str, int | list[int]]:
     """Return a dict containing DNL segment data.
 
     See ISO/IEC 10918-1 Section B.2.5.
@@ -236,7 +237,7 @@ def DNL(fp):
     return {"Ld": length, "NL": nr_lines}
 
 
-def DQT(fp):
+def DQT(fp: BinaryIO) -> dict[str, int | list[int] | list[list[int]]]:
     """Return a dict containing DQT segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.1.
@@ -272,18 +273,16 @@ def DQT(fp):
         tq.append(table_id)
 
         if precision not in (0, 1):
-            raise ValueError(
-                "JPEG 10918 - DQT: invalid precision '{}'".format(precision)
-            )
+            raise ValueError(f"JPEG 10918 - DQT: invalid precision '{precision}'")
 
         # If Pq is 0, Qk is 8-bit, if Pq is 1, Qk is 16-bit
         Q_k = []
         for ii in range(64):
             if precision == 0:
-                Q_k.append(unpack(">B", fp.read(1))[0])
+                Q_k.append(cast(int, unpack(">B", fp.read(1))[0]))
                 bytes_to_read -= 1
             elif precision == 1:
-                Q_k.append(unpack(">H", fp.read(2))[0])
+                Q_k.append(cast(int, unpack(">H", fp.read(2))[0]))
                 bytes_to_read -= 2
 
         qk.append(Q_k)
@@ -291,7 +290,7 @@ def DQT(fp):
     return {"Lq": length, "Pq": pq, "Tq": tq, "Qk": qk}
 
 
-def DRI(fp):
+def DRI(fp: BinaryIO) -> dict[str, int]:
     """Return a dict containing DRI segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.4.
@@ -316,7 +315,7 @@ def DRI(fp):
     return {"Lr": unpack(">H", fp.read(2))[0], "Ri": unpack(">H", fp.read(2))[0]}
 
 
-def EXP(fp):
+def EXP(fp: BinaryIO) -> dict[str, int]:
     """Return a dict containing EXP segment data.
 
     See ISO/IEC 10918-1 Section B.3.3.
@@ -345,7 +344,7 @@ def EXP(fp):
     return {"Le": length, "Eh": eh, "Ev": ev}
 
 
-def SOF(fp):
+def SOF(fp: BinaryIO) -> dict[str, int | dict[int, dict[str, int]]]:
     """Return a dict containing SOF header data.
 
     See ISO/IEC 10918-1 Section B.2.2.
@@ -406,7 +405,7 @@ def SOF(fp):
     }
 
 
-def SOS(fp):
+def SOS(fp: BinaryIO) -> dict[str, int | list[int]]:
     """Return a dict containing SOS header data.
 
     See ISO/IEC 10918-1 Section B.2.3.
@@ -443,7 +442,7 @@ def SOS(fp):
     """
     (length, nr_components) = unpack(">HB", fp.read(3))
 
-    csj, tdj, taj, tmj = [], [], [], []
+    csj, tdj, taj = [], [], []
     for ii in range(nr_components):
         _cs = unpack(">B", fp.read(1))[0]
         csj.append(_cs)
@@ -467,7 +466,7 @@ def SOS(fp):
     }
 
 
-def skip(fp):
+def skip(fp: BinaryIO) -> None:
     """Skip the next N - 2 bytes.
 
     See ISO/IEC 10918-1 Section ???

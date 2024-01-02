@@ -1,0 +1,63 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+authors = [
+    {name = "pylibjpeg contributors"}
+]
+classifiers=[
+"License :: OSI Approved :: MIT License",
+"Intended Audience :: Developers",
+"Intended Audience :: Healthcare Industry",
+"Intended Audience :: Science/Research",
+"Development Status :: 5 - Production/Stable",
+"Natural Language :: English",
+"Programming Language :: Python :: 3.10",
+"Programming Language :: Python :: 3.11",
+"Programming Language :: Python :: 3.12",
+"Operating System :: OS Independent",
+"Topic :: Scientific/Engineering :: Medical Science Apps.",
+"Topic :: Software Development :: Libraries",
+]
+dependencies = ["numpy"]
+description = """\
+    A Python framework for decoding JPEG and decoding/encoding DICOM\
+    RLE data, with a focus on supporting pydicom\
+"""
+keywords = ["dicom, pydicom, python, imaging jpg jpeg jpg-ls jpeg-ls jpeg2k jpeg2000 rle"]
+license = {text = "MIT"}
+name = "pylibjpeg"
+readme = "README.md"
+requires-python = ">=3.10"
+version = "2.0.0.dev0"
+
+
+[project.optional-dependencies]
+dev = [
+    "black==23.12.1",
+    "mypy==1.8.0",
+    "pytest",
+    "pytest-cov",
+]
+
+
+[project.urls]
+download = "https://github.com/pydicom/pylibjpeg/archive/main.zip"
+homepage = "https://github.com/pydicom/pylibjpeg"
+repository = "https://github.com/pydicom/pylibjpeg"
+
+
+[tool.mypy]
+python_version = "3.10"
+files = "pylibjpeg"
+exclude = ["pylibjpeg/tests", "pylibjpeg/tools/tests"]
+show_error_codes = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = false
+ignore_missing_imports = true
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
