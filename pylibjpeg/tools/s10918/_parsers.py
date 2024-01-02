@@ -51,12 +51,12 @@ The following marker segments are supported:
 """
 
 from struct import unpack
-from typing import BinaryIO, Any, cast
+from typing import BinaryIO, Any, cast, Dict, Union, List, Tuple
 
 from pylibjpeg.tools.utils import split_byte
 
 
-def APP(fp: BinaryIO) -> dict[str, int | bytes]:
+def APP(fp: BinaryIO) -> Dict[str, Union[int, bytes]]:
     """Return a dict containing APP data.
 
     See ISO/IEC 10918-1 Section B.2.4.6.
@@ -83,7 +83,7 @@ def APP(fp: BinaryIO) -> dict[str, int | bytes]:
     return {"Lp": length, "Ap": fp.read(length - 2)}
 
 
-def COM(fp: BinaryIO) -> dict[str, int | str]:
+def COM(fp: BinaryIO) -> Dict[str, Union[int, str]]:
     """Return a dict containing COM data.
 
     See ISO/IEC 10918-1 Section B.2.4.5.
@@ -111,7 +111,7 @@ def COM(fp: BinaryIO) -> dict[str, int | str]:
     return {"Lc": length, "Cm": comment}
 
 
-def DAC(fp: BinaryIO) -> dict[str, int | list[int]]:
+def DAC(fp: BinaryIO) -> Dict[str, Union[int, List[int]]]:
     """Return a dict containing DAC segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.3.
@@ -150,7 +150,7 @@ def DAC(fp: BinaryIO) -> dict[str, int | list[int]]:
     return {"La": length, "Tc": tc, "Tb": tb, "Cs": cs}
 
 
-def DHT(fp: BinaryIO) -> dict[str, int | list[int] | Any]:
+def DHT(fp: BinaryIO) -> Dict[str, Union[int, List[int], Any]]:
     """Return a dict containing DHT segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.2.
@@ -182,7 +182,7 @@ def DHT(fp: BinaryIO) -> dict[str, int | list[int] | Any]:
     bytes_to_read = length - 2
 
     tc, th, li = [], [], []
-    vij: dict[tuple[int, int], dict[int, tuple[int]]] = {}
+    vij: Dict[Tuple[int, int], Dict[int, Tuple[int]]] = {}
     while bytes_to_read > 0:
         _tc, _th = split_byte(fp.read(1))
         tc.append(_tc)
@@ -209,7 +209,7 @@ def DHT(fp: BinaryIO) -> dict[str, int | list[int] | Any]:
     return {"Lh": length, "Tc": tc, "Th": th, "Li": li, "Vij": vij}
 
 
-def DNL(fp: BinaryIO) -> dict[str, int | list[int]]:
+def DNL(fp: BinaryIO) -> Dict[str, Union[int, List[int]]]:
     """Return a dict containing DNL segment data.
 
     See ISO/IEC 10918-1 Section B.2.5.
@@ -237,7 +237,7 @@ def DNL(fp: BinaryIO) -> dict[str, int | list[int]]:
     return {"Ld": length, "NL": nr_lines}
 
 
-def DQT(fp: BinaryIO) -> dict[str, int | list[int] | list[list[int]]]:
+def DQT(fp: BinaryIO) -> Dict[str, Union[int, List[int], List[List[int]]]]:
     """Return a dict containing DQT segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.1.
@@ -290,7 +290,7 @@ def DQT(fp: BinaryIO) -> dict[str, int | list[int] | list[list[int]]]:
     return {"Lq": length, "Pq": pq, "Tq": tq, "Qk": qk}
 
 
-def DRI(fp: BinaryIO) -> dict[str, int]:
+def DRI(fp: BinaryIO) -> Dict[str, int]:
     """Return a dict containing DRI segment data.
 
     See ISO/IEC 10918-1 Section B.2.4.4.
@@ -315,7 +315,7 @@ def DRI(fp: BinaryIO) -> dict[str, int]:
     return {"Lr": unpack(">H", fp.read(2))[0], "Ri": unpack(">H", fp.read(2))[0]}
 
 
-def EXP(fp: BinaryIO) -> dict[str, int]:
+def EXP(fp: BinaryIO) -> Dict[str, int]:
     """Return a dict containing EXP segment data.
 
     See ISO/IEC 10918-1 Section B.3.3.
@@ -344,7 +344,7 @@ def EXP(fp: BinaryIO) -> dict[str, int]:
     return {"Le": length, "Eh": eh, "Ev": ev}
 
 
-def SOF(fp: BinaryIO) -> dict[str, int | dict[int, dict[str, int]]]:
+def SOF(fp: BinaryIO) -> Dict[str, Union[int, Dict[int, Dict[str, int]]]]:
     """Return a dict containing SOF header data.
 
     See ISO/IEC 10918-1 Section B.2.2.
@@ -405,7 +405,7 @@ def SOF(fp: BinaryIO) -> dict[str, int | dict[int, dict[str, int]]]:
     }
 
 
-def SOS(fp: BinaryIO) -> dict[str, int | list[int]]:
+def SOS(fp: BinaryIO) -> Dict[str, Union[int, List[int]]]:
     """Return a dict containing SOS header data.
 
     See ISO/IEC 10918-1 Section B.2.3.

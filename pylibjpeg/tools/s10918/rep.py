@@ -1,4 +1,4 @@
-from typing import Any, cast
+from typing import Any, cast, Dict, Tuple, List
 
 from ._printers import PRINTERS
 
@@ -53,7 +53,7 @@ class JPEG:
 
     """
 
-    def __init__(self, meta: dict[tuple[str, int], Any]) -> None:
+    def __init__(self, meta: Dict[Tuple[str, int], Any]) -> None:
         """Initialise a new JPEG.
 
         Parameters
@@ -75,7 +75,7 @@ class JPEG:
             "marker was found"
         )
 
-    def get_keys(self, name: str) -> list[Any]:
+    def get_keys(self, name: str) -> List[Any]:
         """Return a list of keys with marker containing `name`."""
         return [mm for mm in self._keys if name in mm[0]]
 
@@ -161,12 +161,12 @@ class JPEG:
         return not self.is_hierarchical
 
     @property
-    def _keys(self) -> list[tuple[str, int]]:
+    def _keys(self) -> List[Tuple[str, int]]:
         """Return a list of the info keys, ordered by offset."""
         return sorted(self.info.keys(), key=lambda x: x[1])
 
     @property
-    def markers(self) -> list[str]:
+    def markers(self) -> List[str]:
         """Return a list of the found JPEG markers, ordered by offset."""
         return [mm[0] for mm in self._keys]
 

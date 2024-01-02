@@ -57,8 +57,7 @@ class TestNoDecoders:
 
     def test_unknown_decoder_type(self):
         """Test unknown decoder type."""
-        with pytest.raises(ValueError, match=r"Unknown decoder_type 'TEST'"):
-            get_decoders(decoder_type="TEST")
+        assert not get_decoders(decoder_type="TEST")
 
 
 @pytest.mark.skipif(not RUN_JPEG, reason="No JPEG decoders available")

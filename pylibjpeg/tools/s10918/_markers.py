@@ -1,11 +1,11 @@
 """JPEG 10918 markers"""
 
-from typing import Callable
+from typing import Callable, Dict, Tuple, Union
 
 from ._parsers import APP, COM, DAC, DHT, DNL, DQT, DRI, EXP, SOF, SOS
 
 
-MARKERS: dict[int, tuple[str, str, None | Callable]] = {}
+MARKERS: Dict[int, Tuple[str, str, Union[None, Callable]]] = {}
 # JPEG reserved markers
 for _marker in range(0xFF02, 0xFFBF + 1):
     MARKERS[_marker] = ("RES", "Reserved", None)
