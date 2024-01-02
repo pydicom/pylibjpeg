@@ -13,6 +13,8 @@ classifiers=[
 "Intended Audience :: Science/Research",
 "Development Status :: 5 - Production/Stable",
 "Natural Language :: English",
+"Programming Language :: Python :: 3.8",
+"Programming Language :: Python :: 3.9",
 "Programming Language :: Python :: 3.10",
 "Programming Language :: Python :: 3.11",
 "Programming Language :: Python :: 3.12",
@@ -20,7 +22,7 @@ classifiers=[
 "Topic :: Scientific/Engineering :: Medical Science Apps.",
 "Topic :: Software Development :: Libraries",
 ]
-dependencies = ["numpy"]
+dependencies = ["numpy", "typing_extension"]
 description = """\
     A Python framework for decoding JPEG and decoding/encoding DICOM\
     RLE data, with a focus on supporting pydicom\
@@ -29,7 +31,7 @@ keywords = ["dicom, pydicom, python, imaging jpg jpeg jpg-ls jpeg-ls jpeg2k jpeg
 license = {text = "MIT"}
 name = "pylibjpeg"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 version = "2.0.0.dev0"
 
 
@@ -40,6 +42,20 @@ dev = [
     "pytest",
     "pytest-cov",
 ]
+rle = [
+    "pylibjpeg-rle"
+]
+openjpeg = [
+    "pylibjpeg-openjpeg"
+]
+libjpeg = [
+    "pylibjpeg-libjpeg"
+]
+all = [
+    "pylibjpeg-rle",
+    "pylibjpeg-openjpeg",
+    "pylibjpeg-libjpeg",
+]
 
 
 [project.urls]
@@ -49,14 +65,14 @@ repository = "https://github.com/pydicom/pylibjpeg"
 
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.8"
 files = "pylibjpeg"
 exclude = ["pylibjpeg/tests", "pylibjpeg/tools/tests"]
 show_error_codes = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 warn_return_any = true
-warn_unreachable = false
+warn_unreachable = true
 ignore_missing_imports = true
 disallow_untyped_calls = true
 disallow_untyped_defs = true

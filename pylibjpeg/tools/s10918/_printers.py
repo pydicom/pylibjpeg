@@ -18,7 +18,7 @@ The following segments are supported:
 """
 
 from struct import unpack
-from typing import Any, cast
+from typing import Any, cast, Tuple, Dict, Union
 
 
 ZIGZAG = [
@@ -99,7 +99,7 @@ _COMMON_COMPONENT_IDS = {
 }
 
 
-def _print_app(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_app(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for an APP segment."""
     _, _, sub = info
 
@@ -160,7 +160,7 @@ def _print_app(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_com(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_com(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a COM segment."""
     _m, fill, sub = info
 
@@ -182,7 +182,7 @@ def _print_com(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_dac(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_dac(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a DAC segment."""
     m_bytes, fill, sub = info
 
@@ -193,7 +193,7 @@ def _print_dac(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_dhp(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_dhp(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a DHP segment."""
     m_bytes, fill, sub = info
 
@@ -219,7 +219,7 @@ def _print_dhp(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_dht(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_dht(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a DHT segment."""
     m_bytes, fill, sub = info
 
@@ -248,7 +248,7 @@ def _print_dht(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_dqt(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_dqt(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a DQT segment."""
     m_bytes, fill, sub = info
 
@@ -280,7 +280,7 @@ def _print_dqt(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_dnl(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_dnl(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a DNL segment."""
     m_bytes, fill, sub = info
 
@@ -291,7 +291,7 @@ def _print_dnl(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_dri(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_dri(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a DRI segment."""
     m_bytes, fill, sub = info
 
@@ -302,7 +302,7 @@ def _print_dri(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_eoi(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_eoi(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for an EOI segment."""
     m_bytes, fill, sub = info
     header = f"{marker} marker at offset {offset}"
@@ -311,7 +311,7 @@ def _print_eoi(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_exp(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_exp(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for an EXP segment."""
     m_bytes, fill, sub = info
 
@@ -322,7 +322,7 @@ def _print_exp(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_sof(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_sof(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a SOF segment."""
     m_bytes, fill, sub = info
 
@@ -368,7 +368,7 @@ def _print_sof(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
     return "\n".join(ss)
 
 
-def _print_soi(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) -> str:
+def _print_soi(marker: str, offset: int, info: Tuple[int, int, Dict[str, Any]]) -> str:
     """String output for a SOI segment."""
     m_bytes, fill, sub = info
 
@@ -381,7 +381,7 @@ def _print_soi(marker: str, offset: int, info: tuple[int, int, dict[str, Any]]) 
 def _print_sos(
     marker: str,
     offset: int,
-    info: tuple[int, int, dict[str | tuple[str, int], Any]],
+    info: Tuple[int, int, Dict[Union[str, Tuple[str, int]], Any]],
 ) -> str:
     """String output for a SOS segment."""
     m_bytes, fill, sub = info
@@ -408,7 +408,7 @@ def _print_sos(
             ss.append(f"\n{' ENC marker at offset {key[1]}':.^63}")
             ss.append(f"\n{len(sub[key])} bytes of entropy-coded data")
         else:
-            (name, offset) = cast(tuple[str, int], key)
+            (name, offset) = cast(Tuple[str, int], key)
             ss.append(f"{offset:<7}{name}(FFD{name[-1]})")
 
     return "\n".join(ss)

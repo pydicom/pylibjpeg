@@ -1,5 +1,7 @@
 """Utility functions."""
 
+from typing import Tuple
+
 
 def get_bit(byte: bytes, index: int) -> int:
     """Return the value of the bit at `index` of `byte`.
@@ -24,7 +26,7 @@ def get_bit(byte: bytes, index: int) -> int:
     return (value >> (7 - index)) & 1
 
 
-def split_byte(byte: bytes) -> tuple[int, int]:
+def split_byte(byte: bytes) -> Tuple[int, int]:
     """Return the 8-bit `byte` as two 4-bit unsigned integers.
 
     Parameters

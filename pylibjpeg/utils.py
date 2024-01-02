@@ -1,9 +1,9 @@
 import logging
 import os
+import sys
 
-# from pkg_resources import iter_entry_points
 from importlib import metadata
-from typing import BinaryIO, Any, Protocol
+from typing import BinaryIO, Any, Protocol, Union, Dict
 
 import numpy as np
 
@@ -11,7 +11,7 @@ import numpy as np
 LOGGER = logging.getLogger(__name__)
 
 
-DecodeSource = str | os.PathLike[str] | BinaryIO | bytes
+DecodeSource = Union[str, os.PathLike[str], BinaryIO, bytes]
 
 
 class Decoder(Protocol):
@@ -31,7 +31,7 @@ DECODER_ENTRY_POINTS = {
 
 
 class Encoder(Protocol):
-    def __call__(self, src: np.ndarray, **kwargs: Any) -> bytes | bytearray:
+    def __call__(self, src: np.ndarray, **kwargs: Any) -> Union[bytes, bytearray]:
         ...  # pragma: no cover
 
 
@@ -102,7 +102,7 @@ def decode(data: DecodeSource, decoder: str = "", **kwargs: Any) -> np.ndarray:
     raise ValueError("Unable to decode the data")
 
 
-def get_decoders(decoder_type: str = "") -> dict[str, Decoder]:
+def get_decoders(decoder_type: str = "") -> Dict[str, Decoder]:
     """Return a :class:`dict` of JPEG decoders as {package: callable}.
 
     Parameters
@@ -125,8 +125,22 @@ def get_decoders(decoder_type: str = "") -> dict[str, Decoder]:
     dict
         A dict of ``{'package_name': <decoder function>}``.
     """
-    # print(metadata.entry_points())
-    # Return all decoders
+    # TODO: Python 3.10 remove
+    if sys.version_info[:2] < (3, 10):
+        ep = metadata.entry_points()
+        if not decoder_type:
+            decoders = {}
+            for entry_point in DECODER_ENTRY_POINTS.values():
+                if entry_point in ep:
+                    decoders.update({val.name: val.load() for val in ep[entry_point]})
+
+            return decoders
+
+        if decoder_type in ep:
+            return {val.name: val.load() for val in ep[decoder_type]}
+
+        raise ValueError(f"Unknown decoder_type '{decoder_type}'")
+
     if not decoder_type:
         decoders = {}
         for entry_point in DECODER_ENTRY_POINTS.values():
@@ -142,15 +156,26 @@ def get_decoders(decoder_type: str = "") -> dict[str, Decoder]:
         raise ValueError(f"Unknown decoder_type '{decoder_type}'")
 
 
-def get_pixel_data_decoders() -> dict[str, Decoder]:
+def get_pixel_data_decoders() -> Dict[str, Decoder]:
     """Return a :class:`dict` of ``{UID: callable}``."""
+    # TODO: Python 3.10 remove
+    if sys.version_info[:2] < (3, 10):
+        ep = metadata.entry_points()
+        if "pylibjpeg.pixel_data_decoders" in ep:
+            return {
+                val.name: val.load()
+                for val in ep["pylibjpeg.pixel_data_decoders"]
+            }
+
+        return {}
+
     return {
         val.name: val.load()
         for val in metadata.entry_points(group="pylibjpeg.pixel_data_decoders")
     }
 
 
-def _encode(arr: np.ndarray, encoder: str = "", **kwargs: Any) -> bytes | bytearray:
+def _encode(arr: np.ndarray, encoder: str = "", **kwargs: Any) -> Union[bytes, bytearray]:
     """Return the encoded `arr` as a :class:`bytes`.
 
     .. versionadded:: 1.3.0
@@ -197,7 +222,7 @@ def _encode(arr: np.ndarray, encoder: str = "", **kwargs: Any) -> bytes | bytear
     raise ValueError("Unable to encode the data")
 
 
-def get_encoders(encoder_type: str = "") -> dict[str, Encoder]:
+def get_encoders(encoder_type: str = "") -> Dict[str, Encoder]:
     """Return a :class:`dict` of JPEG encoders as {package: callable}.
 
     .. versionadded:: 1.3.0
@@ -222,26 +247,53 @@ def get_encoders(encoder_type: str = "") -> dict[str, Encoder]:
     dict
         A dict of ``{'package_name': <encoder function>}``.
     """
+    # TODO: Python 3.10 remove
+    if sys.version_info[:2] < (3, 10):
+        ep = metadata.entry_points()
+        if not encoder_type:
+            encoders = {}
+            for entry_point in ENCODER_ENTRY_POINTS.values():
+                if entry_point in ep:
+                    encoders.update({val.name: val.load() for val in ep[entry_point]})
+
+            return encoders
+
+        if encoder_type in ep:
+            return {val.name: val.load() for val in ep[encoder_type]}
+
+        raise ValueError(f"Unknown decoder_type '{encoders}'")
+
     if not encoder_type:
         encoders = {}
         for entry_point in ENCODER_ENTRY_POINTS.values():
-            result = metadata.entry_points(group=entry_point)
+            result = metadata.entry_points().select(group=entry_point)
             encoders.update({val.name: val.load() for val in result})
 
         return encoders
 
     try:
-        result = metadata.entry_points(group=ENCODER_ENTRY_POINTS[encoder_type])
+        result = metadata.entry_points().select(group=ENCODER_ENTRY_POINTS[encoder_type])
         return {val.name: val.load() for val in result}
     except KeyError:
         raise ValueError(f"Unknown encoder_type '{encoder_type}'")
 
 
-def get_pixel_data_encoders() -> dict[str, Encoder]:
+def get_pixel_data_encoders() -> Dict[str, Encoder]:
     """Return a :class:`dict` of ``{UID: callable}``.
 
     .. versionadded:: 1.3.0
     """
+    # TODO: Python 3.10 remove
+    if sys.version_info[:2] < (3, 10):
+        ep = metadata.entry_points()
+        if "pylibjpeg.pixel_data_encoders" in ep:
+            return {
+                val.name: val.load()
+                for val in ep["pylibjpeg.pixel_data_encoders"]
+            }
+
+        return {}
+
     return {
         val.name: val.load()
         for val in metadata.entry_points(group="pylibjpeg.pixel_data_encoders")

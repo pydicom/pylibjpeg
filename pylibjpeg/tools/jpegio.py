@@ -1,6 +1,7 @@
 import logging
 import os
-from typing import BinaryIO
+from pathlib import Path
+from typing import BinaryIO, Union, cast
 
 from .s10918 import parse, JPEG
 
@@ -33,16 +34,18 @@ def get_specification(fp: BinaryIO) -> str:
     )
 
 
-def jpgread(path: str | os.PathLike[str] | BinaryIO) -> JPEG:
+def jpgread(path: Union[str, os.PathLike[str], BinaryIO]) -> JPEG:
     """Return a represention of the JPEG file at `fpath`."""
     LOGGER.debug(f"Reading file: {path}")
-    if isinstance(path, str | os.PathLike[str]):
+    if not hasattr(path, "read"):
+        path = cast(str, path)
         with open(path, "rb") as fp:
             jpg_format = get_specification(fp)
             parser, jpg_class = PARSERS[jpg_format]
             meta = parser(fp)
             LOGGER.debug("File parsed successfully")
     else:
+        path = cast(BinaryIO, path)
         jpg_format = get_specification(path)
         parser, jpg_class = PARSERS[jpg_format]
         meta = parser(path)

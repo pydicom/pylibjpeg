@@ -2,7 +2,7 @@
 
 import logging
 from struct import unpack
-from typing import BinaryIO, Any, Callable, cast
+from typing import BinaryIO, Any, Callable, cast, Dict, Tuple
 
 from ._markers import MARKERS
 
@@ -10,7 +10,7 @@ from ._markers import MARKERS
 LOGGER = logging.getLogger(__name__)
 
 
-def parse(fp: BinaryIO) -> dict[tuple[str, int], Any]:
+def parse(fp: BinaryIO) -> Dict[Tuple[str, int], Any]:
     """Return a JPEG but don't decode yet."""
     _fill_bytes = 0
     while fp.read(1) == b"\xff":
@@ -23,7 +23,7 @@ def parse(fp: BinaryIO) -> dict[tuple[str, int], Any]:
     if fp.read(2) != b"\xFF\xD8":
         raise ValueError("SOI marker not found")
 
-    info: dict[tuple[str, int], tuple[int, int, Any]] = {
+    info: Dict[Tuple[str, int], Tuple[int, int, Any]] = {
         ("SOI", fp.tell() - 2): (unpack(">H", b"\xFF\xD8")[0], _fill_bytes, {})
     }
 
