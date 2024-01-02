@@ -11,7 +11,7 @@ import numpy as np
 LOGGER = logging.getLogger(__name__)
 
 
-DecodeSource = Union[str, os.PathLike[str], BinaryIO, bytes]
+DecodeSource = Union[str, os.PathLike, BinaryIO, bytes]
 
 
 class Decoder(Protocol):
@@ -127,10 +127,12 @@ def get_decoders(decoder_type: str = "") -> Dict[str, Decoder]:
     """
     # TODO: Python 3.10 remove
     if sys.version_info[:2] < (3, 10):
+        # {"package name": [EntryPoint(), ...]}
         ep = metadata.entry_points()
         if not decoder_type:
             decoders = {}
             for entry_point in DECODER_ENTRY_POINTS.values():
+                print(entry_point in ep)
                 if entry_point in ep:
                     decoders.update({val.name: val.load() for val in ep[entry_point]})
 
@@ -139,7 +141,7 @@ def get_decoders(decoder_type: str = "") -> Dict[str, Decoder]:
         if decoder_type in ep:
             return {val.name: val.load() for val in ep[decoder_type]}
 
-        raise ValueError(f"Unknown decoder_type '{decoder_type}'")
+        return {}
 
     if not decoder_type:
         decoders = {}
@@ -149,11 +151,11 @@ def get_decoders(decoder_type: str = "") -> Dict[str, Decoder]:
 
         return decoders
 
-    try:
+    if decoder_type in DECODER_ENTRY_POINTS:
         result = metadata.entry_points(group=DECODER_ENTRY_POINTS[decoder_type])
         return {val.name: val.load() for val in result}
-    except KeyError:
-        raise ValueError(f"Unknown decoder_type '{decoder_type}'")
+
+    return {}
 
 
 def get_pixel_data_decoders() -> Dict[str, Decoder]:
@@ -261,7 +263,7 @@ def get_encoders(encoder_type: str = "") -> Dict[str, Encoder]:
         if encoder_type in ep:
             return {val.name: val.load() for val in ep[encoder_type]}
 
-        raise ValueError(f"Unknown decoder_type '{encoders}'")
+        return {}
 
     if not encoder_type:
         encoders = {}
@@ -271,11 +273,11 @@ def get_encoders(encoder_type: str = "") -> Dict[str, Encoder]:
 
         return encoders
 
-    try:
+    if encoder_type in ENCODER_ENTRY_POINTS:
         result = metadata.entry_points().select(group=ENCODER_ENTRY_POINTS[encoder_type])
         return {val.name: val.load() for val in result}
-    except KeyError:
-        raise ValueError(f"Unknown encoder_type '{encoder_type}'")
+
+    return {}
 
 
 def get_pixel_data_encoders() -> Dict[str, Encoder]:
