@@ -132,16 +132,18 @@ def get_decoders(decoder_type: str = "") -> Dict[str, Decoder]:
         if not decoder_type:
             decoders = {}
             for entry_point in DECODER_ENTRY_POINTS.values():
-                print(entry_point in ep)
                 if entry_point in ep:
                     decoders.update({val.name: val.load() for val in ep[entry_point]})
 
             return decoders
 
-        if decoder_type in ep:
-            return {val.name: val.load() for val in ep[decoder_type]}
-
-        return {}
+        try:
+            return {
+                val.name: val.load()
+                for val in ep[DECODER_ENTRY_POINTS[decoder_type]]
+            }
+        except KeyError:
+            return {}
 
     if not decoder_type:
         decoders = {}
@@ -151,11 +153,11 @@ def get_decoders(decoder_type: str = "") -> Dict[str, Decoder]:
 
         return decoders
 
-    if decoder_type in DECODER_ENTRY_POINTS:
+    try:
         result = metadata.entry_points(group=DECODER_ENTRY_POINTS[decoder_type])
         return {val.name: val.load() for val in result}
-
-    return {}
+    except KeyError:
+        return {}
 
 
 def get_pixel_data_decoders() -> Dict[str, Decoder]:
@@ -171,10 +173,13 @@ def get_pixel_data_decoders() -> Dict[str, Decoder]:
 
         return {}
 
-    return {
-        val.name: val.load()
-        for val in metadata.entry_points(group="pylibjpeg.pixel_data_decoders")
-    }
+    try:
+        return  {
+            val.name: val.load()
+            for val in metadata.entry_points(group="pylibjpeg.pixel_data_decoders")
+        }
+    except KeyError:
+        return {}
 
 
 def _encode(arr: np.ndarray, encoder: str = "", **kwargs: Any) -> Union[bytes, bytearray]:
@@ -268,16 +273,16 @@ def get_encoders(encoder_type: str = "") -> Dict[str, Encoder]:
     if not encoder_type:
         encoders = {}
         for entry_point in ENCODER_ENTRY_POINTS.values():
-            result = metadata.entry_points().select(group=entry_point)
+            result = metadata.entry_points(group=entry_point)
             encoders.update({val.name: val.load() for val in result})
 
         return encoders
 
-    if encoder_type in ENCODER_ENTRY_POINTS:
-        result = metadata.entry_points().select(group=ENCODER_ENTRY_POINTS[encoder_type])
+    try:
+        result = metadata.entry_points(group=ENCODER_ENTRY_POINTS[encoder_type])
         return {val.name: val.load() for val in result}
-
-    return {}
+    except KeyError:
+        return {}
 
 
 def get_pixel_data_encoders() -> Dict[str, Encoder]:
@@ -296,7 +301,10 @@ def get_pixel_data_encoders() -> Dict[str, Encoder]:
 
         return {}
 
-    return {
-        val.name: val.load()
-        for val in metadata.entry_points(group="pylibjpeg.pixel_data_encoders")
-    }
+    try:
+        return  {
+            val.name: val.load()
+            for val in metadata.entry_points(group="pylibjpeg.pixel_data_encoders")
+        }
+    except KeyError:
+        return {}

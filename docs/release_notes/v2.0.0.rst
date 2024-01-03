@@ -1,0 +1,9 @@
+.. _v2.0.0:
+
+2.0.0
+=====
+
+* Renamed default branch to ``main``
+* Switched to a ``pyproject.toml`` based project
+* Removed ``pydicom`` module
+* Supported Python versions are 3.8, 3.9, 3.10, 3.11 and 3.12
