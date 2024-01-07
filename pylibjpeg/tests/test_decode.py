@@ -12,7 +12,7 @@ from pylibjpeg.data import JPEG_DIRECTORY
 from pylibjpeg.utils import get_decoders, get_pixel_data_decoders
 
 
-HAS_DECODERS = bool(get_decoders())
+HAS_DECODERS = bool(get_decoders()) or bool(get_pixel_data_decoders())
 RUN_JPEG = bool(get_decoders("JPEG"))
 RUN_JPEGLS = bool(get_decoders("JPEG-LS"))
 RUN_JPEG2K = bool(get_decoders("JPEG 2000"))

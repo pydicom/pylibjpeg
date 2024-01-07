@@ -1,7 +1,7 @@
 <p align="center">
 <a href="https://github.com/pydicom/pylibjpeg/actions?query=workflow%3Aunit-tests"><img alt="Build status" src="https://github.com/pydicom/pylibjpeg/workflows/unit-tests/badge.svg"></a>
 <a href="https://codecov.io/gh/pydicom/pylibjpeg"><img alt="Test coverage" src="https://codecov.io/gh/pydicom/pylibjpeg/branch/main/graph/badge.svg"></a>
-<a href="https://pypi.org/project/pylibjpeg/"><img alt="PyPI versions" src="https://badge.fury.io/py/pylibjpeg.svg"></a>
+<a href="https://pypi.org/project/pylibjpeg/"><img alt="PyPI versions" src="https://img.shields.io/pypi/v/pylibjpeg"></a>
 <a href="https://www.python.org/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/pylibjpeg.svg"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
