@@ -1,6 +1,5 @@
 import logging
 import os
-from pathlib import Path
 from typing import BinaryIO, Union, cast
 
 from .s10918 import parse, JPEG

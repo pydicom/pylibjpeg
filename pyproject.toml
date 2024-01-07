@@ -24,21 +24,21 @@ classifiers=[
 ]
 dependencies = ["numpy"]
 description = """\
-    A Python framework for decoding JPEG and decoding/encoding DICOM\
-    RLE data, with a focus on supporting pydicom\
+A Python framework for decoding JPEG and decoding/encoding DICOM \
+RLE data, with a focus on supporting pydicom\
 """
-keywords = ["dicom, pydicom, python, imaging jpg jpeg jpg-ls jpeg-ls jpeg2k jpeg2000 rle"]
+keywords = ["dicom pydicom python imaging jpg jpeg jpg-ls jpeg-ls jpeg2k jpeg2000 rle"]
 license = {text = "MIT"}
 name = "pylibjpeg"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "2.0.0.dev0"
+version = "2.0.0"
 
 
 [project.optional-dependencies]
 dev = [
-    "black==23.12.1",
-    "mypy==1.8.0",
+    "black>=23.12",
+    "mypy>=1.8",
     "pytest",
     "pytest-cov",
 ]

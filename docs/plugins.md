@@ -58,13 +58,20 @@ the requirements of the transfer syntax:
 
 ```python
 def my_pixel_data_decoder(
-    src: bytes, ds: Optional[pydicom.dataset.Dataset] = None, **kwargs: Any
-) -> numpy.ndarray:
+    src: bytes,
+    ds: pydicom.dataset.Dataset | None = None,
+    version: int = 1,
+    **kwargs: Any,
+) -> numpy.ndarray | bytearray:
     """Return the encoded *src* as an unshaped numpy ndarray of uint8.
 
-    .. versionchanged:: 1.3
+    .. versionchanged: 1.3
 
         Added requirement to return little-endian ordered data by default.
+
+    .. versionchanged: 2.0
+
+        Added `version` keyword argument and support for returning :class:`bytearray`
 
     Parameters
     ----------
@@ -73,6 +80,12 @@ def my_pixel_data_decoder(
     ds : pydicom.dataset.Dataset, optional
         A dataset containing the group ``0x0028`` elements corresponding to
         the *Pixel Data*. If not used then *kwargs* must be supplied.
+    version : int, optional
+
+      * If ``1`` (default) then either supplying either `ds` or `kwargs` is
+        required and the return type is a :class:`~numpy.ndarray`
+      * If ``2`` then `ds` will be ignored, `kwargs` is required and the return
+        type is :class:`bytearray`
     kwargs : Dict[str, Any]
         A dict containing relevant image pixel module elements:
 
@@ -94,8 +107,10 @@ def my_pixel_data_decoder(
 
     Returns
     -------
-    numpy.ndarray
-        A 1-dimensional ndarray of 'uint8' containing the little-endian ordered decoded pixel data.
+    numpy.ndarray | bytearray
+        Either a 1-dimensional ndarray of 'uint8' or a bytearray containing the
+        little-endian ordered decoded pixel data, depending on the value of
+        `version`.
     """
     # Decoding happens here
 ```
@@ -206,7 +221,7 @@ The pixel data encoding function will be passed two required parameters:
 The function should return the encoded pixel data as `bytes`.
 
 ```python
-def my_pixel_data_encoder(src: bytes, **kwargs) -> bytes:
+def my_pixel_data_encoder(src: bytes, **kwargs: Any) -> bytes:
     """Return `src` as encoded bytes.
 
     Parameters
