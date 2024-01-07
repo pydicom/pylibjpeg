@@ -3,9 +3,9 @@ name: release-deploy
 on:
   release:
     types: [ published ]
-  push:
-    branches: [ main ]
-  pull_request:
+  # push:
+  #   branches: [ main ]
+  # pull_request:
 
 jobs:
   build-deploy:
@@ -42,9 +42,4 @@ jobs:
         path: ./dist
 
     - name: Publish package to PyPi
-      run: |
-        ls -l dist/
-
-      #
-      # - name: Publish package to PyPi
-      #   uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@release/v1
