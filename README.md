@@ -1,11 +1,14 @@
-[![codecov](https://codecov.io/gh/pydicom/pylibjpeg/branch/master/graph/badge.svg)](https://codecov.io/gh/pydicom/pylibjpeg)
-[![Build Status](https://github.com/pydicom/pylibjpeg/workflows/build/badge.svg)](https://github.com/pydicom/pylibjpeg/actions?query=workflow%3Abuild)
-[![PyPI version](https://badge.fury.io/py/pylibjpeg.svg)](https://badge.fury.io/py/pylibjpeg)
-[![Python versions](https://img.shields.io/pypi/pyversions/pylibjpeg.svg)](https://img.shields.io/pypi/pyversions/pylibjpeg.svg)
+<p align="center">
+<a href="https://github.com/pydicom/pylibjpeg/actions?query=workflow%3Aunit-tests"><img alt="Build status" src="https://github.com/pydicom/pylibjpeg/workflows/unit-tests/badge.svg"></a>
+<a href="https://codecov.io/gh/pydicom/pylibjpeg"><img alt="Test coverage" src="https://codecov.io/gh/pydicom/pylibjpeg/branch/main/graph/badge.svg"></a>
+<a href="https://pypi.org/project/pylibjpeg/"><img alt="PyPI versions" src="https://badge.fury.io/py/pylibjpeg.svg"></a>
+<a href="https://www.python.org/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/pylibjpeg.svg"></a>
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+</p>
 
 ## pylibjpeg
 
-A Python 3.10+ framework for decoding JPEG images and decoding/encoding RLE datasets, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
+A Python 3.8+ framework for decoding JPEG images and decoding/encoding RLE datasets, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
 
 
 ### Installation
@@ -42,26 +45,29 @@ python -m pip install pylibjpeg
 One or more plugins are required before *pylibjpeg* is able to handle JPEG images or RLE datasets. To handle a given format or DICOM Transfer Syntax
 you first have to install the corresponding package:
 
-#### Supported Formats
-|Format                   |Decode?|Encode?|Plugin                 |Based on     |
-|---                      |------ |---    |---                    |---          |
-|JPEG, JPEG-LS and JPEG XT|Yes    |No     |[pylibjpeg-libjpeg][1] |[libjpeg][2] |
-|JPEG 2000                |Yes    |No     |[pylibjpeg-openjpeg][3]|[openjpeg][4]|
-|RLE Lossless (PackBits)  |Yes    |Yes    |[pylibjpeg-rle][5]     |-            |
+#### Supported Image Formats
+|Format                   |Decode?|Encode?|Plugin                 | License |Based on     |
+|---                      |------ |---    |---                    |---      |---          |
+|JPEG, JPEG-LS and JPEG XT|Yes    |No     |[pylibjpeg-libjpeg][1] | GPLv3   |[libjpeg][2] |
+|JPEG 2000                |Yes    |No     |[pylibjpeg-openjpeg][3]| MIT     |[openjpeg][4]|
+|RLE Lossless (PackBits)  |Yes    |Yes    |[pylibjpeg-rle][5]     | MIT     |-            |
 
-#### DICOM Transfer Syntax
+#### Supported DICOM Transfer Syntaxes
 
-|UID                   | Description                                    | Plugin                |
-|---                   |---                                             |----                   |
-|1.2.840.10008.1.2.4.50|JPEG Baseline (Process 1)                       |[pylibjpeg-libjpeg][1] |
-|1.2.840.10008.1.2.4.51|JPEG Extended (Process 2 and 4)                 |[pylibjpeg-libjpeg][1] |
-|1.2.840.10008.1.2.4.57|JPEG Lossless, Non-Hierarchical (Process 14)    |[pylibjpeg-libjpeg][1] |
-|1.2.840.10008.1.2.4.70|JPEG Lossless, Non-Hierarchical, First-Order Prediction</br>(Process 14, Selection Value 1) | [pylibjpeg-libjpeg][1]|
-|1.2.840.10008.1.2.4.80|JPEG-LS Lossless                                |[pylibjpeg-libjpeg][1] |
-|1.2.840.10008.1.2.4.81|JPEG-LS Lossy (Near-Lossless) Image Compression |[pylibjpeg-libjpeg][1] |
-|1.2.840.10008.1.2.4.90|JPEG 2000 Image Compression (Lossless Only)     |[pylibjpeg-openjpeg][4]|
-|1.2.840.10008.1.2.4.91|JPEG 2000 Image Compression                     |[pylibjpeg-openjpeg][4]|
-|1.2.840.10008.1.2.5   |RLE Lossless                                    |[pylibjpeg-rle][5]     |
+|UID                    | Description                                    | Plugin                |
+|---                    |---                                             |----                   |
+|1.2.840.10008.1.2.4.50 |JPEG Baseline (Process 1)                       |[pylibjpeg-libjpeg][1] |
+|1.2.840.10008.1.2.4.51 |JPEG Extended (Process 2 and 4)                 |[pylibjpeg-libjpeg][1] |
+|1.2.840.10008.1.2.4.57 |JPEG Lossless, Non-Hierarchical (Process 14)    |[pylibjpeg-libjpeg][1] |
+|1.2.840.10008.1.2.4.70 |JPEG Lossless, Non-Hierarchical, First-Order Prediction</br>(Process 14, Selection Value 1) | [pylibjpeg-libjpeg][1]|
+|1.2.840.10008.1.2.4.80 |JPEG-LS Lossless                                |[pylibjpeg-libjpeg][1] |
+|1.2.840.10008.1.2.4.81 |JPEG-LS Lossy (Near-Lossless) Image Compression |[pylibjpeg-libjpeg][1] |
+|1.2.840.10008.1.2.4.90 |JPEG 2000 Image Compression (Lossless Only)     |[pylibjpeg-openjpeg][3]|
+|1.2.840.10008.1.2.4.91 |JPEG 2000 Image Compression                     |[pylibjpeg-openjpeg][3]|
+|1.2.840.10008.1.2.4.201|High-Throughput JPEG 2000 Image Compression (Lossless Only) |[pylibjpeg-openjpeg][3]|
+|1.2.840.10008.1.2.4.202|High-Throughput JPEG 2000 with RPCL Options Image Compression (Lossless Only) |[pylibjpeg-openjpeg][3]|
+|1.2.840.10008.1.2.4.203|High-Throughput JPEG 2000 Image Compression |[pylibjpeg-openjpeg][3]|
+|1.2.840.10008.1.2.5    |RLE Lossless                                    |[pylibjpeg-rle][5]     |
 
 If you're not sure what the dataset's *Transfer Syntax UID* is, it can be
 determined with:
@@ -101,19 +107,6 @@ ds = dcmread(get_testdata_file('OBXXXX1A_rle.dcm'))
 # to explicitly specify the use of pylibjpeg
 ds.decompress("pylibjpeg")
 rle_arr = ds.pixel_array
-```
-
-For datasets with multiple frames you can reduce your memory usage by
-processing each frame separately using the ``generate_frames()`` generator
-function:
-```python
-from pydicom import dcmread
-from pydicom.data import get_testdata_file
-from pydicom.pixel_data_handlers.pylibjpeg_handler import generate_frames
-
-ds = dcmread(get_testdata_file('color3d_jpeg_baseline.dcm'))
-frames = generate_frames(ds)
-arr = next(frames)
 ```
 
 ##### Standalone JPEG decoding

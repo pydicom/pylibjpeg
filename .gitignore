@@ -31,6 +31,7 @@ __pycache__
 .pytest_cache
 *.egg-info
 build
+env*/
 
 # Docs build
 docs/_build/*
@@ -45,15 +46,14 @@ doc/reference/generated/*
 # PyCharm IDE files
 *.idea*
 
-
-
 # jupyter notebooks
 *.ipynb
 .ipynb_checkpoints/*
 tests/test_pixel.py
 
 # mypy
-pydicom/.mypy_cache/*
+.mypy_cache/
+.ruff_cache/
 
 # vscode
 .vscode/*

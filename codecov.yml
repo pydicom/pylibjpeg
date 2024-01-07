@@ -13,8 +13,4 @@ coverage:
 
 ignore:
   - "pylibjpeg/tests"
-  - "pylibjpeg/scripts"
   - "pylibjpeg/tools"
-  - "pylibjpeg-libjpeg"
-  - "pylibjpeg-data"
-  - "pydicom"
