@@ -10,6 +10,11 @@ on:
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/pylibjpeg/
+    permissions:
+      id-token: write
 
     steps:
     - uses: actions/checkout@v4
@@ -37,12 +42,6 @@ jobs:
         path: ./dist
 
     - name: Publish package to PyPi
-      environment:
-        name: pypi
-        url: https://pypi.org/project/pylibjpeg/
-      permissions:
-        id-token: write
-
       run: |
         ls -l dist/
 
