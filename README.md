@@ -49,7 +49,7 @@ you first have to install the corresponding package:
 |Format                   |Decode?|Encode?|Plugin                 | License |Based on     |
 |---                      |------ |---    |---                    |---      |---          |
 |JPEG, JPEG-LS and JPEG XT|Yes    |No     |[pylibjpeg-libjpeg][1] | GPLv3   |[libjpeg][2] |
-|JPEG 2000                |Yes    |No     |[pylibjpeg-openjpeg][3]| MIT     |[openjpeg][4]|
+|JPEG 2000                |Yes    |Yes    |[pylibjpeg-openjpeg][3]| MIT     |[openjpeg][4]|
 |RLE Lossless (PackBits)  |Yes    |Yes    |[pylibjpeg-rle][5]     | MIT     |-            |
 
 #### Supported DICOM Transfer Syntaxes
