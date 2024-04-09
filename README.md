@@ -140,7 +140,7 @@ ds = dcmread(get_testdata_file("CT_small.dcm"))
 
 # Encode in-place using RLE Lossless and update the dataset
 # Updates the Pixel Data, Transfer Syntax UID and Planar Configuration
-ds.compress(uid)
+ds.compress(RLELossless)
 
 # Save compressed
 ds.save_as("CT_small_rle.dcm")
