@@ -32,7 +32,7 @@ license = {text = "MIT"}
 name = "pylibjpeg"
 readme = "README.md"
 requires-python = ">=3.8"
-version = "2.0.0"
+version = "2.0.1"
 
 
 [project.optional-dependencies]
