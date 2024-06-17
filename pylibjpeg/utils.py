@@ -32,7 +32,7 @@ DECODER_ENTRY_POINTS = {
 
 
 class Encoder(Protocol):
-    def __call__(self, src: np.ndarray, **kwargs: Any) -> Union[bytes, bytearray]:
+    def __call__(self, src: np.ndarray | bytes, **kwargs: Any) -> Union[bytes, bytearray]:
         ...  # pragma: no cover
 
 
@@ -347,7 +347,10 @@ def get_pixel_data_decoders(
 
     entry_point = "pylibjpeg.pixel_data_decoders"
     decoders = cast(
-        Union[Dict[str, Decoder], Dict[str, Dict[str, Decoder]]],
+        Union[
+            Dict[str, Union[Decoder, Encoder]],
+            Dict[str, Dict[str, Union[Decoder, Encoder]]],
+        ],
         _get_pixel_data_plugins(entry_point, version),
     )
     return decoders
