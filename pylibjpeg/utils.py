@@ -32,7 +32,7 @@ DECODER_ENTRY_POINTS = {
 
 
 class Encoder(Protocol):
-    def __call__(self, src: np.ndarray | bytes, **kwargs: Any) -> Union[bytes, bytearray]:
+    def __call__(self, src: Union[np.ndarray, bytes], **kwargs: Any) -> Union[bytes, bytearray]:
         ...  # pragma: no cover
 
 
