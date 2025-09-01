@@ -13,11 +13,11 @@ classifiers=[
 "Intended Audience :: Science/Research",
 "Development Status :: 5 - Production/Stable",
 "Natural Language :: English",
-"Programming Language :: Python :: 3.8",
-"Programming Language :: Python :: 3.9",
 "Programming Language :: Python :: 3.10",
 "Programming Language :: Python :: 3.11",
 "Programming Language :: Python :: 3.12",
+"Programming Language :: Python :: 3.13",
+"Programming Language :: Python :: 3.14",
 "Operating System :: OS Independent",
 "Topic :: Scientific/Engineering :: Medical Science Apps.",
 "Topic :: Software Development :: Libraries",
@@ -31,8 +31,8 @@ keywords = ["dicom pydicom python imaging jpg jpeg jpg-ls jpeg-ls jpeg2k jpeg200
 license = {text = "MIT"}
 name = "pylibjpeg"
 readme = "README.md"
-requires-python = ">=3.8"
-version = "2.0.1"
+requires-python = ">=3.10"
+version = "2.1.0"
 
 
 [project.optional-dependencies]
@@ -65,7 +65,7 @@ repository = "https://github.com/pydicom/pylibjpeg"
 
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.10"
 files = "pylibjpeg"
 exclude = ["pylibjpeg/tests", "pylibjpeg/tools/tests"]
 show_error_codes = true
