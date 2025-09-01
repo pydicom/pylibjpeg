@@ -8,7 +8,7 @@
 
 ## pylibjpeg
 
-A Python 3.8+ framework for decoding JPEG images and decoding/encoding RLE datasets, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
+A Python framework for decoding JPEG and JPEG-LS and decoding/encoding JPEG 2000 and RLE, with a focus on providing support for [pydicom](https://github.com/pydicom/pydicom).
 
 
 ### Installation
@@ -46,11 +46,12 @@ One or more plugins are required before *pylibjpeg* is able to handle JPEG image
 you first have to install the corresponding package:
 
 #### Supported Image Formats
-|Format                   |Decode?|Encode?|Plugin                 | License |Based on     |
-|---                      |------ |---    |---                    |---      |---          |
-|JPEG, JPEG-LS and JPEG XT|Yes    |No     |[pylibjpeg-libjpeg][1] | GPLv3   |[libjpeg][2] |
-|JPEG 2000                |Yes    |Yes    |[pylibjpeg-openjpeg][3]| MIT     |[openjpeg][4]|
-|RLE Lossless (PackBits)  |Yes    |Yes    |[pylibjpeg-rle][5]     | MIT     |-            |
+|Format                    |Decode?|Encode?|Plugin                 | License |Based on     |
+|---                       |------ |---    |---                    |---      |---          |
+|JPEG, JPEG-LS and JPEG XT |Yes    |No     |[pylibjpeg-libjpeg][1] | GPLv3   |[libjpeg][2] |
+|JPEG 2000                 |Yes    |Yes    |[pylibjpeg-openjpeg][3]| MIT/BSD |[openjpeg][4]|
+|High-throughput JPEG 2000 |Yes    |No     |[pylibjpeg-openjpeg][3]| MIT/BSD |[openjpeg][4]|
+|RLE Lossless (PackBits)   |Yes    |Yes    |[pylibjpeg-rle][5]     | MIT     |-            |
 
 #### Supported DICOM Transfer Syntaxes
 
