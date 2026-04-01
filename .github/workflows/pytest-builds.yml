@@ -64,4 +64,4 @@ jobs:
 
     - name: Send coverage results
       if: ${{ success() }}
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
